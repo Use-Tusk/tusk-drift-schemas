@@ -1,0 +1,319 @@
+syntax = "proto3";
+package tusk.drift.backend.v1;
+
+import "core/span.proto";
+
+option go_package = "./backend";
+
+service TestRunService {
+  // Get global spans - spans that can be used across all tests
+  // e.g. outbound span to a jwks endpoint that may not be present in all traces
+  // we're replaying
+  rpc GetGlobalSpans(GetGlobalSpansRequest) returns (GetGlobalSpansResponse);
+
+  // Get pre-app start spans - used to mock pre-app start spans
+  rpc GetPreAppStartSpans(GetPreAppStartSpansRequest)
+      returns (GetPreAppStartSpansResponse);
+
+  // Create drift run in BE, also upserts commit and PR info
+  rpc CreateDriftRun(CreateDriftRunRequest) returns (CreateDriftRunResponse);
+
+  // Get all trace tests for a drift run
+  rpc GetDriftRunTraceTests(GetDriftRunTraceTestsRequest)
+      returns (GetDriftRunTraceTestsResponse);
+
+  // Get all trace tests in test suite
+  rpc GetAllTraceTests(GetAllTraceTestsRequest)
+      returns (GetAllTraceTestsResponse);
+
+  // Get a single trace test
+  rpc GetTraceTest(GetTraceTestRequest) returns (GetTraceTestResponse);
+
+  // Upload trace test results to BE
+  rpc UploadTraceTestResults(UploadTraceTestResultsRequest)
+      returns (UploadTraceTestResultsResponse);
+
+  // Allows CLI to indicate to backend that it's done running trace tests
+  // This can also allow CLI to send a heartbeat to indicate it's still running
+  rpc UpdateDriftRunCIStatus(UpdateDriftRunCIStatusRequest)
+      returns (UpdateDriftRunCIStatusResponse);
+
+  // We were initially thinking we'd need GetDriftRunTestResults or
+  // GetDriftRunTestStatus Since CI may wait for trace test results to be
+  // uploaded and classified before exiting However, for now CI will just exit
+  // with success if the tests were able to be run
+}
+
+message GetGlobalSpansRequest {
+  string observable_service_id = 1;
+
+  // Optional since first page will have no cursor
+  optional string pagination_cursor = 2;
+  // Server should provide next cursor based on this page size
+  int32 page_size = 3;
+}
+
+message GetGlobalSpansResponseSuccess {
+  repeated tusk.drift.core.v1.Span spans = 1;
+
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetGlobalSpansResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetGlobalSpansResponse {
+  oneof response {
+    GetGlobalSpansResponseSuccess success = 1;
+    GetGlobalSpansResponseError error = 2;
+  }
+}
+
+message GetPreAppStartSpansRequest {
+  string observable_service_id = 1;
+
+  optional string pagination_cursor = 2;
+  int32 page_size = 3;
+}
+
+message GetPreAppStartSpansResponseSuccess {
+  repeated tusk.drift.core.v1.Span spans = 1;
+
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetPreAppStartSpansResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetPreAppStartSpansResponse {
+  oneof response {
+    GetPreAppStartSpansResponseSuccess success = 1;
+    GetPreAppStartSpansResponseError error = 2;
+  }
+}
+
+message CreateDriftRunRequest {
+  string observable_service_id = 1;
+  string cli_version = 2;
+  string commit_sha = 3;
+  string pr_number = 4;
+  string branch_name = 5;
+  string external_check_run_id = 6;
+}
+
+message CreateDriftRunResponseSuccess { string drift_run_id = 1; }
+
+message CreateDriftRunResponseError {
+  // Machine-readable error code, could be an enum
+  string code = 1;
+  // Human-readable error message
+  string message = 2;
+}
+
+message CreateDriftRunResponse {
+  oneof response {
+    CreateDriftRunResponseSuccess success = 1;
+    CreateDriftRunResponseError error = 2;
+  }
+}
+
+message GetDriftRunTraceTestsRequest {
+  string drift_run_id = 1;
+
+  optional string pagination_cursor = 2;
+  // Server should provide next cursor based on this page size
+  int32 page_size = 3;
+}
+
+message TraceTest {
+  string id = 1; // DB id
+  string trace_id = 2;
+  string server_span_recording_id = 3;
+
+  repeated tusk.drift.core.v1.Span spans = 4;
+}
+
+message GetDriftRunTraceTestsResponseSuccess {
+  repeated TraceTest trace_tests = 1;
+
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetDriftRunTraceTestsResponseError {
+  // Machine-readable error code, could be an enum
+  string code = 1;
+  // Human-readable error message
+  string message = 2;
+}
+
+message GetDriftRunTraceTestsResponse {
+  oneof response {
+    GetDriftRunTraceTestsResponseSuccess success = 1;
+    GetDriftRunTraceTestsResponseError error = 2;
+  }
+}
+
+message GetTraceTestRequest {
+  string observable_service_id = 1;
+  string trace_test_id = 2;
+}
+
+message GetTraceTestResponse {
+  oneof response {
+    GetTraceTestResponseSuccess success = 1;
+    GetTraceTestResponseError error = 2;
+  }
+}
+
+message GetTraceTestResponseSuccess { TraceTest trace_test = 1; }
+
+message GetTraceTestResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetAllTraceTestsRequest {
+  string observable_service_id = 1;
+
+  optional string pagination_cursor = 2;
+  // Server should provide next cursor based on this page size
+  int32 page_size = 3;
+}
+
+message GetAllTraceTestsResponseSuccess {
+  repeated TraceTest trace_tests = 1;
+
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetAllTraceTestsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetAllTraceTestsResponse {
+  oneof response {
+    GetAllTraceTestsResponseSuccess success = 1;
+    GetAllTraceTestsResponseError error = 2;
+  }
+}
+
+message Deviation {
+  string field = 1; // what field in replay span had a deviation
+  string description =
+      2; // description of the deviation, primarily useful for comparing SUT
+         // inbound response (e.g. "HTTP status code mismatch")
+}
+
+enum MatchScope {
+  MATCH_SCOPE_UNSPECIFIED = 0;
+  MATCH_SCOPE_TRACE = 1;
+  MATCH_SCOPE_GLOBAL = 2;
+}
+
+enum MatchType {
+  MATCH_TYPE_UNSPECIFIED = 0;
+  MATCH_TYPE_INPUT_VALUE_HASH = 1;
+  MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA = 2;
+  MATCH_TYPE_INPUT_SCHEMA_HASH = 3;
+  MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4;
+  MATCH_TYPE_FUZZY = 5;
+  MATCH_TYPE_FALLBACK = 6;
+}
+
+message MatchLevel {
+  MatchType match_type = 1;     // How the match was found
+  MatchScope match_scope = 2;   // Scope of where the match was found
+  string match_description = 3; // Natural language description for match
+}
+
+message TraceTestSpanResult {
+  // Create a separate table in backend for span_result_recording, but very
+  // similar schema to
+  tusk.drift.core.v1.Span replay_span = 1;
+
+  // All nullable since we want to allow for no matching span_recordings
+  // This should be the DB id of the matched span_recording
+  optional string matched_span_recording_id = 2;
+  optional MatchLevel match_level = 3;
+  optional string stack_trace = 4;
+
+  repeated Deviation deviations = 5;
+}
+
+enum TraceTestFailureReason {
+  TRACE_TEST_FAILURE_REASON_UNSPECIFIED = 0;
+  TRACE_TEST_FAILURE_REASON_MOCK_NOT_FOUND = 1;
+  TRACE_TEST_FAILURE_REASON_RESPONSE_MISMATCH = 2;
+  TRACE_TEST_FAILURE_REASON_NO_RESPONSE = 3;
+}
+
+message TraceTestResult {
+  string trace_test_id = 1; // DB id
+
+  bool test_success = 2;
+  optional TraceTestFailureReason test_failure_reason = 3;
+  optional string test_failure_message = 4;
+
+  optional string replay_trace_id = 5;
+  optional string replay_server_span_id = 6;
+
+  repeated TraceTestSpanResult span_results = 7;
+}
+
+message UploadTraceTestResultsRequest {
+  string drift_run_id = 1;
+  string cli_version = 2;
+  string sdk_version = 3;
+
+  repeated TraceTestResult trace_test_results = 4;
+}
+
+message UploadTraceTestResultsResponseSuccess { string message = 1; }
+
+message UploadTraceTestResultsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message UploadTraceTestResultsResponse {
+  oneof response {
+    UploadTraceTestResultsResponseSuccess success = 1;
+    UploadTraceTestResultsResponseError error = 2;
+  }
+}
+
+enum DriftRunCIStatus {
+  DRIFT_RUN_CI_STATUS_UNSPECIFIED = 0;
+  DRIFT_RUN_CI_STATUS_RUNNING = 1;
+  DRIFT_RUN_CI_STATUS_SUCCESS = 2;
+  DRIFT_RUN_CI_STATUS_FAILURE = 3;
+}
+
+message UpdateDriftRunCIStatusRequest {
+  string drift_run_id = 1;
+  DriftRunCIStatus ci_status = 2;
+  optional string ci_status_message = 3;
+}
+
+message UpdateDriftRunCIStatusResponseSuccess { string message = 1; }
+
+message UpdateDriftRunCIStatusResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message UpdateDriftRunCIStatusResponse {
+  oneof response {
+    UpdateDriftRunCIStatusResponseSuccess success = 1;
+    UpdateDriftRunCIStatusResponseError error = 2;
+  }
+}

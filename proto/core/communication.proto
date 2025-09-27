@@ -1,0 +1,91 @@
+syntax = "proto3";
+package tusk.drift.core.v1;
+
+option go_package = "./core";
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+import "core/span.proto";
+
+// Generic protocol between CLI and SDK - completely instrumentation-agnostic
+service MockService {
+  rpc Connect(ConnectRequest) returns (ConnectResponse);
+  rpc GetMock(GetMockRequest) returns (GetMockResponse);
+  rpc SendInboundSpanForReplay(SendInboundSpanForReplayRequest)
+      returns (SendInboundSpanForReplayResponse);
+}
+
+// SDK connection handshake
+message ConnectRequest {
+  string service_id = 1;
+  string sdk_version = 2;
+  string min_cli_version = 3;
+  google.protobuf.Struct metadata =
+      4; // Additional metadata (JSON-serializable)
+}
+
+message ConnectResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message GetMockRequest {
+  string request_id = 1; // For async correlation (used in CLI)
+  string test_id = 2;    // Trace/test identifier
+  Span outbound_span = 3;
+  string stack_trace = 4;
+  string operation = 5;         // "GET", "query", "execute", "get", etc.
+  map<string, string> tags = 6; // Generic key-value metadata
+  google.protobuf.Timestamp requested_at = 7;
+}
+
+message GetMockResponse {
+  string request_id = 1; // Correlate with request
+  bool found = 2;        // Whether mock was found
+
+  // Opaque response data - CLI returns as-is from stored spans
+  google.protobuf.Struct response_data = 3; // Response payload
+  google.protobuf.Struct metadata =
+      4; // Response metadata (headers, status, etc.)
+
+  // Error information
+  string error = 5;      // Error message if not found
+  string error_code = 6; // Error classification
+
+  // Mock metadata
+  string matched_span_id = 7;               // Which span was matched
+  google.protobuf.Timestamp matched_at = 8; // When the match occurred
+}
+
+// Message types for the Unix socket protocol
+message SDKMessage {
+  MessageType type = 1;
+  string request_id = 2;
+  oneof payload {
+    ConnectRequest connect_request = 3;
+    GetMockRequest get_mock_request = 4;
+    SendInboundSpanForReplayRequest send_inbound_span_for_replay_request = 5;
+  }
+}
+
+message CLIMessage {
+  MessageType type = 1;
+  string request_id = 2;
+  oneof payload {
+    ConnectResponse connect_response = 3;
+    GetMockResponse get_mock_response = 4;
+    SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5;
+  }
+}
+
+enum MessageType {
+  MESSAGE_TYPE_UNSPECIFIED = 0;
+  MESSAGE_TYPE_SDK_CONNECT = 1;
+  MESSAGE_TYPE_MOCK_REQUEST = 2;
+  MESSAGE_TYPE_INBOUND_SPAN = 3;
+}
+
+message SendInboundSpanForReplayRequest { Span span = 1; }
+
+message SendInboundSpanForReplayResponse { bool success = 1; }

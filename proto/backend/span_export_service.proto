@@ -1,0 +1,25 @@
+syntax = "proto3";
+package tusk.drift.backend.v1;
+
+import "core/span.proto";
+
+option go_package = "./backend";
+
+service SpanExportService {
+  rpc ExportSpans(ExportSpansRequest) returns (ExportSpansResponse);
+}
+
+message ExportSpansRequest {
+  string observable_service_id = 1;
+  string environment = 2;
+  string sdk_version = 3;
+  string sdk_instance_id = 4;
+
+  repeated tusk.drift.core.v1.Span spans = 5;
+}
+
+message ExportSpansResponse {
+  bool success = 1;
+  // TODO: Add field to indicate number of spans saved?
+  string message = 2;
+}

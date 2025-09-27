@@ -1,0 +1,111 @@
+syntax = "proto3";
+package tusk.drift.core.v1;
+
+import "google/protobuf/duration.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./core";
+
+// Universal span structure that works for all instrumentation types
+message Span {
+  // Core span identity
+  string trace_id = 1;
+  string span_id = 2;
+  string parent_span_id = 3;
+  // Visual name
+  string name = 4; // "api/process_commit", "update UserQuery", "pg.query"
+
+  // Instrumentation identity
+  string package_name = 5; // "http", "pg", "mysql", "redis", "fetch"
+  string instrumentation_name = 6; // instrumentation class name
+  string submodule_name = 7; // "GET", "query", "execute", "get", etc.
+
+  // Package type classification
+  PackageType package_type = 8; // Enum classification of package type
+
+  // Input/output data
+  google.protobuf.Struct input_value = 9; // Request/query/command data
+  google.protobuf.Struct output_value = 10; // Response/result data
+  google.protobuf.Struct input_schema = 11; // Schema definition for input
+  google.protobuf.Struct output_schema = 12; // Schema definition for output
+
+  // Hash-based matching and validation
+  string input_schema_hash = 13; // Hash of input schema for validation
+  string output_schema_hash = 14; // Hash of output schema for validation
+  string input_value_hash = 15; // Hash of input_value for matching
+  string output_value_hash = 16; // Hash of output_value
+
+  // Span metadata
+  SpanKind kind = 17; // OpenTelemetry-compatible span kind
+  SpanStatus status = 18; // Span completion status
+  bool is_pre_app_start = 19; // Whether the span is a before user marking app as ready
+
+  // Timing information
+  google.protobuf.Timestamp timestamp = 20; // Primary timestamp
+  google.protobuf.Duration duration = 21; // Primary duration
+
+  // Span relationships and state
+  bool is_root_span = 22;
+  google.protobuf.Struct metadata = 23; // Additional metadata
+}
+
+// Package type classification enum
+// Langauge agnostic
+enum PackageType {
+  PACKAGE_TYPE_UNSPECIFIED = 0;
+  PACKAGE_TYPE_HTTP = 1; // HTTP-based operations
+  PACKAGE_TYPE_GRAPHQL = 2; // GraphQL operations
+  PACKAGE_TYPE_GRPC = 3; // gRPC operations
+  PACKAGE_TYPE_PG = 4; // PostgreSQL operations
+  PACKAGE_TYPE_MYSQL = 5; // MySQL operations
+  PACKAGE_TYPE_MONGODB = 6; // MongoDB operations
+  PACKAGE_TYPE_REDIS = 7; // Redis caching operations
+  PACKAGE_TYPE_KAFKA = 8; // Apache Kafka messaging
+  PACKAGE_TYPE_RABBITMQ = 9; // RabbitMQ messaging
+}
+
+// OpenTelemetry-compatible span kinds
+enum SpanKind {
+  SPAN_KIND_UNSPECIFIED = 0;
+  SPAN_KIND_INTERNAL = 1; // Internal operation
+  SPAN_KIND_SERVER = 2; // Server-side operation
+  SPAN_KIND_CLIENT = 3; // Client-side operation
+  SPAN_KIND_PRODUCER = 4; // Message producer
+  SPAN_KIND_CONSUMER = 5; // Message consumer
+}
+
+// Span completion status
+message SpanStatus {
+  StatusCode code = 1;
+  string message = 2;
+}
+
+enum StatusCode {
+  STATUS_CODE_UNSPECIFIED = 0; // Default state
+  STATUS_CODE_OK = 1; // Success
+  STATUS_CODE_ERROR = 2; // Error occurred
+}
+
+// Span events (logs) - optional
+message SpanEvent {
+  string name = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  map<string, google.protobuf.Value> attributes = 3;
+}
+
+// Span links - optional
+message SpanLink {
+  string trace_id = 1;
+  string span_id = 2;
+  map<string, google.protobuf.Value> attributes = 3;
+}
+
+// Trace collection
+message Trace {
+  string trace_id = 1;
+  repeated Span spans = 2;
+  google.protobuf.Timestamp started_at = 3;
+  google.protobuf.Timestamp completed_at = 4;
+  map<string, string> metadata = 5; // Trace-level metadata
+}

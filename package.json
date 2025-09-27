@@ -1,0 +1,94 @@
+{
+  "name": "@use-tusk/drift-schemas",
+  "version": "0.1.8",
+  "type": "module",
+  "files": [
+    "dist/**"
+  ],
+  "exports": {
+    "./backend/onboarding_service": {
+      "import": "./dist/backend/onboarding_service.js",
+      "require": "./dist/backend/onboarding_service.cjs"
+    },
+    "./backend/onboarding_service.client": {
+      "import": "./dist/backend/onboarding_service.client.js",
+      "require": "./dist/backend/onboarding_service.client.cjs"
+    },
+    "./backend/span_export_service": {
+      "import": "./dist/backend/span_export_service.js",
+      "require": "./dist/backend/span_export_service.cjs"
+    },
+    "./backend/span_export_service.client": {
+      "import": "./dist/backend/span_export_service.client.js",
+      "require": "./dist/backend/span_export_service.client.cjs"
+    },
+    "./backend/test_run_service": {
+      "import": "./dist/backend/test_run_service.js",
+      "require": "./dist/backend/test_run_service.cjs"
+    },
+    "./backend/test_run_service.client": {
+      "import": "./dist/backend/test_run_service.client.js",
+      "require": "./dist/backend/test_run_service.client.cjs"
+    },
+    "./core/communication": {
+      "import": "./dist/core/communication.js",
+      "require": "./dist/core/communication.cjs"
+    },
+    "./core/communication.client": {
+      "import": "./dist/core/communication.client.js",
+      "require": "./dist/core/communication.client.cjs"
+    },
+    "./core/span": {
+      "import": "./dist/core/span.js",
+      "require": "./dist/core/span.cjs"
+    },
+    "./google/protobuf/duration": {
+      "import": "./dist/google/protobuf/duration.js",
+      "require": "./dist/google/protobuf/duration.cjs"
+    },
+    "./google/protobuf/struct": {
+      "import": "./dist/google/protobuf/struct.js",
+      "require": "./dist/google/protobuf/struct.cjs"
+    },
+    "./google/protobuf/timestamp": {
+      "import": "./dist/google/protobuf/timestamp.js",
+      "require": "./dist/google/protobuf/timestamp.cjs"
+    },
+    "./postgresql/postgresql": {
+      "import": "./dist/postgresql/postgresql.js",
+      "require": "./dist/postgresql/postgresql.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "core/*": [
+        "dist/core/*"
+      ],
+      "backend/*": [
+        "dist/backend/*"
+      ],
+      "google/protobuf/*": [
+        "dist/google/protobuf/*"
+      ],
+      "postgresql/*": [
+        "dist/postgresql/*"
+      ]
+    }
+  },
+  "scripts": {
+    "generate": "buf generate",
+    "build": "tsdown",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run generate && npm run build"
+  },
+  "dependencies": {
+    "@protobuf-ts/runtime": "^2.11.0",
+    "@protobuf-ts/runtime-rpc": "^2.11.1"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.57.0",
+    "tsdown": "^0.15.0",
+    "typescript": "^5.4.0"
+  }
+}

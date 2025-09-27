@@ -1,0 +1,13 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/Use-Tusk/tusk-drift-schemas/generated/go
+plugins:
+  - remote: buf.build/community/timostamm-protobuf-ts
+    out: generated/ts
+    opt: generate_dependencies
+  - remote: buf.build/protocolbuffers/go
+    out: generated/go
+    opt: paths=source_relative

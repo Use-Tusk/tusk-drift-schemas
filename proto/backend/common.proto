@@ -1,0 +1,5 @@
+syntax = "proto3";
+package tusk.drift.backend.v1;
+
+option go_package = "./backend";
+
