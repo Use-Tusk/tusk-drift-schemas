@@ -1,60 +1,60 @@
 syntax = "proto3";
 package tusk.drift.instrumentation.postgresql.v1;
 
-option go_package = "./postgresql";
-
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+
+option go_package = "./postgresql";
 
 // PostgreSQL query request - used internally by PostgreSQL instrumentation SDK
 message PostgreSQLQuery {
   // Core query information
-  string text = 1;            // SQL query text
+  string text = 1; // SQL query text
   repeated string values = 2; // Parameterized query values (always strings)
-  string client_type = 3;     // "client", "pool", etc.
+  string client_type = 3; // "client", "pool", etc.
 
   // Connection context
   PostgreSQLConnection connection = 4; // Connection information
-  QueryOptions options = 5;            // Query execution options
+  QueryOptions options = 5; // Query execution options
 
   // Query metadata
-  string query_id = 6;          // Unique query identifier (optional)
+  string query_id = 6; // Unique query identifier (optional)
   map<string, string> tags = 7; // Custom tags for the query
 }
 
 // PostgreSQL connection information
 message PostgreSQLConnection {
-  string database_name = 1;    // Database name
-  string username = 2;         // Username (without password)
-  string host = 3;             // Host address
-  int32 port = 4;              // Port number
+  string database_name = 1; // Database name
+  string username = 2; // Username (without password)
+  string host = 3; // Host address
+  int32 port = 4; // Port number
   string application_name = 5; // Application name in connection
-  string connection_id = 6;    // Connection identifier
-  bool ssl_enabled = 7;        // Whether SSL is enabled
-  string server_version = 8;   // PostgreSQL server version
+  string connection_id = 6; // Connection identifier
+  bool ssl_enabled = 7; // Whether SSL is enabled
+  string server_version = 8; // PostgreSQL server version
 }
 
 // Query execution options
 message QueryOptions {
-  int32 statement_timeout = 1;            // Statement timeout in milliseconds
-  int32 query_timeout = 2;                // Query timeout in milliseconds
-  bool binary_mode = 3;                   // Whether binary mode is enabled
-  string cursor_name = 4;                 // Cursor name (for cursor queries)
-  int32 fetch_size = 5;                   // Fetch size for large result sets
-  bool read_only = 6;                     // Whether query is read-only
+  int32 statement_timeout = 1; // Statement timeout in milliseconds
+  int32 query_timeout = 2; // Query timeout in milliseconds
+  bool binary_mode = 3; // Whether binary mode is enabled
+  string cursor_name = 4; // Cursor name (for cursor queries)
+  int32 fetch_size = 5; // Fetch size for large result sets
+  bool read_only = 6; // Whether query is read-only
   map<string, string> custom_options = 7; // Custom driver options
 }
 
 // PostgreSQL query result - matches your trace data structure
 message PostgreSQLResult {
   // Core result information (from your trace data)
-  string command = 1;     // "SELECT", "INSERT", "UPDATE", etc.
-  int32 row_count = 2;    // Number of rows affected/returned
+  string command = 1; // "SELECT", "INSERT", "UPDATE", etc.
+  int32 row_count = 2; // Number of rows affected/returned
   optional int32 oid = 3; // Object ID (PostgreSQL-specific, can be null)
 
   // Result data
   repeated google.protobuf.Struct rows = 4; // Actual row data as JSON objects
-  repeated PostgreSQLField fields = 5;      // Field/column definitions
+  repeated PostgreSQLField fields = 5; // Field/column definitions
 
   // Query execution metadata
   QueryExecutionInfo execution_info = 6; // Execution details
@@ -65,92 +65,90 @@ message PostgreSQLResult {
 
 // PostgreSQL field definition (matches your trace data)
 message PostgreSQLField {
-  string name = 1;              // Field name (e.g., "Repo_id")
-  int32 table_id = 2;           // PostgreSQL table OID
-  int32 column_id = 3;          // Column ID within table
-  int32 data_type_id = 4;       // PostgreSQL data type OID
-  int32 data_type_size = 5;     // Data type size (-1 for variable)
+  string name = 1; // Field name (e.g., "Repo_id")
+  int32 table_id = 2; // PostgreSQL table OID
+  int32 column_id = 3; // Column ID within table
+  int32 data_type_id = 4; // PostgreSQL data type OID
+  int32 data_type_size = 5; // Data type size (-1 for variable)
   int32 data_type_modifier = 6; // Type-specific modifier
-  string format = 7;            // "text" or "binary"
+  string format = 7; // "text" or "binary"
 
   // Additional field metadata
   string data_type_name = 8; // Human-readable type name
-  bool nullable = 9;         // Whether field can be null
-  bool primary_key = 10;     // Whether field is part of primary key
+  bool nullable = 9; // Whether field can be null
+  bool primary_key = 10; // Whether field is part of primary key
 }
 
 // Query execution information
 message QueryExecutionInfo {
   // Timing breakdown
-  int64 parse_time_ms = 1;   // Time to parse query
-  int64 plan_time_ms = 2;    // Time to plan query
+  int64 parse_time_ms = 1; // Time to parse query
+  int64 plan_time_ms = 2; // Time to plan query
   int64 execute_time_ms = 3; // Time to execute query
-  int64 total_time_ms = 4;   // Total query time
+  int64 total_time_ms = 4; // Total query time
 
   // Execution statistics
-  int64 rows_examined = 5;  // Rows examined by query
-  int64 rows_returned = 6;  // Rows returned by query
-  int64 bytes_sent = 7;     // Bytes sent to client
+  int64 rows_examined = 5; // Rows examined by query
+  int64 rows_returned = 6; // Rows returned by query
+  int64 bytes_sent = 7; // Bytes sent to client
   int64 bytes_received = 8; // Bytes received from server
 
   // Query plan information (optional)
-  string execution_plan = 9;    // EXPLAIN output (optional)
+  string execution_plan = 9; // EXPLAIN output (optional)
   repeated string notices = 10; // PostgreSQL notices/warnings
 }
 
 // PostgreSQL-specific error information
 message PostgreSQLError {
-  string sql_state = 1;        // SQL state code (e.g., "23505")
-  string message = 2;          // Error message
-  string detail = 3;           // Detailed error information
-  string hint = 4;             // Error hint
-  string position = 5;         // Error position in query
-  string where = 6;            // Context where error occurred
-  string schema_name = 7;      // Schema name (if applicable)
-  string table_name = 8;       // Table name (if applicable)
-  string column_name = 9;      // Column name (if applicable)
+  string sql_state = 1; // SQL state code (e.g., "23505")
+  string message = 2; // Error message
+  string detail = 3; // Detailed error information
+  string hint = 4; // Error hint
+  string position = 5; // Error position in query
+  string where = 6; // Context where error occurred
+  string schema_name = 7; // Schema name (if applicable)
+  string table_name = 8; // Table name (if applicable)
+  string column_name = 9; // Column name (if applicable)
   string constraint_name = 10; // Constraint name (if applicable)
-  string data_type_name = 11;  // Data type name (if applicable)
-  string file = 12;            // Source file where error occurred
-  string line = 13;            // Line number in source file
-  string routine = 14;         // Routine name where error occurred
+  string data_type_name = 11; // Data type name (if applicable)
+  string file = 12; // Source file where error occurred
+  string line = 13; // Line number in source file
+  string routine = 14; // Routine name where error occurred
 }
 
 // Prepared statement information
 message PostgreSQLPreparedStatement {
   string statement_name = 1; // Name of prepared statement
-  string query_text = 2;     // Original query text
-  repeated PostgreSQLParameterType parameter_types =
-      3;                                     // Parameter type information
+  string query_text = 2; // Original query text
+  repeated PostgreSQLParameterType parameter_types = 3; // Parameter type information
   google.protobuf.Timestamp prepared_at = 4; // When statement was prepared
-  int32 execution_count = 5;                 // How many times executed
+  int32 execution_count = 5; // How many times executed
 }
 
 // Parameter type information for prepared statements
 message PostgreSQLParameterType {
-  int32 position = 1;        // Parameter position (1-based)
-  int32 data_type_id = 2;    // PostgreSQL data type OID
+  int32 position = 1; // Parameter position (1-based)
+  int32 data_type_id = 2; // PostgreSQL data type OID
   string data_type_name = 3; // Human-readable type name
-  bool nullable = 4;         // Whether parameter can be null
+  bool nullable = 4; // Whether parameter can be null
 }
 
 // Transaction context
 message PostgreSQLTransaction {
-  string transaction_id = 1;                // Transaction identifier
-  TransactionState state = 2;               // Current transaction state
-  IsolationLevel isolation_level = 3;       // Transaction isolation level
-  bool read_only = 4;                       // Whether transaction is read-only
+  string transaction_id = 1; // Transaction identifier
+  TransactionState state = 2; // Current transaction state
+  IsolationLevel isolation_level = 3; // Transaction isolation level
+  bool read_only = 4; // Whether transaction is read-only
   google.protobuf.Timestamp started_at = 5; // When transaction started
 }
 
 // Transaction state enumeration
 enum TransactionState {
   TRANSACTION_STATE_UNSPECIFIED = 0;
-  TRANSACTION_STATE_IDLE = 1;                // Not in a transaction
-  TRANSACTION_STATE_ACTIVE = 2;              // Transaction active
+  TRANSACTION_STATE_IDLE = 1; // Not in a transaction
+  TRANSACTION_STATE_ACTIVE = 2; // Transaction active
   TRANSACTION_STATE_IDLE_IN_TRANSACTION = 3; // Idle in transaction
-  TRANSACTION_STATE_IDLE_IN_FAILED_TRANSACTION =
-      4; // Idle in failed transaction
+  TRANSACTION_STATE_IDLE_IN_FAILED_TRANSACTION = 4; // Idle in failed transaction
 }
 
 // PostgreSQL isolation levels
@@ -165,14 +163,14 @@ enum IsolationLevel {
 // Batch query support
 message PostgreSQLBatch {
   repeated PostgreSQLQuery queries = 1; // Queries in the batch
-  bool stop_on_error = 2;               // Whether to stop on first error
-  bool return_results = 3;              // Whether to return individual results
+  bool stop_on_error = 2; // Whether to stop on first error
+  bool return_results = 3; // Whether to return individual results
 }
 
 // Batch result
 message PostgreSQLBatchResult {
-  repeated PostgreSQLResult results = 1;    // Results for each query
-  int32 successful_queries = 2;             // Number of successful queries
-  int32 failed_queries = 3;                 // Number of failed queries
+  repeated PostgreSQLResult results = 1; // Results for each query
+  int32 successful_queries = 2; // Number of successful queries
+  int32 failed_queries = 3; // Number of failed queries
   optional PostgreSQLError first_error = 4; // First error encountered (if any)
 }

@@ -1878,10 +1878,10 @@ type MatchLevel struct {
 	MatchScope       MatchScope             `protobuf:"varint,2,opt,name=match_scope,json=matchScope,proto3,enum=tusk.drift.backend.v1.MatchScope" json:"match_scope,omitempty"` // Scope of where the match was found
 	MatchDescription string                 `protobuf:"bytes,3,opt,name=match_description,json=matchDescription,proto3" json:"match_description,omitempty"`                      // Natural language description for match
 	// Similarity scoring fields (populated when multiple matches exist)
-	BestScore     *float32               `protobuf:"fixed32,4,opt,name=best_score,json=bestScore,proto3,oneof" json:"best_score,omitempty"`     // The similarity score of the selected match (0.0-1.0)
-	TopCandidates []*SimilarityCandidate `protobuf:"bytes,5,rep,name=top_candidates,json=topCandidates,proto3" json:"top_candidates,omitempty"` // Top 5 alternative matches with scores
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	SimilarityScore *float32               `protobuf:"fixed32,4,opt,name=similarity_score,json=similarityScore,proto3,oneof" json:"similarity_score,omitempty"` // The similarity score of the selected match (0.0-1.0)
+	TopCandidates   []*SimilarityCandidate `protobuf:"bytes,5,rep,name=top_candidates,json=topCandidates,proto3" json:"top_candidates,omitempty"`               // Top 5 alternative matches with scores
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *MatchLevel) Reset() {
@@ -1935,9 +1935,9 @@ func (x *MatchLevel) GetMatchDescription() string {
 	return ""
 }
 
-func (x *MatchLevel) GetBestScore() float32 {
-	if x != nil && x.BestScore != nil {
-		return *x.BestScore
+func (x *MatchLevel) GetSimilarityScore() float32 {
+	if x != nil && x.SimilarityScore != nil {
+		return *x.SimilarityScore
 	}
 	return 0
 }
@@ -2787,18 +2787,17 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\bresponse\"C\n" +
 	"\tDeviation\x12\x14\n" +
 	"\x05field\x18\x01 \x01(\tR\x05field\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xc4\x02\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xd6\x02\n" +
 	"\n" +
 	"MatchLevel\x12?\n" +
 	"\n" +
 	"match_type\x18\x01 \x01(\x0e2 .tusk.drift.backend.v1.MatchTypeR\tmatchType\x12B\n" +
 	"\vmatch_scope\x18\x02 \x01(\x0e2!.tusk.drift.backend.v1.MatchScopeR\n" +
 	"matchScope\x12+\n" +
-	"\x11match_description\x18\x03 \x01(\tR\x10matchDescription\x12\"\n" +
-	"\n" +
-	"best_score\x18\x04 \x01(\x02H\x00R\tbestScore\x88\x01\x01\x12Q\n" +
-	"\x0etop_candidates\x18\x05 \x03(\v2*.tusk.drift.backend.v1.SimilarityCandidateR\rtopCandidatesB\r\n" +
-	"\v_best_score\"D\n" +
+	"\x11match_description\x18\x03 \x01(\tR\x10matchDescription\x12.\n" +
+	"\x10similarity_score\x18\x04 \x01(\x02H\x00R\x0fsimilarityScore\x88\x01\x01\x12Q\n" +
+	"\x0etop_candidates\x18\x05 \x03(\v2*.tusk.drift.backend.v1.SimilarityCandidateR\rtopCandidatesB\x13\n" +
+	"\x11_similarity_score\"D\n" +
 	"\x13SimilarityCandidate\x12\x17\n" +
 	"\aspan_id\x18\x01 \x01(\tR\x06spanId\x12\x14\n" +
 	"\x05score\x18\x02 \x01(\x02R\x05score\"\xff\x02\n" +

@@ -493,9 +493,9 @@ export interface MatchLevel {
     /**
      * Similarity scoring fields (populated when multiple matches exist)
      *
-     * @generated from protobuf field: optional float best_score = 4
+     * @generated from protobuf field: optional float similarity_score = 4
      */
-    bestScore?: number; // The similarity score of the selected match (0.0-1.0)
+    similarityScore?: number; // The similarity score of the selected match (0.0-1.0)
     /**
      * @generated from protobuf field: repeated tusk.drift.backend.v1.SimilarityCandidate top_candidates = 5
      */
@@ -2352,7 +2352,7 @@ class MatchLevel$Type extends MessageType<MatchLevel> {
             { no: 1, name: "match_type", kind: "enum", T: () => ["tusk.drift.backend.v1.MatchType", MatchType, "MATCH_TYPE_"] },
             { no: 2, name: "match_scope", kind: "enum", T: () => ["tusk.drift.backend.v1.MatchScope", MatchScope, "MATCH_SCOPE_"] },
             { no: 3, name: "match_description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "best_score", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
+            { no: 4, name: "similarity_score", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
             { no: 5, name: "top_candidates", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => SimilarityCandidate }
         ]);
     }
@@ -2380,8 +2380,8 @@ class MatchLevel$Type extends MessageType<MatchLevel> {
                 case /* string match_description */ 3:
                     message.matchDescription = reader.string();
                     break;
-                case /* optional float best_score */ 4:
-                    message.bestScore = reader.float();
+                case /* optional float similarity_score */ 4:
+                    message.similarityScore = reader.float();
                     break;
                 case /* repeated tusk.drift.backend.v1.SimilarityCandidate top_candidates */ 5:
                     message.topCandidates.push(SimilarityCandidate.internalBinaryRead(reader, reader.uint32(), options));
@@ -2407,9 +2407,9 @@ class MatchLevel$Type extends MessageType<MatchLevel> {
         /* string match_description = 3; */
         if (message.matchDescription !== "")
             writer.tag(3, WireType.LengthDelimited).string(message.matchDescription);
-        /* optional float best_score = 4; */
-        if (message.bestScore !== undefined)
-            writer.tag(4, WireType.Bit32).float(message.bestScore);
+        /* optional float similarity_score = 4; */
+        if (message.similarityScore !== undefined)
+            writer.tag(4, WireType.Bit32).float(message.similarityScore);
         /* repeated tusk.drift.backend.v1.SimilarityCandidate top_candidates = 5; */
         for (let i = 0; i < message.topCandidates.length; i++)
             SimilarityCandidate.internalBinaryWrite(message.topCandidates[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
