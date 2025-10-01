@@ -3,7 +3,6 @@ package tusk.drift.backend.v1;
 
 option go_package = "./backend";
 
-
 // TODO: Maybe rename this to `ClientService`? bc it could contain methods to get client info, user info, etc.
 service OnboardingService {
   rpc CreateObservableService(CreateObservableServiceRequest) returns (CreateObservableServiceResponse);
@@ -25,6 +24,6 @@ message CreateObservableServiceResponse {
 }
 
 /**
-TODO: Create methods for:
-- GetClientInfo ? e.g. plan name, etc.
+   TODO: Create methods for:
+   - GetClientInfo ? e.g. plan name, etc.
 */

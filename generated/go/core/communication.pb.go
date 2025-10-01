@@ -712,7 +712,7 @@ var File_core_communication_proto protoreflect.FileDescriptor
 
 const file_core_communication_proto_rawDesc = "" +
 	"\n" +
-	"\x18core/communication.proto\x12\x12tusk.drift.core.v1\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0fcore/span.proto\"\xad\x01\n" +
+	"\x18core/communication.proto\x12\x12tusk.drift.core.v1\x1a\x0fcore/span.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xad\x01\n" +
 	"\x0eConnectRequest\x12\x1d\n" +
 	"\n" +
 	"service_id\x18\x01 \x01(\tR\tserviceId\x12\x1f\n" +

@@ -1877,8 +1877,11 @@ type MatchLevel struct {
 	MatchType        MatchType              `protobuf:"varint,1,opt,name=match_type,json=matchType,proto3,enum=tusk.drift.backend.v1.MatchType" json:"match_type,omitempty"`     // How the match was found
 	MatchScope       MatchScope             `protobuf:"varint,2,opt,name=match_scope,json=matchScope,proto3,enum=tusk.drift.backend.v1.MatchScope" json:"match_scope,omitempty"` // Scope of where the match was found
 	MatchDescription string                 `protobuf:"bytes,3,opt,name=match_description,json=matchDescription,proto3" json:"match_description,omitempty"`                      // Natural language description for match
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
+	// Similarity scoring fields (populated when multiple matches exist)
+	SimilarityScore *float32               `protobuf:"fixed32,4,opt,name=similarity_score,json=similarityScore,proto3,oneof" json:"similarity_score,omitempty"` // The similarity score of the selected match (0.0-1.0)
+	TopCandidates   []*SimilarityCandidate `protobuf:"bytes,5,rep,name=top_candidates,json=topCandidates,proto3" json:"top_candidates,omitempty"`               // Top 5 alternative matches with scores
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *MatchLevel) Reset() {
@@ -1932,6 +1935,72 @@ func (x *MatchLevel) GetMatchDescription() string {
 	return ""
 }
 
+func (x *MatchLevel) GetSimilarityScore() float32 {
+	if x != nil && x.SimilarityScore != nil {
+		return *x.SimilarityScore
+	}
+	return 0
+}
+
+func (x *MatchLevel) GetTopCandidates() []*SimilarityCandidate {
+	if x != nil {
+		return x.TopCandidates
+	}
+	return nil
+}
+
+type SimilarityCandidate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanId        string                 `protobuf:"bytes,1,opt,name=span_id,json=spanId,proto3" json:"span_id,omitempty"`
+	Score         float32                `protobuf:"fixed32,2,opt,name=score,proto3" json:"score,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SimilarityCandidate) Reset() {
+	*x = SimilarityCandidate{}
+	mi := &file_backend_test_run_service_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SimilarityCandidate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SimilarityCandidate) ProtoMessage() {}
+
+func (x *SimilarityCandidate) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SimilarityCandidate.ProtoReflect.Descriptor instead.
+func (*SimilarityCandidate) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *SimilarityCandidate) GetSpanId() string {
+	if x != nil {
+		return x.SpanId
+	}
+	return ""
+}
+
+func (x *SimilarityCandidate) GetScore() float32 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
 type TraceTestSpanResult struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Create a separate table in backend for span_result_recording, but very
@@ -1949,7 +2018,7 @@ type TraceTestSpanResult struct {
 
 func (x *TraceTestSpanResult) Reset() {
 	*x = TraceTestSpanResult{}
-	mi := &file_backend_test_run_service_proto_msgTypes[27]
+	mi := &file_backend_test_run_service_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1961,7 +2030,7 @@ func (x *TraceTestSpanResult) String() string {
 func (*TraceTestSpanResult) ProtoMessage() {}
 
 func (x *TraceTestSpanResult) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[27]
+	mi := &file_backend_test_run_service_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1974,7 +2043,7 @@ func (x *TraceTestSpanResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraceTestSpanResult.ProtoReflect.Descriptor instead.
 func (*TraceTestSpanResult) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{27}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *TraceTestSpanResult) GetReplaySpan() *core.Span {
@@ -2027,7 +2096,7 @@ type TraceTestResult struct {
 
 func (x *TraceTestResult) Reset() {
 	*x = TraceTestResult{}
-	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	mi := &file_backend_test_run_service_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2039,7 +2108,7 @@ func (x *TraceTestResult) String() string {
 func (*TraceTestResult) ProtoMessage() {}
 
 func (x *TraceTestResult) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	mi := &file_backend_test_run_service_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2052,7 +2121,7 @@ func (x *TraceTestResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TraceTestResult.ProtoReflect.Descriptor instead.
 func (*TraceTestResult) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{28}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *TraceTestResult) GetTraceTestId() string {
@@ -2116,7 +2185,7 @@ type UploadTraceTestResultsRequest struct {
 
 func (x *UploadTraceTestResultsRequest) Reset() {
 	*x = UploadTraceTestResultsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	mi := &file_backend_test_run_service_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2128,7 +2197,7 @@ func (x *UploadTraceTestResultsRequest) String() string {
 func (*UploadTraceTestResultsRequest) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	mi := &file_backend_test_run_service_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2141,7 +2210,7 @@ func (x *UploadTraceTestResultsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadTraceTestResultsRequest.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{29}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *UploadTraceTestResultsRequest) GetDriftRunId() string {
@@ -2181,7 +2250,7 @@ type UploadTraceTestResultsResponseSuccess struct {
 
 func (x *UploadTraceTestResultsResponseSuccess) Reset() {
 	*x = UploadTraceTestResultsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	mi := &file_backend_test_run_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2193,7 +2262,7 @@ func (x *UploadTraceTestResultsResponseSuccess) String() string {
 func (*UploadTraceTestResultsResponseSuccess) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	mi := &file_backend_test_run_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2206,7 +2275,7 @@ func (x *UploadTraceTestResultsResponseSuccess) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UploadTraceTestResultsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{30}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *UploadTraceTestResultsResponseSuccess) GetMessage() string {
@@ -2226,7 +2295,7 @@ type UploadTraceTestResultsResponseError struct {
 
 func (x *UploadTraceTestResultsResponseError) Reset() {
 	*x = UploadTraceTestResultsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[31]
+	mi := &file_backend_test_run_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2238,7 +2307,7 @@ func (x *UploadTraceTestResultsResponseError) String() string {
 func (*UploadTraceTestResultsResponseError) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[31]
+	mi := &file_backend_test_run_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2251,7 +2320,7 @@ func (x *UploadTraceTestResultsResponseError) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UploadTraceTestResultsResponseError.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{31}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *UploadTraceTestResultsResponseError) GetCode() string {
@@ -2281,7 +2350,7 @@ type UploadTraceTestResultsResponse struct {
 
 func (x *UploadTraceTestResultsResponse) Reset() {
 	*x = UploadTraceTestResultsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[32]
+	mi := &file_backend_test_run_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2293,7 +2362,7 @@ func (x *UploadTraceTestResultsResponse) String() string {
 func (*UploadTraceTestResultsResponse) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[32]
+	mi := &file_backend_test_run_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2306,7 +2375,7 @@ func (x *UploadTraceTestResultsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadTraceTestResultsResponse.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{32}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *UploadTraceTestResultsResponse) GetResponse() isUploadTraceTestResultsResponse_Response {
@@ -2361,7 +2430,7 @@ type UpdateDriftRunCIStatusRequest struct {
 
 func (x *UpdateDriftRunCIStatusRequest) Reset() {
 	*x = UpdateDriftRunCIStatusRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[33]
+	mi := &file_backend_test_run_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2373,7 +2442,7 @@ func (x *UpdateDriftRunCIStatusRequest) String() string {
 func (*UpdateDriftRunCIStatusRequest) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[33]
+	mi := &file_backend_test_run_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2386,7 +2455,7 @@ func (x *UpdateDriftRunCIStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDriftRunCIStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{33}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *UpdateDriftRunCIStatusRequest) GetDriftRunId() string {
@@ -2419,7 +2488,7 @@ type UpdateDriftRunCIStatusResponseSuccess struct {
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) Reset() {
 	*x = UpdateDriftRunCIStatusResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[34]
+	mi := &file_backend_test_run_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2431,7 +2500,7 @@ func (x *UpdateDriftRunCIStatusResponseSuccess) String() string {
 func (*UpdateDriftRunCIStatusResponseSuccess) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[34]
+	mi := &file_backend_test_run_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2444,7 +2513,7 @@ func (x *UpdateDriftRunCIStatusResponseSuccess) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdateDriftRunCIStatusResponseSuccess.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{34}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) GetMessage() string {
@@ -2464,7 +2533,7 @@ type UpdateDriftRunCIStatusResponseError struct {
 
 func (x *UpdateDriftRunCIStatusResponseError) Reset() {
 	*x = UpdateDriftRunCIStatusResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[35]
+	mi := &file_backend_test_run_service_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2476,7 +2545,7 @@ func (x *UpdateDriftRunCIStatusResponseError) String() string {
 func (*UpdateDriftRunCIStatusResponseError) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[35]
+	mi := &file_backend_test_run_service_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2489,7 +2558,7 @@ func (x *UpdateDriftRunCIStatusResponseError) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateDriftRunCIStatusResponseError.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{35}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *UpdateDriftRunCIStatusResponseError) GetCode() string {
@@ -2519,7 +2588,7 @@ type UpdateDriftRunCIStatusResponse struct {
 
 func (x *UpdateDriftRunCIStatusResponse) Reset() {
 	*x = UpdateDriftRunCIStatusResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	mi := &file_backend_test_run_service_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2531,7 +2600,7 @@ func (x *UpdateDriftRunCIStatusResponse) String() string {
 func (*UpdateDriftRunCIStatusResponse) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	mi := &file_backend_test_run_service_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2544,7 +2613,7 @@ func (x *UpdateDriftRunCIStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDriftRunCIStatusResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{36}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *UpdateDriftRunCIStatusResponse) GetResponse() isUpdateDriftRunCIStatusResponse_Response {
@@ -2718,14 +2787,20 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\bresponse\"C\n" +
 	"\tDeviation\x12\x14\n" +
 	"\x05field\x18\x01 \x01(\tR\x05field\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xbe\x01\n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\"\xd6\x02\n" +
 	"\n" +
 	"MatchLevel\x12?\n" +
 	"\n" +
 	"match_type\x18\x01 \x01(\x0e2 .tusk.drift.backend.v1.MatchTypeR\tmatchType\x12B\n" +
 	"\vmatch_scope\x18\x02 \x01(\x0e2!.tusk.drift.backend.v1.MatchScopeR\n" +
 	"matchScope\x12+\n" +
-	"\x11match_description\x18\x03 \x01(\tR\x10matchDescription\"\xff\x02\n" +
+	"\x11match_description\x18\x03 \x01(\tR\x10matchDescription\x12.\n" +
+	"\x10similarity_score\x18\x04 \x01(\x02H\x00R\x0fsimilarityScore\x88\x01\x01\x12Q\n" +
+	"\x0etop_candidates\x18\x05 \x03(\v2*.tusk.drift.backend.v1.SimilarityCandidateR\rtopCandidatesB\x13\n" +
+	"\x11_similarity_score\"D\n" +
+	"\x13SimilarityCandidate\x12\x17\n" +
+	"\aspan_id\x18\x01 \x01(\tR\x06spanId\x12\x14\n" +
+	"\x05score\x18\x02 \x01(\x02R\x05score\"\xff\x02\n" +
 	"\x13TraceTestSpanResult\x129\n" +
 	"\vreplay_span\x18\x01 \x01(\v2\x18.tusk.drift.core.v1.SpanR\n" +
 	"replaySpan\x12>\n" +
@@ -2833,7 +2908,7 @@ func file_backend_test_run_service_proto_rawDescGZIP() []byte {
 }
 
 var file_backend_test_run_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 37)
+var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 38)
 var file_backend_test_run_service_proto_goTypes = []any{
 	(MatchScope)(0),                               // 0: tusk.drift.backend.v1.MatchScope
 	(MatchType)(0),                                // 1: tusk.drift.backend.v1.MatchType
@@ -2866,28 +2941,29 @@ var file_backend_test_run_service_proto_goTypes = []any{
 	(*GetAllTraceTestsResponse)(nil),              // 28: tusk.drift.backend.v1.GetAllTraceTestsResponse
 	(*Deviation)(nil),                             // 29: tusk.drift.backend.v1.Deviation
 	(*MatchLevel)(nil),                            // 30: tusk.drift.backend.v1.MatchLevel
-	(*TraceTestSpanResult)(nil),                   // 31: tusk.drift.backend.v1.TraceTestSpanResult
-	(*TraceTestResult)(nil),                       // 32: tusk.drift.backend.v1.TraceTestResult
-	(*UploadTraceTestResultsRequest)(nil),         // 33: tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	(*UploadTraceTestResultsResponseSuccess)(nil), // 34: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	(*UploadTraceTestResultsResponseError)(nil),   // 35: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	(*UploadTraceTestResultsResponse)(nil),        // 36: tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	(*UpdateDriftRunCIStatusRequest)(nil),         // 37: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	(*UpdateDriftRunCIStatusResponseSuccess)(nil), // 38: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	(*UpdateDriftRunCIStatusResponseError)(nil),   // 39: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	(*UpdateDriftRunCIStatusResponse)(nil),        // 40: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	(*core.Span)(nil),                             // 41: tusk.drift.core.v1.Span
+	(*SimilarityCandidate)(nil),                   // 31: tusk.drift.backend.v1.SimilarityCandidate
+	(*TraceTestSpanResult)(nil),                   // 32: tusk.drift.backend.v1.TraceTestSpanResult
+	(*TraceTestResult)(nil),                       // 33: tusk.drift.backend.v1.TraceTestResult
+	(*UploadTraceTestResultsRequest)(nil),         // 34: tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	(*UploadTraceTestResultsResponseSuccess)(nil), // 35: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	(*UploadTraceTestResultsResponseError)(nil),   // 36: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	(*UploadTraceTestResultsResponse)(nil),        // 37: tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	(*UpdateDriftRunCIStatusRequest)(nil),         // 38: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	(*UpdateDriftRunCIStatusResponseSuccess)(nil), // 39: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	(*UpdateDriftRunCIStatusResponseError)(nil),   // 40: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	(*UpdateDriftRunCIStatusResponse)(nil),        // 41: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	(*core.Span)(nil),                             // 42: tusk.drift.core.v1.Span
 }
 var file_backend_test_run_service_proto_depIdxs = []int32{
-	41, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	42, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	5,  // 1: tusk.drift.backend.v1.GetGlobalSpansResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
 	6,  // 2: tusk.drift.backend.v1.GetGlobalSpansResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseError
-	41, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	42, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	9,  // 4: tusk.drift.backend.v1.GetPreAppStartSpansResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
 	10, // 5: tusk.drift.backend.v1.GetPreAppStartSpansResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseError
 	13, // 6: tusk.drift.backend.v1.CreateDriftRunResponse.success:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseSuccess
 	14, // 7: tusk.drift.backend.v1.CreateDriftRunResponse.error:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseError
-	41, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
+	42, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
 	17, // 9: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
 	18, // 10: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
 	19, // 11: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseError
@@ -2899,38 +2975,39 @@ var file_backend_test_run_service_proto_depIdxs = []int32{
 	27, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
 	1,  // 18: tusk.drift.backend.v1.MatchLevel.match_type:type_name -> tusk.drift.backend.v1.MatchType
 	0,  // 19: tusk.drift.backend.v1.MatchLevel.match_scope:type_name -> tusk.drift.backend.v1.MatchScope
-	41, // 20: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
-	30, // 21: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.backend.v1.MatchLevel
-	29, // 22: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
-	2,  // 23: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
-	31, // 24: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
-	32, // 25: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
-	34, // 26: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	35, // 27: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	3,  // 28: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
-	38, // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	39, // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	4,  // 31: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
-	8,  // 32: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	12, // 33: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
-	16, // 34: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	25, // 35: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
-	21, // 36: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
-	33, // 37: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	37, // 38: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	7,  // 39: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
-	11, // 40: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	15, // 41: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
-	20, // 42: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	28, // 43: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
-	22, // 44: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
-	36, // 45: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	40, // 46: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	39, // [39:47] is the sub-list for method output_type
-	31, // [31:39] is the sub-list for method input_type
-	31, // [31:31] is the sub-list for extension type_name
-	31, // [31:31] is the sub-list for extension extendee
-	0,  // [0:31] is the sub-list for field type_name
+	31, // 20: tusk.drift.backend.v1.MatchLevel.top_candidates:type_name -> tusk.drift.backend.v1.SimilarityCandidate
+	42, // 21: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
+	30, // 22: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.backend.v1.MatchLevel
+	29, // 23: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
+	2,  // 24: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
+	32, // 25: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
+	33, // 26: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
+	35, // 27: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	36, // 28: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	3,  // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
+	39, // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	40, // 31: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	4,  // 32: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
+	8,  // 33: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	12, // 34: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
+	16, // 35: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	25, // 36: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
+	21, // 37: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
+	34, // 38: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	38, // 39: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	7,  // 40: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
+	11, // 41: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	15, // 42: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
+	20, // 43: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	28, // 44: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
+	22, // 45: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
+	37, // 46: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	41, // 47: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	40, // [40:48] is the sub-list for method output_type
+	32, // [32:40] is the sub-list for method input_type
+	32, // [32:32] is the sub-list for extension type_name
+	32, // [32:32] is the sub-list for extension extendee
+	0,  // [0:32] is the sub-list for field type_name
 }
 
 func init() { file_backend_test_run_service_proto_init() }
@@ -2970,14 +3047,15 @@ func file_backend_test_run_service_proto_init() {
 		(*GetAllTraceTestsResponse_Success)(nil),
 		(*GetAllTraceTestsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[27].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[26].OneofWrappers = []any{}
 	file_backend_test_run_service_proto_msgTypes[28].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[32].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[29].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[33].OneofWrappers = []any{
 		(*UploadTraceTestResultsResponse_Success)(nil),
 		(*UploadTraceTestResultsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[33].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[36].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[34].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[37].OneofWrappers = []any{
 		(*UpdateDriftRunCIStatusResponse_Success)(nil),
 		(*UpdateDriftRunCIStatusResponse_Error)(nil),
 	}
@@ -2987,7 +3065,7 @@ func file_backend_test_run_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_test_run_service_proto_rawDesc), len(file_backend_test_run_service_proto_rawDesc)),
 			NumEnums:      4,
-			NumMessages:   37,
+			NumMessages:   38,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
