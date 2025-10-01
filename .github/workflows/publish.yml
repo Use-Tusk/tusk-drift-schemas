@@ -8,6 +8,10 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,5 +36,5 @@ jobs:
 
       - name: Publish to GitHub Packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.TUSK_DRIFT_SCHEMAS_NPM_PUBLISH_PAT }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npm publish
