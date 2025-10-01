@@ -12,31 +12,26 @@ service TestRunService {
   rpc GetGlobalSpans(GetGlobalSpansRequest) returns (GetGlobalSpansResponse);
 
   // Get pre-app start spans - used to mock pre-app start spans
-  rpc GetPreAppStartSpans(GetPreAppStartSpansRequest)
-      returns (GetPreAppStartSpansResponse);
+  rpc GetPreAppStartSpans(GetPreAppStartSpansRequest) returns (GetPreAppStartSpansResponse);
 
   // Create drift run in BE, also upserts commit and PR info
   rpc CreateDriftRun(CreateDriftRunRequest) returns (CreateDriftRunResponse);
 
   // Get all trace tests for a drift run
-  rpc GetDriftRunTraceTests(GetDriftRunTraceTestsRequest)
-      returns (GetDriftRunTraceTestsResponse);
+  rpc GetDriftRunTraceTests(GetDriftRunTraceTestsRequest) returns (GetDriftRunTraceTestsResponse);
 
   // Get all trace tests in test suite
-  rpc GetAllTraceTests(GetAllTraceTestsRequest)
-      returns (GetAllTraceTestsResponse);
+  rpc GetAllTraceTests(GetAllTraceTestsRequest) returns (GetAllTraceTestsResponse);
 
   // Get a single trace test
   rpc GetTraceTest(GetTraceTestRequest) returns (GetTraceTestResponse);
 
   // Upload trace test results to BE
-  rpc UploadTraceTestResults(UploadTraceTestResultsRequest)
-      returns (UploadTraceTestResultsResponse);
+  rpc UploadTraceTestResults(UploadTraceTestResultsRequest) returns (UploadTraceTestResultsResponse);
 
   // Allows CLI to indicate to backend that it's done running trace tests
   // This can also allow CLI to send a heartbeat to indicate it's still running
-  rpc UpdateDriftRunCIStatus(UpdateDriftRunCIStatusRequest)
-      returns (UpdateDriftRunCIStatusResponse);
+  rpc UpdateDriftRunCIStatus(UpdateDriftRunCIStatusRequest) returns (UpdateDriftRunCIStatusResponse);
 
   // We were initially thinking we'd need GetDriftRunTestResults or
   // GetDriftRunTestStatus Since CI may wait for trace test results to be
@@ -107,7 +102,9 @@ message CreateDriftRunRequest {
   string external_check_run_id = 6;
 }
 
-message CreateDriftRunResponseSuccess { string drift_run_id = 1; }
+message CreateDriftRunResponseSuccess {
+  string drift_run_id = 1;
+}
 
 message CreateDriftRunResponseError {
   // Machine-readable error code, could be an enum
@@ -172,7 +169,9 @@ message GetTraceTestResponse {
   }
 }
 
-message GetTraceTestResponseSuccess { TraceTest trace_test = 1; }
+message GetTraceTestResponseSuccess {
+  TraceTest trace_test = 1;
+}
 
 message GetTraceTestResponseError {
   string code = 1;
@@ -208,9 +207,8 @@ message GetAllTraceTestsResponse {
 
 message Deviation {
   string field = 1; // what field in replay span had a deviation
-  string description =
-      2; // description of the deviation, primarily useful for comparing SUT
-         // inbound response (e.g. "HTTP status code mismatch")
+  string description = 2; // description of the deviation, primarily useful for comparing SUT
+  // inbound response (e.g. "HTTP status code mismatch")
 }
 
 enum MatchScope {
@@ -230,9 +228,17 @@ enum MatchType {
 }
 
 message MatchLevel {
-  MatchType match_type = 1;     // How the match was found
-  MatchScope match_scope = 2;   // Scope of where the match was found
+  MatchType match_type = 1; // How the match was found
+  MatchScope match_scope = 2; // Scope of where the match was found
   string match_description = 3; // Natural language description for match
+  // Similarity scoring fields (populated when multiple matches exist)
+  optional float similarity_score = 4; // The similarity score of the selected match (0.0-1.0)
+  repeated SimilarityCandidate top_candidates = 5; // Top 5 alternative matches with scores
+}
+
+message SimilarityCandidate {
+  string span_id = 1;
+  float score = 2;
 }
 
 message TraceTestSpanResult {
@@ -277,7 +283,9 @@ message UploadTraceTestResultsRequest {
   repeated TraceTestResult trace_test_results = 4;
 }
 
-message UploadTraceTestResultsResponseSuccess { string message = 1; }
+message UploadTraceTestResultsResponseSuccess {
+  string message = 1;
+}
 
 message UploadTraceTestResultsResponseError {
   string code = 1;
@@ -304,7 +312,9 @@ message UpdateDriftRunCIStatusRequest {
   optional string ci_status_message = 3;
 }
 
-message UpdateDriftRunCIStatusResponseSuccess { string message = 1; }
+message UpdateDriftRunCIStatusResponseSuccess {
+  string message = 1;
+}
 
 message UpdateDriftRunCIStatusResponseError {
   string code = 1;
