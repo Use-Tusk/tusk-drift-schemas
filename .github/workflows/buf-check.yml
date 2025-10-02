@@ -29,6 +29,7 @@ jobs:
           buf format -w
           if [[ -n "$(git status --porcelain)" ]]; then
             echo "buf format produced changes. Run 'buf format -w' locally to update your files."
+            # cleanup for next step
             git status --short
             git checkout -- .
             exit 1
@@ -41,9 +42,8 @@ jobs:
           buf generate
           if [[ -n "$(git status --porcelain generated)" ]]; then
             echo "buf generate produced changes. Run 'buf generate' locally and commit the results."
-            git status --short generated
-            git checkout -- generated || true
-            git clean -fd generated || true
+            # there's no cleanup since this is the last step, REMEMBER to add
+            # one if you neeed it!
             exit 1
           fi
 
