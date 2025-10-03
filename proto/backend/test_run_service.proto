@@ -33,6 +33,10 @@ service TestRunService {
   // This can also allow CLI to send a heartbeat to indicate it's still running
   rpc UpdateDriftRunCIStatus(UpdateDriftRunCIStatusRequest) returns (UpdateDriftRunCIStatusResponse);
 
+  // Allows CLI to indicate to backend that it's done running trace tests
+  // so that backend can start classification
+  rpc FinalizeDriftRun(FinalizeDriftRunRequest) returns (FinalizeDriftRunResponse);
+
   // We were initially thinking we'd need GetDriftRunTestResults or
   // GetDriftRunTestStatus Since CI may wait for trace test results to be
   // uploaded and classified before exiting However, for now CI will just exit
@@ -325,5 +329,25 @@ message UpdateDriftRunCIStatusResponse {
   oneof response {
     UpdateDriftRunCIStatusResponseSuccess success = 1;
     UpdateDriftRunCIStatusResponseError error = 2;
+  }
+}
+
+message FinalizeDriftRunRequest {
+  string drift_run_id = 1;
+}
+
+message FinalizeDriftRunResponseSuccess {
+  string message = 1;
+}
+
+message FinalizeDriftRunResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message FinalizeDriftRunResponse {
+  oneof response {
+    FinalizeDriftRunResponseSuccess success = 1;
+    FinalizeDriftRunResponseError error = 2;
   }
 }

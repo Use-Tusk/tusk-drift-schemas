@@ -5,9 +5,9 @@ managed:
     - file_option: go_package_prefix
       value: github.com/Use-Tusk/tusk-drift-schemas/generated/go
 plugins:
-  - remote: buf.build/community/timostamm-protobuf-ts
+  - remote: buf.build/community/timostamm-protobuf-ts:v2.11.1
     out: generated/ts
     opt: generate_dependencies
-  - remote: buf.build/protocolbuffers/go
+  - remote: buf.build/protocolbuffers/go:v1.36.10
     out: generated/go
     opt: paths=source_relative

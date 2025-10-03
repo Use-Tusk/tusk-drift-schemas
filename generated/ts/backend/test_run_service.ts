@@ -707,6 +707,60 @@ export interface UpdateDriftRunCIStatusResponse {
     };
 }
 /**
+ * @generated from protobuf message tusk.drift.backend.v1.FinalizeDriftRunRequest
+ */
+export interface FinalizeDriftRunRequest {
+    /**
+     * @generated from protobuf field: string drift_run_id = 1
+     */
+    driftRunId: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess
+ */
+export interface FinalizeDriftRunResponseSuccess {
+    /**
+     * @generated from protobuf field: string message = 1
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponseError
+ */
+export interface FinalizeDriftRunResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponse
+ */
+export interface FinalizeDriftRunResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess success = 1
+         */
+        success: FinalizeDriftRunResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.FinalizeDriftRunResponseError error = 2
+         */
+        error: FinalizeDriftRunResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
  * @generated from protobuf enum tusk.drift.backend.v1.MatchScope
  */
 export enum MatchScope {
@@ -3101,6 +3155,215 @@ class UpdateDriftRunCIStatusResponse$Type extends MessageType<UpdateDriftRunCISt
  * @generated MessageType for protobuf message tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
  */
 export const UpdateDriftRunCIStatusResponse = new UpdateDriftRunCIStatusResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FinalizeDriftRunRequest$Type extends MessageType<FinalizeDriftRunRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.FinalizeDriftRunRequest", [
+            { no: 1, name: "drift_run_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<FinalizeDriftRunRequest>): FinalizeDriftRunRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.driftRunId = "";
+        if (value !== undefined)
+            reflectionMergePartial<FinalizeDriftRunRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FinalizeDriftRunRequest): FinalizeDriftRunRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string drift_run_id */ 1:
+                    message.driftRunId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FinalizeDriftRunRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string drift_run_id = 1; */
+        if (message.driftRunId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.driftRunId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.FinalizeDriftRunRequest
+ */
+export const FinalizeDriftRunRequest = new FinalizeDriftRunRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FinalizeDriftRunResponseSuccess$Type extends MessageType<FinalizeDriftRunResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess", [
+            { no: 1, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<FinalizeDriftRunResponseSuccess>): FinalizeDriftRunResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<FinalizeDriftRunResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FinalizeDriftRunResponseSuccess): FinalizeDriftRunResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string message */ 1:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FinalizeDriftRunResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string message = 1; */
+        if (message.message !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess
+ */
+export const FinalizeDriftRunResponseSuccess = new FinalizeDriftRunResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FinalizeDriftRunResponseError$Type extends MessageType<FinalizeDriftRunResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.FinalizeDriftRunResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<FinalizeDriftRunResponseError>): FinalizeDriftRunResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<FinalizeDriftRunResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FinalizeDriftRunResponseError): FinalizeDriftRunResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FinalizeDriftRunResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponseError
+ */
+export const FinalizeDriftRunResponseError = new FinalizeDriftRunResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FinalizeDriftRunResponse$Type extends MessageType<FinalizeDriftRunResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.FinalizeDriftRunResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => FinalizeDriftRunResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => FinalizeDriftRunResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<FinalizeDriftRunResponse>): FinalizeDriftRunResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<FinalizeDriftRunResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FinalizeDriftRunResponse): FinalizeDriftRunResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: FinalizeDriftRunResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.FinalizeDriftRunResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: FinalizeDriftRunResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FinalizeDriftRunResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.FinalizeDriftRunResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            FinalizeDriftRunResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.FinalizeDriftRunResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            FinalizeDriftRunResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.FinalizeDriftRunResponse
+ */
+export const FinalizeDriftRunResponse = new FinalizeDriftRunResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.TestRunService
  */
@@ -3112,5 +3375,6 @@ export const TestRunService = new ServiceType("tusk.drift.backend.v1.TestRunServ
     { name: "GetAllTraceTests", options: {}, I: GetAllTraceTestsRequest, O: GetAllTraceTestsResponse },
     { name: "GetTraceTest", options: {}, I: GetTraceTestRequest, O: GetTraceTestResponse },
     { name: "UploadTraceTestResults", options: {}, I: UploadTraceTestResultsRequest, O: UploadTraceTestResultsResponse },
-    { name: "UpdateDriftRunCIStatus", options: {}, I: UpdateDriftRunCIStatusRequest, O: UpdateDriftRunCIStatusResponse }
+    { name: "UpdateDriftRunCIStatus", options: {}, I: UpdateDriftRunCIStatusRequest, O: UpdateDriftRunCIStatusResponse },
+    { name: "FinalizeDriftRun", options: {}, I: FinalizeDriftRunRequest, O: FinalizeDriftRunResponse }
 ]);

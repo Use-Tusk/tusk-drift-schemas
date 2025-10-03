@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { FinalizeDriftRunResponse } from "./test_run_service";
+import type { FinalizeDriftRunRequest } from "./test_run_service";
 import type { UpdateDriftRunCIStatusResponse } from "./test_run_service";
 import type { UpdateDriftRunCIStatusRequest } from "./test_run_service";
 import type { UploadTraceTestResultsResponse } from "./test_run_service";
@@ -78,6 +80,13 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: UpdateDriftRunCIStatus
      */
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>;
+    /**
+     * Allows CLI to indicate to backend that it's done running trace tests
+     * so that backend can start classification
+     *
+     * @generated from protobuf rpc: FinalizeDriftRun
+     */
+    finalizeDriftRun(input: FinalizeDriftRunRequest, options?: RpcOptions): UnaryCall<FinalizeDriftRunRequest, FinalizeDriftRunResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -162,5 +171,15 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Allows CLI to indicate to backend that it's done running trace tests
+     * so that backend can start classification
+     *
+     * @generated from protobuf rpc: FinalizeDriftRun
+     */
+    finalizeDriftRun(input: FinalizeDriftRunRequest, options?: RpcOptions): UnaryCall<FinalizeDriftRunRequest, FinalizeDriftRunResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<FinalizeDriftRunRequest, FinalizeDriftRunResponse>("unary", this._transport, method, opt, input);
     }
 }
