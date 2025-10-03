@@ -5,6 +5,12 @@
   "files": [
     "dist/**"
   ],
+  "description": "Schemas for Tusk Drift",
+  "homepage": "https://github.com/Use-Tusk/tusk-drift-schemas",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Use-Tusk/tusk-drift-schemas.git"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
