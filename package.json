@@ -5,6 +5,10 @@
   "files": [
     "dist/**"
   ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "exports": {
     "./backend/onboarding_service": {
       "import": "./dist/backend/onboarding_service.js",
