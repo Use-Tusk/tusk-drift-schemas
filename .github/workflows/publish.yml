@@ -1,4 +1,4 @@
-name: Publish to GitHub Packages
+name: Publish to NPM registry
 
 on:
   release:
@@ -34,7 +34,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Publish to GitHub Packages
+      - name: Publish to NPM registry
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
