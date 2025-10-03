@@ -1,0 +1,54 @@
+name: Buf Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  buf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Buf
+        uses: bufbuild/buf-setup-action@v1
+
+      - name: Run buf lint
+        run: buf lint
+
+      - name: Check buf format
+        id: format
+        continue-on-error: true
+        run: |
+          buf format -w
+          if [[ -n "$(git status --porcelain)" ]]; then
+            echo "buf format produced changes. Run 'buf format -w' locally to update your files."
+            # cleanup for next step
+            git status --short
+            git checkout -- .
+            exit 1
+          fi
+
+      - name: Check buf generate output
+        id: generate
+        continue-on-error: true
+        run: |
+          buf generate
+          if [[ -n "$(git status --porcelain generated)" ]]; then
+            echo "buf generate produced changes. Run 'buf generate' locally and commit the results."
+            # there's no cleanup since this is the last step, REMEMBER to add
+            # one if you neeed it!
+            exit 1
+          fi
+
+      - name: Fail if checks detected changes
+        if: steps.format.outcome == 'failure' || steps.generate.outcome == 'failure'
+        run: |
+          echo "::error::buf format or buf generate produced changes."
+          exit 1
