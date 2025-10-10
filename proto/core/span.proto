@@ -4,6 +4,7 @@ package tusk.drift.core.v1;
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
+import "core/json_schema.proto";
 
 option go_package = "./core";
 
@@ -27,8 +28,8 @@ message Span {
   // Input/output data
   google.protobuf.Struct input_value = 9; // Request/query/command data
   google.protobuf.Struct output_value = 10; // Response/result data
-  google.protobuf.Struct input_schema = 11; // Schema definition for input
-  google.protobuf.Struct output_schema = 12; // Schema definition for output
+  JsonSchema input_schema = 11; // Schema definition for input
+  JsonSchema output_schema = 12; // Schema definition for output
 
   // Hash-based matching and validation
   string input_schema_hash = 13; // Hash of input schema for validation

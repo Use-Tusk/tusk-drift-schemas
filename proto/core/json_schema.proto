@@ -1,0 +1,79 @@
+syntax = "proto3";
+package tusk.drift.core.v1;
+
+option go_package = "./core";
+
+// JSON schema type enumeration
+// Language-agnostic type classification for JSON values
+enum JsonSchemaType {
+  JSON_SCHEMA_TYPE_UNSPECIFIED = 0;
+  JSON_SCHEMA_TYPE_NUMBER = 1;
+  JSON_SCHEMA_TYPE_STRING = 2;
+  JSON_SCHEMA_TYPE_BOOLEAN = 3;
+  JSON_SCHEMA_TYPE_NULL = 4;
+  JSON_SCHEMA_TYPE_UNDEFINED = 5;
+  JSON_SCHEMA_TYPE_OBJECT = 6;
+  JSON_SCHEMA_TYPE_ORDERED_LIST = 7;
+  JSON_SCHEMA_TYPE_UNORDERED_LIST = 8;
+  JSON_SCHEMA_TYPE_FUNCTION = 9;
+}
+
+// Encoding type for data serialization
+enum EncodingType {
+  ENCODING_TYPE_UNSPECIFIED = 0;
+  ENCODING_TYPE_BASE64 = 1;
+}
+
+// Decoded content type classification
+// Describes the semantic type of decoded content
+enum DecodedType {
+  DECODED_TYPE_UNSPECIFIED = 0;
+  DECODED_TYPE_JSON = 1;
+  DECODED_TYPE_HTML = 2;
+  DECODED_TYPE_CSS = 3;
+  DECODED_TYPE_JAVASCRIPT = 4;
+  DECODED_TYPE_XML = 5;
+  DECODED_TYPE_YAML = 6;
+  DECODED_TYPE_MARKDOWN = 7;
+  DECODED_TYPE_CSV = 8;
+  DECODED_TYPE_SQL = 9;
+  DECODED_TYPE_GRAPHQL = 10;
+  DECODED_TYPE_PLAIN_TEXT = 11;
+  DECODED_TYPE_FORM_DATA = 12;
+  DECODED_TYPE_MULTIPART_FORM = 13;
+  DECODED_TYPE_PDF = 14;
+  DECODED_TYPE_AUDIO = 15;
+  DECODED_TYPE_VIDEO = 16;
+  DECODED_TYPE_GZIP = 17;
+  DECODED_TYPE_BINARY = 18;
+  DECODED_TYPE_JPEG = 19;
+  DECODED_TYPE_PNG = 20;
+  DECODED_TYPE_GIF = 21;
+  DECODED_TYPE_WEBP = 22;
+  DECODED_TYPE_SVG = 23;
+  DECODED_TYPE_ZIP = 24;
+}
+
+// Recursive JSON schema message
+// Describes the structure and metadata of JSON data
+message JsonSchema {
+  // The type of this schema node
+  JsonSchemaType type = 1;
+  
+  // For OBJECT types: map of property names to their schemas
+  map<string, JsonSchema> properties = 2;
+  
+  // For ORDERED_LIST/UNORDERED_LIST types: schema of list items
+  optional JsonSchema items = 3;
+  
+  // Optional encoding information (e.g., BASE64)
+  optional EncodingType encoding = 4;
+  
+  // Optional decoded content type (e.g., JSON, HTML)
+  optional DecodedType decoded_type = 5;
+  
+  // Match importance for test matching (0.0 to 1.0)
+  // 0.0 = lowest importance, 1.0 = highest importance
+  optional double match_importance = 6;
+}
+

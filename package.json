@@ -48,6 +48,10 @@
       "import": "./dist/core/communication.client.js",
       "require": "./dist/core/communication.client.cjs"
     },
+    "./core/json_schema": {
+      "import": "./dist/core/json_schema.js",
+      "require": "./dist/core/json_schema.cjs"
+    },
     "./core/span": {
       "import": "./dist/core/span.js",
       "require": "./dist/core/span.cjs"
