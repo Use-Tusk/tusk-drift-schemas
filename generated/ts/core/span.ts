@@ -13,6 +13,7 @@ import { MessageType } from "@protobuf-ts/runtime";
 import { Value } from "../google/protobuf/struct";
 import { Duration } from "../google/protobuf/duration";
 import { Timestamp } from "../google/protobuf/timestamp";
+import { JsonSchema } from "./json_schema";
 import { Struct } from "../google/protobuf/struct";
 /**
  * Universal span structure that works for all instrumentation types
@@ -71,13 +72,13 @@ export interface Span {
      */
     outputValue?: Struct; // Response/result data
     /**
-     * @generated from protobuf field: google.protobuf.Struct input_schema = 11
+     * @generated from protobuf field: tusk.drift.core.v1.JsonSchema input_schema = 11
      */
-    inputSchema?: Struct; // Schema definition for input
+    inputSchema?: JsonSchema; // Schema definition for input
     /**
-     * @generated from protobuf field: google.protobuf.Struct output_schema = 12
+     * @generated from protobuf field: tusk.drift.core.v1.JsonSchema output_schema = 12
      */
-    outputSchema?: Struct; // Schema definition for output
+    outputSchema?: JsonSchema; // Schema definition for output
     /**
      * Hash-based matching and validation
      *
@@ -361,8 +362,8 @@ class Span$Type extends MessageType<Span> {
             { no: 8, name: "package_type", kind: "enum", T: () => ["tusk.drift.core.v1.PackageType", PackageType, "PACKAGE_TYPE_"] },
             { no: 9, name: "input_value", kind: "message", T: () => Struct },
             { no: 10, name: "output_value", kind: "message", T: () => Struct },
-            { no: 11, name: "input_schema", kind: "message", T: () => Struct },
-            { no: 12, name: "output_schema", kind: "message", T: () => Struct },
+            { no: 11, name: "input_schema", kind: "message", T: () => JsonSchema },
+            { no: 12, name: "output_schema", kind: "message", T: () => JsonSchema },
             { no: 13, name: "input_schema_hash", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 14, name: "output_schema_hash", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 15, name: "input_value_hash", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
@@ -432,11 +433,11 @@ class Span$Type extends MessageType<Span> {
                 case /* google.protobuf.Struct output_value */ 10:
                     message.outputValue = Struct.internalBinaryRead(reader, reader.uint32(), options, message.outputValue);
                     break;
-                case /* google.protobuf.Struct input_schema */ 11:
-                    message.inputSchema = Struct.internalBinaryRead(reader, reader.uint32(), options, message.inputSchema);
+                case /* tusk.drift.core.v1.JsonSchema input_schema */ 11:
+                    message.inputSchema = JsonSchema.internalBinaryRead(reader, reader.uint32(), options, message.inputSchema);
                     break;
-                case /* google.protobuf.Struct output_schema */ 12:
-                    message.outputSchema = Struct.internalBinaryRead(reader, reader.uint32(), options, message.outputSchema);
+                case /* tusk.drift.core.v1.JsonSchema output_schema */ 12:
+                    message.outputSchema = JsonSchema.internalBinaryRead(reader, reader.uint32(), options, message.outputSchema);
                     break;
                 case /* string input_schema_hash */ 13:
                     message.inputSchemaHash = reader.string();
@@ -513,12 +514,12 @@ class Span$Type extends MessageType<Span> {
         /* google.protobuf.Struct output_value = 10; */
         if (message.outputValue)
             Struct.internalBinaryWrite(message.outputValue, writer.tag(10, WireType.LengthDelimited).fork(), options).join();
-        /* google.protobuf.Struct input_schema = 11; */
+        /* tusk.drift.core.v1.JsonSchema input_schema = 11; */
         if (message.inputSchema)
-            Struct.internalBinaryWrite(message.inputSchema, writer.tag(11, WireType.LengthDelimited).fork(), options).join();
-        /* google.protobuf.Struct output_schema = 12; */
+            JsonSchema.internalBinaryWrite(message.inputSchema, writer.tag(11, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.JsonSchema output_schema = 12; */
         if (message.outputSchema)
-            Struct.internalBinaryWrite(message.outputSchema, writer.tag(12, WireType.LengthDelimited).fork(), options).join();
+            JsonSchema.internalBinaryWrite(message.outputSchema, writer.tag(12, WireType.LengthDelimited).fork(), options).join();
         /* string input_schema_hash = 13; */
         if (message.inputSchemaHash !== "")
             writer.tag(13, WireType.LengthDelimited).string(message.inputSchemaHash);

@@ -1,22 +1,49 @@
 # Tusk Drift Schemas 
 
-This repo holds schemas used by Tusk Drift.
+This repo holds schemas defined as protobuf files used by Tusk Drift. We use Buf to generate code for each language we support (currently TypeScript and Golang).
 
-## Typescript
+Install Buf [here](https://buf.build/docs/cli/installation/).
 
-For typescript projects
+## TypeScript
+
+### Installing schemas in TypeScript projects
+
 ```
 npm install @use-tusk/drift-schemas
 ```
 
+### Developing locally
+
+In this repo, run `npm link` to create a symlink to the local package.
+
+In your project, run `npm link @use-tusk/drift-schemas` to use the local package.
+
+After updating the schemas, run `npm run build` to rebuild the package.
+
+Run `npm unlink @use-tusk/drift-schemas` to remove the local package.
+
 ## Golang
 
-For golang projects
+### Installing schemas in Golang projects
+
 ```
 go get github.com/Use-Tusk/tusk-drift-schemas
 ```
 
-# Building
+### Developing locally
 
-To get started, you need to [install Buf](https://buf.build/docs/cli/installation/).
-Then, just run `buf generate`!
+In your project, add this to `go.mod`:
+
+```
+replace github.com/Use-Tusk/tusk-drift-schemas => ../tusk-drift-schemas
+```
+
+Run `go mod tidy` to update the dependencies.
+
+## Releasing
+
+1. Checkout a new branch with the new version number (e.g. `git checkout -b v0.1.1`)
+2. Increment the patch version (e.g. 0.1.0 → 0.1.1), using `npm version patch`. This creates a commit and a tag.
+3. Push the branch and the tag to GitHub.
+4. Create a new release on GitHub with the new version number.
+5. The release will trigger a GitHub Actions workflow to publish the package to NPM, and the new release tag will allow Golang projects to install the new version.
