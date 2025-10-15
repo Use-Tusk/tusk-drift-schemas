@@ -1,0 +1,88 @@
+syntax = "proto3";
+package tusk.drift.backend.v1;
+
+option go_package = "./backend";
+
+service ClientService {
+  rpc GetAuthInfo(GetAuthInfoRequest) returns (GetAuthInfoResponse);
+  rpc CreateObservableService(CreateObservableServiceRequest) returns (CreateObservableServiceResponse);
+}
+
+message GetAuthInfoRequest {
+  optional string client_id = 1;
+}
+
+enum UserType {
+  USER_TYPE_UNSPECIFIED = 0;
+  USER_TYPE_USER = 1;
+  USER_TYPE_API_KEY = 2;
+}
+
+message UserAuthInfo {
+  string id = 1;
+  UserType type = 2;
+  string name = 3;
+  optional string email = 4;
+  optional string code_hosting_username = 5;
+}
+
+message AuthInfoClient {
+  string id = 1;
+  optional string name = 2;
+  optional string domain = 3;
+  repeated string feature_flags = 4;
+  repeated CodeHostingResource code_hosting_resources = 5;
+}
+
+enum CodeHostingResourceType {
+  CODE_HOSTING_RESOURCE_TYPE_UNSPECIFIED = 0;
+  CODE_HOSTING_RESOURCE_TYPE_GITHUB = 1;
+  CODE_HOSTING_RESOURCE_TYPE_GITLAB = 2;
+}
+
+message CodeHostingResource {
+  int64 id = 1;
+  CodeHostingResourceType type = 2;
+  string external_id = 3;
+}
+
+message GetAuthInfoResponse {
+  UserAuthInfo user = 1;
+  repeated AuthInfoClient clients = 2;
+}
+
+message CreateObservableServiceRequest {
+  string repo_owner_name = 1;
+  string repo_name = 2;
+  ServiceType service_type = 3;
+  optional string app_dir = 4;
+}
+
+enum ServiceType {
+  SERVICE_TYPE_UNSPECIFIED = 0;
+  SERVICE_TYPE_NODE = 1;
+}
+
+message CreateObservableServiceResponseSuccess {
+  string observable_service_id = 1;
+}
+
+enum CreateObservableServiceResponseErrorCode {
+  CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+  CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE = 3;
+  CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_REPO_FOUND = 4;
+}
+
+message CreateObservableServiceResponseError {
+  CreateObservableServiceResponseErrorCode code = 1;
+  string message = 2;
+}
+
+message CreateObservableServiceResponse {
+  oneof response {
+    CreateObservableServiceResponseSuccess success = 1;
+    CreateObservableServiceResponseError error = 2;
+  }
+}
