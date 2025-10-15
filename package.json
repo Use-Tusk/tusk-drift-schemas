@@ -16,13 +16,13 @@
     "registry": "https://registry.npmjs.org/"
   },
   "exports": {
-    "./backend/onboarding_service": {
-      "import": "./dist/backend/onboarding_service.js",
-      "require": "./dist/backend/onboarding_service.cjs"
+    "./backend/client_service": {
+      "import": "./dist/backend/client_service.js",
+      "require": "./dist/backend/client_service.cjs"
     },
-    "./backend/onboarding_service.client": {
-      "import": "./dist/backend/onboarding_service.client.js",
-      "require": "./dist/backend/onboarding_service.client.cjs"
+    "./backend/client_service.client": {
+      "import": "./dist/backend/client_service.client.js",
+      "require": "./dist/backend/client_service.client.cjs"
     },
     "./backend/span_export_service": {
       "import": "./dist/backend/span_export_service.js",
