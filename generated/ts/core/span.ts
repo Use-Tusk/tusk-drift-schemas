@@ -282,7 +282,13 @@ export enum PackageType {
      *
      * @generated from protobuf enum value: PACKAGE_TYPE_RABBITMQ = 9;
      */
-    RABBITMQ = 9
+    RABBITMQ = 9,
+    /**
+     * Firestore operations
+     *
+     * @generated from protobuf enum value: PACKAGE_TYPE_FIRESTORE = 10;
+     */
+    FIRESTORE = 10
 }
 /**
  * OpenTelemetry-compatible span kinds
