@@ -1,10 +1,10 @@
 syntax = "proto3";
 package tusk.drift.core.v1;
 
+import "core/json_schema.proto";
 import "google/protobuf/duration.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
-import "core/json_schema.proto";
 
 option go_package = "./core";
 
@@ -64,6 +64,7 @@ enum PackageType {
   PACKAGE_TYPE_REDIS = 7; // Redis caching operations
   PACKAGE_TYPE_KAFKA = 8; // Apache Kafka messaging
   PACKAGE_TYPE_RABBITMQ = 9; // RabbitMQ messaging
+  PACKAGE_TYPE_FIRESTORE = 10; // Firestore operations
 }
 
 // OpenTelemetry-compatible span kinds

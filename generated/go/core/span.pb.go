@@ -30,30 +30,32 @@ type PackageType int32
 
 const (
 	PackageType_PACKAGE_TYPE_UNSPECIFIED PackageType = 0
-	PackageType_PACKAGE_TYPE_HTTP        PackageType = 1 // HTTP-based operations
-	PackageType_PACKAGE_TYPE_GRAPHQL     PackageType = 2 // GraphQL operations
-	PackageType_PACKAGE_TYPE_GRPC        PackageType = 3 // gRPC operations
-	PackageType_PACKAGE_TYPE_PG          PackageType = 4 // PostgreSQL operations
-	PackageType_PACKAGE_TYPE_MYSQL       PackageType = 5 // MySQL operations
-	PackageType_PACKAGE_TYPE_MONGODB     PackageType = 6 // MongoDB operations
-	PackageType_PACKAGE_TYPE_REDIS       PackageType = 7 // Redis caching operations
-	PackageType_PACKAGE_TYPE_KAFKA       PackageType = 8 // Apache Kafka messaging
-	PackageType_PACKAGE_TYPE_RABBITMQ    PackageType = 9 // RabbitMQ messaging
+	PackageType_PACKAGE_TYPE_HTTP        PackageType = 1  // HTTP-based operations
+	PackageType_PACKAGE_TYPE_GRAPHQL     PackageType = 2  // GraphQL operations
+	PackageType_PACKAGE_TYPE_GRPC        PackageType = 3  // gRPC operations
+	PackageType_PACKAGE_TYPE_PG          PackageType = 4  // PostgreSQL operations
+	PackageType_PACKAGE_TYPE_MYSQL       PackageType = 5  // MySQL operations
+	PackageType_PACKAGE_TYPE_MONGODB     PackageType = 6  // MongoDB operations
+	PackageType_PACKAGE_TYPE_REDIS       PackageType = 7  // Redis caching operations
+	PackageType_PACKAGE_TYPE_KAFKA       PackageType = 8  // Apache Kafka messaging
+	PackageType_PACKAGE_TYPE_RABBITMQ    PackageType = 9  // RabbitMQ messaging
+	PackageType_PACKAGE_TYPE_FIRESTORE   PackageType = 10 // Firestore operations
 )
 
 // Enum value maps for PackageType.
 var (
 	PackageType_name = map[int32]string{
-		0: "PACKAGE_TYPE_UNSPECIFIED",
-		1: "PACKAGE_TYPE_HTTP",
-		2: "PACKAGE_TYPE_GRAPHQL",
-		3: "PACKAGE_TYPE_GRPC",
-		4: "PACKAGE_TYPE_PG",
-		5: "PACKAGE_TYPE_MYSQL",
-		6: "PACKAGE_TYPE_MONGODB",
-		7: "PACKAGE_TYPE_REDIS",
-		8: "PACKAGE_TYPE_KAFKA",
-		9: "PACKAGE_TYPE_RABBITMQ",
+		0:  "PACKAGE_TYPE_UNSPECIFIED",
+		1:  "PACKAGE_TYPE_HTTP",
+		2:  "PACKAGE_TYPE_GRAPHQL",
+		3:  "PACKAGE_TYPE_GRPC",
+		4:  "PACKAGE_TYPE_PG",
+		5:  "PACKAGE_TYPE_MYSQL",
+		6:  "PACKAGE_TYPE_MONGODB",
+		7:  "PACKAGE_TYPE_REDIS",
+		8:  "PACKAGE_TYPE_KAFKA",
+		9:  "PACKAGE_TYPE_RABBITMQ",
+		10: "PACKAGE_TYPE_FIRESTORE",
 	}
 	PackageType_value = map[string]int32{
 		"PACKAGE_TYPE_UNSPECIFIED": 0,
@@ -66,6 +68,7 @@ var (
 		"PACKAGE_TYPE_REDIS":       7,
 		"PACKAGE_TYPE_KAFKA":       8,
 		"PACKAGE_TYPE_RABBITMQ":    9,
+		"PACKAGE_TYPE_FIRESTORE":   10,
 	}
 )
 
@@ -690,7 +693,7 @@ var File_core_span_proto protoreflect.FileDescriptor
 
 const file_core_span_proto_rawDesc = "" +
 	"\n" +
-	"\x0fcore/span.proto\x12\x12tusk.drift.core.v1\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16core/json_schema.proto\"\xbe\b\n" +
+	"\x0fcore/span.proto\x12\x12tusk.drift.core.v1\x1a\x16core/json_schema.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbe\b\n" +
 	"\x04Span\x12\x19\n" +
 	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x17\n" +
 	"\aspan_id\x18\x02 \x01(\tR\x06spanId\x12$\n" +
@@ -749,7 +752,7 @@ const file_core_span_proto_rawDesc = "" +
 	"\bmetadata\x18\x05 \x03(\v2'.tusk.drift.core.v1.Trace.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\x85\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xa1\x02\n" +
 	"\vPackageType\x12\x1c\n" +
 	"\x18PACKAGE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11PACKAGE_TYPE_HTTP\x10\x01\x12\x18\n" +
@@ -760,7 +763,9 @@ const file_core_span_proto_rawDesc = "" +
 	"\x14PACKAGE_TYPE_MONGODB\x10\x06\x12\x16\n" +
 	"\x12PACKAGE_TYPE_REDIS\x10\a\x12\x16\n" +
 	"\x12PACKAGE_TYPE_KAFKA\x10\b\x12\x19\n" +
-	"\x15PACKAGE_TYPE_RABBITMQ\x10\t*\x99\x01\n" +
+	"\x15PACKAGE_TYPE_RABBITMQ\x10\t\x12\x1a\n" +
+	"\x16PACKAGE_TYPE_FIRESTORE\x10\n" +
+	"*\x99\x01\n" +
 	"\bSpanKind\x12\x19\n" +
 	"\x15SPAN_KIND_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12SPAN_KIND_INTERNAL\x10\x01\x12\x14\n" +
