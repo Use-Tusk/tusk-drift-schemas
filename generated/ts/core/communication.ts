@@ -164,6 +164,12 @@ export interface SDKMessage {
          */
         sendInboundSpanForReplayRequest: SendInboundSpanForReplayRequest;
     } | {
+        oneofKind: "sendAlertRequest";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.SendAlertRequest send_alert_request = 6
+         */
+        sendAlertRequest: SendAlertRequest;
+    } | {
         oneofKind: undefined;
     };
 }
@@ -223,6 +229,59 @@ export interface SendInboundSpanForReplayResponse {
     success: boolean;
 }
 /**
+ * @generated from protobuf message tusk.drift.core.v1.SendAlertRequest
+ */
+export interface SendAlertRequest {
+    /**
+     * @generated from protobuf oneof: alert
+     */
+    alert: {
+        oneofKind: "versionMismatch";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.VersionMismatchAlert version_mismatch = 1
+         */
+        versionMismatch: VersionMismatchAlert;
+    } | {
+        oneofKind: "unpatchedDependency";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.UnpatchedDependencyAlert unpatched_dependency = 2
+         */
+        unpatchedDependency: UnpatchedDependencyAlert;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * @generated from protobuf message tusk.drift.core.v1.VersionMismatchAlert
+ */
+export interface VersionMismatchAlert {
+    /**
+     * @generated from protobuf field: string module_name = 1
+     */
+    moduleName: string;
+    /**
+     * @generated from protobuf field: string requested_version = 2
+     */
+    requestedVersion: string; // Can be empty if version not found
+    /**
+     * @generated from protobuf field: repeated string supported_versions = 3
+     */
+    supportedVersions: string[];
+}
+/**
+ * @generated from protobuf message tusk.drift.core.v1.UnpatchedDependencyAlert
+ */
+export interface UnpatchedDependencyAlert {
+    /**
+     * @generated from protobuf field: string stack_trace = 1
+     */
+    stackTrace: string;
+    /**
+     * @generated from protobuf field: string trace_id = 2
+     */
+    traceId: string;
+}
+/**
  * @generated from protobuf enum tusk.drift.core.v1.MessageType
  */
 export enum MessageType {
@@ -241,7 +300,11 @@ export enum MessageType {
     /**
      * @generated from protobuf enum value: MESSAGE_TYPE_INBOUND_SPAN = 3;
      */
-    INBOUND_SPAN = 3
+    INBOUND_SPAN = 3,
+    /**
+     * @generated from protobuf enum value: MESSAGE_TYPE_ALERT = 4;
+     */
+    ALERT = 4
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class ConnectRequest$Type extends MessageType$<ConnectRequest> {
@@ -585,7 +648,8 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
             { no: 2, name: "request_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "connect_request", kind: "message", oneof: "payload", T: () => ConnectRequest },
             { no: 4, name: "get_mock_request", kind: "message", oneof: "payload", T: () => GetMockRequest },
-            { no: 5, name: "send_inbound_span_for_replay_request", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayRequest }
+            { no: 5, name: "send_inbound_span_for_replay_request", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayRequest },
+            { no: 6, name: "send_alert_request", kind: "message", oneof: "payload", T: () => SendAlertRequest }
         ]);
     }
     create(value?: PartialMessage<SDKMessage>): SDKMessage {
@@ -626,6 +690,12 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
                         sendInboundSpanForReplayRequest: SendInboundSpanForReplayRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).sendInboundSpanForReplayRequest)
                     };
                     break;
+                case /* tusk.drift.core.v1.SendAlertRequest send_alert_request */ 6:
+                    message.payload = {
+                        oneofKind: "sendAlertRequest",
+                        sendAlertRequest: SendAlertRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).sendAlertRequest)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -653,6 +723,9 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
         /* tusk.drift.core.v1.SendInboundSpanForReplayRequest send_inbound_span_for_replay_request = 5; */
         if (message.payload.oneofKind === "sendInboundSpanForReplayRequest")
             SendInboundSpanForReplayRequest.internalBinaryWrite(message.payload.sendInboundSpanForReplayRequest, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.SendAlertRequest send_alert_request = 6; */
+        if (message.payload.oneofKind === "sendAlertRequest")
+            SendAlertRequest.internalBinaryWrite(message.payload.sendAlertRequest, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -842,6 +915,184 @@ class SendInboundSpanForReplayResponse$Type extends MessageType$<SendInboundSpan
  * @generated MessageType for protobuf message tusk.drift.core.v1.SendInboundSpanForReplayResponse
  */
 export const SendInboundSpanForReplayResponse = new SendInboundSpanForReplayResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SendAlertRequest$Type extends MessageType$<SendAlertRequest> {
+    constructor() {
+        super("tusk.drift.core.v1.SendAlertRequest", [
+            { no: 1, name: "version_mismatch", kind: "message", oneof: "alert", T: () => VersionMismatchAlert },
+            { no: 2, name: "unpatched_dependency", kind: "message", oneof: "alert", T: () => UnpatchedDependencyAlert }
+        ]);
+    }
+    create(value?: PartialMessage<SendAlertRequest>): SendAlertRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.alert = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<SendAlertRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SendAlertRequest): SendAlertRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.core.v1.VersionMismatchAlert version_mismatch */ 1:
+                    message.alert = {
+                        oneofKind: "versionMismatch",
+                        versionMismatch: VersionMismatchAlert.internalBinaryRead(reader, reader.uint32(), options, (message.alert as any).versionMismatch)
+                    };
+                    break;
+                case /* tusk.drift.core.v1.UnpatchedDependencyAlert unpatched_dependency */ 2:
+                    message.alert = {
+                        oneofKind: "unpatchedDependency",
+                        unpatchedDependency: UnpatchedDependencyAlert.internalBinaryRead(reader, reader.uint32(), options, (message.alert as any).unpatchedDependency)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SendAlertRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.core.v1.VersionMismatchAlert version_mismatch = 1; */
+        if (message.alert.oneofKind === "versionMismatch")
+            VersionMismatchAlert.internalBinaryWrite(message.alert.versionMismatch, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.UnpatchedDependencyAlert unpatched_dependency = 2; */
+        if (message.alert.oneofKind === "unpatchedDependency")
+            UnpatchedDependencyAlert.internalBinaryWrite(message.alert.unpatchedDependency, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.SendAlertRequest
+ */
+export const SendAlertRequest = new SendAlertRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VersionMismatchAlert$Type extends MessageType$<VersionMismatchAlert> {
+    constructor() {
+        super("tusk.drift.core.v1.VersionMismatchAlert", [
+            { no: 1, name: "module_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "requested_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "supported_versions", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<VersionMismatchAlert>): VersionMismatchAlert {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.moduleName = "";
+        message.requestedVersion = "";
+        message.supportedVersions = [];
+        if (value !== undefined)
+            reflectionMergePartial<VersionMismatchAlert>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VersionMismatchAlert): VersionMismatchAlert {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string module_name */ 1:
+                    message.moduleName = reader.string();
+                    break;
+                case /* string requested_version */ 2:
+                    message.requestedVersion = reader.string();
+                    break;
+                case /* repeated string supported_versions */ 3:
+                    message.supportedVersions.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VersionMismatchAlert, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string module_name = 1; */
+        if (message.moduleName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.moduleName);
+        /* string requested_version = 2; */
+        if (message.requestedVersion !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.requestedVersion);
+        /* repeated string supported_versions = 3; */
+        for (let i = 0; i < message.supportedVersions.length; i++)
+            writer.tag(3, WireType.LengthDelimited).string(message.supportedVersions[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.VersionMismatchAlert
+ */
+export const VersionMismatchAlert = new VersionMismatchAlert$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAlert> {
+    constructor() {
+        super("tusk.drift.core.v1.UnpatchedDependencyAlert", [
+            { no: 1, name: "stack_trace", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "trace_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<UnpatchedDependencyAlert>): UnpatchedDependencyAlert {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.stackTrace = "";
+        message.traceId = "";
+        if (value !== undefined)
+            reflectionMergePartial<UnpatchedDependencyAlert>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: UnpatchedDependencyAlert): UnpatchedDependencyAlert {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string stack_trace */ 1:
+                    message.stackTrace = reader.string();
+                    break;
+                case /* string trace_id */ 2:
+                    message.traceId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: UnpatchedDependencyAlert, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string stack_trace = 1; */
+        if (message.stackTrace !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.stackTrace);
+        /* string trace_id = 2; */
+        if (message.traceId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.traceId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.UnpatchedDependencyAlert
+ */
+export const UnpatchedDependencyAlert = new UnpatchedDependencyAlert$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.core.v1.MockService
  */
