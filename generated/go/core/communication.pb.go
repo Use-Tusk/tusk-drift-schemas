@@ -30,6 +30,7 @@ const (
 	MessageType_MESSAGE_TYPE_SDK_CONNECT  MessageType = 1
 	MessageType_MESSAGE_TYPE_MOCK_REQUEST MessageType = 2
 	MessageType_MESSAGE_TYPE_INBOUND_SPAN MessageType = 3
+	MessageType_MESSAGE_TYPE_ALERT        MessageType = 4
 )
 
 // Enum value maps for MessageType.
@@ -39,12 +40,14 @@ var (
 		1: "MESSAGE_TYPE_SDK_CONNECT",
 		2: "MESSAGE_TYPE_MOCK_REQUEST",
 		3: "MESSAGE_TYPE_INBOUND_SPAN",
+		4: "MESSAGE_TYPE_ALERT",
 	}
 	MessageType_value = map[string]int32{
 		"MESSAGE_TYPE_UNSPECIFIED":  0,
 		"MESSAGE_TYPE_SDK_CONNECT":  1,
 		"MESSAGE_TYPE_MOCK_REQUEST": 2,
 		"MESSAGE_TYPE_INBOUND_SPAN": 3,
+		"MESSAGE_TYPE_ALERT":        4,
 	}
 )
 
@@ -401,6 +404,7 @@ type SDKMessage struct {
 	//	*SDKMessage_ConnectRequest
 	//	*SDKMessage_GetMockRequest
 	//	*SDKMessage_SendInboundSpanForReplayRequest
+	//	*SDKMessage_SendAlertRequest
 	Payload       isSDKMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -484,6 +488,15 @@ func (x *SDKMessage) GetSendInboundSpanForReplayRequest() *SendInboundSpanForRep
 	return nil
 }
 
+func (x *SDKMessage) GetSendAlertRequest() *SendAlertRequest {
+	if x != nil {
+		if x, ok := x.Payload.(*SDKMessage_SendAlertRequest); ok {
+			return x.SendAlertRequest
+		}
+	}
+	return nil
+}
+
 type isSDKMessage_Payload interface {
 	isSDKMessage_Payload()
 }
@@ -500,11 +513,17 @@ type SDKMessage_SendInboundSpanForReplayRequest struct {
 	SendInboundSpanForReplayRequest *SendInboundSpanForReplayRequest `protobuf:"bytes,5,opt,name=send_inbound_span_for_replay_request,json=sendInboundSpanForReplayRequest,proto3,oneof"`
 }
 
+type SDKMessage_SendAlertRequest struct {
+	SendAlertRequest *SendAlertRequest `protobuf:"bytes,6,opt,name=send_alert_request,json=sendAlertRequest,proto3,oneof"`
+}
+
 func (*SDKMessage_ConnectRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_GetMockRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_SendInboundSpanForReplayRequest) isSDKMessage_Payload() {}
+
+func (*SDKMessage_SendAlertRequest) isSDKMessage_Payload() {}
 
 type CLIMessage struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -708,6 +727,200 @@ func (x *SendInboundSpanForReplayResponse) GetSuccess() bool {
 	return false
 }
 
+type SendAlertRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Alert:
+	//
+	//	*SendAlertRequest_VersionMismatch
+	//	*SendAlertRequest_UnpatchedDependency
+	Alert         isSendAlertRequest_Alert `protobuf_oneof:"alert"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SendAlertRequest) Reset() {
+	*x = SendAlertRequest{}
+	mi := &file_core_communication_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SendAlertRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SendAlertRequest) ProtoMessage() {}
+
+func (x *SendAlertRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SendAlertRequest.ProtoReflect.Descriptor instead.
+func (*SendAlertRequest) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *SendAlertRequest) GetAlert() isSendAlertRequest_Alert {
+	if x != nil {
+		return x.Alert
+	}
+	return nil
+}
+
+func (x *SendAlertRequest) GetVersionMismatch() *InstrumentationVersionMismatchAlert {
+	if x != nil {
+		if x, ok := x.Alert.(*SendAlertRequest_VersionMismatch); ok {
+			return x.VersionMismatch
+		}
+	}
+	return nil
+}
+
+func (x *SendAlertRequest) GetUnpatchedDependency() *UnpatchedDependencyAlert {
+	if x != nil {
+		if x, ok := x.Alert.(*SendAlertRequest_UnpatchedDependency); ok {
+			return x.UnpatchedDependency
+		}
+	}
+	return nil
+}
+
+type isSendAlertRequest_Alert interface {
+	isSendAlertRequest_Alert()
+}
+
+type SendAlertRequest_VersionMismatch struct {
+	VersionMismatch *InstrumentationVersionMismatchAlert `protobuf:"bytes,1,opt,name=version_mismatch,json=versionMismatch,proto3,oneof"`
+}
+
+type SendAlertRequest_UnpatchedDependency struct {
+	UnpatchedDependency *UnpatchedDependencyAlert `protobuf:"bytes,2,opt,name=unpatched_dependency,json=unpatchedDependency,proto3,oneof"`
+}
+
+func (*SendAlertRequest_VersionMismatch) isSendAlertRequest_Alert() {}
+
+func (*SendAlertRequest_UnpatchedDependency) isSendAlertRequest_Alert() {}
+
+type InstrumentationVersionMismatchAlert struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	ModuleName        string                 `protobuf:"bytes,1,opt,name=module_name,json=moduleName,proto3" json:"module_name,omitempty"`
+	RequestedVersion  string                 `protobuf:"bytes,2,opt,name=requested_version,json=requestedVersion,proto3" json:"requested_version,omitempty"` // Can be empty if version not found
+	SupportedVersions []string               `protobuf:"bytes,3,rep,name=supported_versions,json=supportedVersions,proto3" json:"supported_versions,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *InstrumentationVersionMismatchAlert) Reset() {
+	*x = InstrumentationVersionMismatchAlert{}
+	mi := &file_core_communication_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InstrumentationVersionMismatchAlert) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InstrumentationVersionMismatchAlert) ProtoMessage() {}
+
+func (x *InstrumentationVersionMismatchAlert) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InstrumentationVersionMismatchAlert.ProtoReflect.Descriptor instead.
+func (*InstrumentationVersionMismatchAlert) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *InstrumentationVersionMismatchAlert) GetModuleName() string {
+	if x != nil {
+		return x.ModuleName
+	}
+	return ""
+}
+
+func (x *InstrumentationVersionMismatchAlert) GetRequestedVersion() string {
+	if x != nil {
+		return x.RequestedVersion
+	}
+	return ""
+}
+
+func (x *InstrumentationVersionMismatchAlert) GetSupportedVersions() []string {
+	if x != nil {
+		return x.SupportedVersions
+	}
+	return nil
+}
+
+type UnpatchedDependencyAlert struct {
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	StackTrace            string                 `protobuf:"bytes,1,opt,name=stack_trace,json=stackTrace,proto3" json:"stack_trace,omitempty"`
+	TraceTestServerSpanId string                 `protobuf:"bytes,2,opt,name=trace_test_server_span_id,json=traceTestServerSpanId,proto3" json:"trace_test_server_span_id,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
+}
+
+func (x *UnpatchedDependencyAlert) Reset() {
+	*x = UnpatchedDependencyAlert{}
+	mi := &file_core_communication_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnpatchedDependencyAlert) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnpatchedDependencyAlert) ProtoMessage() {}
+
+func (x *UnpatchedDependencyAlert) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnpatchedDependencyAlert.ProtoReflect.Descriptor instead.
+func (*UnpatchedDependencyAlert) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UnpatchedDependencyAlert) GetStackTrace() string {
+	if x != nil {
+		return x.StackTrace
+	}
+	return ""
+}
+
+func (x *UnpatchedDependencyAlert) GetTraceTestServerSpanId() string {
+	if x != nil {
+		return x.TraceTestServerSpanId
+	}
+	return ""
+}
+
 var File_core_communication_proto protoreflect.FileDescriptor
 
 const file_core_communication_proto_rawDesc = "" +
@@ -747,7 +960,7 @@ const file_core_communication_proto_rawDesc = "" +
 	"error_code\x18\x06 \x01(\tR\terrorCode\x12&\n" +
 	"\x0fmatched_span_id\x18\a \x01(\tR\rmatchedSpanId\x129\n" +
 	"\n" +
-	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\"\x91\x03\n" +
+	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\"\xe7\x03\n" +
 	"\n" +
 	"SDKMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -755,7 +968,8 @@ const file_core_communication_proto_rawDesc = "" +
 	"request_id\x18\x02 \x01(\tR\trequestId\x12M\n" +
 	"\x0fconnect_request\x18\x03 \x01(\v2\".tusk.drift.core.v1.ConnectRequestH\x00R\x0econnectRequest\x12N\n" +
 	"\x10get_mock_request\x18\x04 \x01(\v2\".tusk.drift.core.v1.GetMockRequestH\x00R\x0egetMockRequest\x12\x84\x01\n" +
-	"$send_inbound_span_for_replay_request\x18\x05 \x01(\v23.tusk.drift.core.v1.SendInboundSpanForReplayRequestH\x00R\x1fsendInboundSpanForReplayRequestB\t\n" +
+	"$send_inbound_span_for_replay_request\x18\x05 \x01(\v23.tusk.drift.core.v1.SendInboundSpanForReplayRequestH\x00R\x1fsendInboundSpanForReplayRequest\x12T\n" +
+	"\x12send_alert_request\x18\x06 \x01(\v2$.tusk.drift.core.v1.SendAlertRequestH\x00R\x10sendAlertRequestB\t\n" +
 	"\apayload\"\x9a\x03\n" +
 	"\n" +
 	"CLIMessage\x123\n" +
@@ -769,12 +983,26 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x1fSendInboundSpanForReplayRequest\x12,\n" +
 	"\x04span\x18\x01 \x01(\v2\x18.tusk.drift.core.v1.SpanR\x04span\"<\n" +
 	" SendInboundSpanForReplayResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess*\x87\x01\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xe4\x01\n" +
+	"\x10SendAlertRequest\x12d\n" +
+	"\x10version_mismatch\x18\x01 \x01(\v27.tusk.drift.core.v1.InstrumentationVersionMismatchAlertH\x00R\x0fversionMismatch\x12a\n" +
+	"\x14unpatched_dependency\x18\x02 \x01(\v2,.tusk.drift.core.v1.UnpatchedDependencyAlertH\x00R\x13unpatchedDependencyB\a\n" +
+	"\x05alert\"\xa2\x01\n" +
+	"#InstrumentationVersionMismatchAlert\x12\x1f\n" +
+	"\vmodule_name\x18\x01 \x01(\tR\n" +
+	"moduleName\x12+\n" +
+	"\x11requested_version\x18\x02 \x01(\tR\x10requestedVersion\x12-\n" +
+	"\x12supported_versions\x18\x03 \x03(\tR\x11supportedVersions\"u\n" +
+	"\x18UnpatchedDependencyAlert\x12\x1f\n" +
+	"\vstack_trace\x18\x01 \x01(\tR\n" +
+	"stackTrace\x128\n" +
+	"\x19trace_test_server_span_id\x18\x02 \x01(\tR\x15traceTestServerSpanId*\x9f\x01\n" +
 	"\vMessageType\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_SDK_CONNECT\x10\x01\x12\x1d\n" +
 	"\x19MESSAGE_TYPE_MOCK_REQUEST\x10\x02\x12\x1d\n" +
-	"\x19MESSAGE_TYPE_INBOUND_SPAN\x10\x032\xbd\x02\n" +
+	"\x19MESSAGE_TYPE_INBOUND_SPAN\x10\x03\x12\x16\n" +
+	"\x12MESSAGE_TYPE_ALERT\x10\x042\xbd\x02\n" +
 	"\vMockService\x12R\n" +
 	"\aConnect\x12\".tusk.drift.core.v1.ConnectRequest\x1a#.tusk.drift.core.v1.ConnectResponse\x12R\n" +
 	"\aGetMock\x12\".tusk.drift.core.v1.GetMockRequest\x1a#.tusk.drift.core.v1.GetMockResponse\x12\x85\x01\n" +
@@ -794,50 +1022,56 @@ func file_core_communication_proto_rawDescGZIP() []byte {
 }
 
 var file_core_communication_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_core_communication_proto_goTypes = []any{
-	(MessageType)(0),                         // 0: tusk.drift.core.v1.MessageType
-	(*ConnectRequest)(nil),                   // 1: tusk.drift.core.v1.ConnectRequest
-	(*ConnectResponse)(nil),                  // 2: tusk.drift.core.v1.ConnectResponse
-	(*GetMockRequest)(nil),                   // 3: tusk.drift.core.v1.GetMockRequest
-	(*GetMockResponse)(nil),                  // 4: tusk.drift.core.v1.GetMockResponse
-	(*SDKMessage)(nil),                       // 5: tusk.drift.core.v1.SDKMessage
-	(*CLIMessage)(nil),                       // 6: tusk.drift.core.v1.CLIMessage
-	(*SendInboundSpanForReplayRequest)(nil),  // 7: tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	(*SendInboundSpanForReplayResponse)(nil), // 8: tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	nil,                                      // 9: tusk.drift.core.v1.GetMockRequest.TagsEntry
-	(*structpb.Struct)(nil),                  // 10: google.protobuf.Struct
-	(*Span)(nil),                             // 11: tusk.drift.core.v1.Span
-	(*timestamppb.Timestamp)(nil),            // 12: google.protobuf.Timestamp
+	(MessageType)(0),                            // 0: tusk.drift.core.v1.MessageType
+	(*ConnectRequest)(nil),                      // 1: tusk.drift.core.v1.ConnectRequest
+	(*ConnectResponse)(nil),                     // 2: tusk.drift.core.v1.ConnectResponse
+	(*GetMockRequest)(nil),                      // 3: tusk.drift.core.v1.GetMockRequest
+	(*GetMockResponse)(nil),                     // 4: tusk.drift.core.v1.GetMockResponse
+	(*SDKMessage)(nil),                          // 5: tusk.drift.core.v1.SDKMessage
+	(*CLIMessage)(nil),                          // 6: tusk.drift.core.v1.CLIMessage
+	(*SendInboundSpanForReplayRequest)(nil),     // 7: tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	(*SendInboundSpanForReplayResponse)(nil),    // 8: tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	(*SendAlertRequest)(nil),                    // 9: tusk.drift.core.v1.SendAlertRequest
+	(*InstrumentationVersionMismatchAlert)(nil), // 10: tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	(*UnpatchedDependencyAlert)(nil),            // 11: tusk.drift.core.v1.UnpatchedDependencyAlert
+	nil,                                         // 12: tusk.drift.core.v1.GetMockRequest.TagsEntry
+	(*structpb.Struct)(nil),                     // 13: google.protobuf.Struct
+	(*Span)(nil),                                // 14: tusk.drift.core.v1.Span
+	(*timestamppb.Timestamp)(nil),               // 15: google.protobuf.Timestamp
 }
 var file_core_communication_proto_depIdxs = []int32{
-	10, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
-	11, // 1: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
-	9,  // 2: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
-	12, // 3: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
-	10, // 4: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
-	10, // 5: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
-	12, // 6: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
+	13, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
+	14, // 1: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
+	12, // 2: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
+	15, // 3: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
+	13, // 4: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
+	13, // 5: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
+	15, // 6: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
 	0,  // 7: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
 	1,  // 8: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
 	3,  // 9: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
 	7,  // 10: tusk.drift.core.v1.SDKMessage.send_inbound_span_for_replay_request:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	0,  // 11: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	2,  // 12: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
-	4,  // 13: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
-	8,  // 14: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	11, // 15: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
-	1,  // 16: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
-	3,  // 17: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
-	7,  // 18: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	2,  // 19: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
-	4,  // 20: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
-	8,  // 21: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	19, // [19:22] is the sub-list for method output_type
-	16, // [16:19] is the sub-list for method input_type
-	16, // [16:16] is the sub-list for extension type_name
-	16, // [16:16] is the sub-list for extension extendee
-	0,  // [0:16] is the sub-list for field type_name
+	9,  // 11: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
+	0,  // 12: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	2,  // 13: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
+	4,  // 14: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
+	8,  // 15: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	14, // 16: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
+	10, // 17: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	11, // 18: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
+	1,  // 19: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
+	3,  // 20: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
+	7,  // 21: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	2,  // 22: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
+	4,  // 23: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
+	8,  // 24: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	22, // [22:25] is the sub-list for method output_type
+	19, // [19:22] is the sub-list for method input_type
+	19, // [19:19] is the sub-list for extension type_name
+	19, // [19:19] is the sub-list for extension extendee
+	0,  // [0:19] is the sub-list for field type_name
 }
 
 func init() { file_core_communication_proto_init() }
@@ -850,11 +1084,16 @@ func file_core_communication_proto_init() {
 		(*SDKMessage_ConnectRequest)(nil),
 		(*SDKMessage_GetMockRequest)(nil),
 		(*SDKMessage_SendInboundSpanForReplayRequest)(nil),
+		(*SDKMessage_SendAlertRequest)(nil),
 	}
 	file_core_communication_proto_msgTypes[5].OneofWrappers = []any{
 		(*CLIMessage_ConnectResponse)(nil),
 		(*CLIMessage_GetMockResponse)(nil),
 		(*CLIMessage_SendInboundSpanForReplayResponse)(nil),
+	}
+	file_core_communication_proto_msgTypes[8].OneofWrappers = []any{
+		(*SendAlertRequest_VersionMismatch)(nil),
+		(*SendAlertRequest_UnpatchedDependency)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -862,7 +1101,7 @@ func file_core_communication_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_core_communication_proto_rawDesc), len(file_core_communication_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   9,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -62,6 +62,7 @@ message SDKMessage {
     ConnectRequest connect_request = 3;
     GetMockRequest get_mock_request = 4;
     SendInboundSpanForReplayRequest send_inbound_span_for_replay_request = 5;
+    SendAlertRequest send_alert_request = 6;
   }
 }
 
@@ -80,6 +81,7 @@ enum MessageType {
   MESSAGE_TYPE_SDK_CONNECT = 1;
   MESSAGE_TYPE_MOCK_REQUEST = 2;
   MESSAGE_TYPE_INBOUND_SPAN = 3;
+  MESSAGE_TYPE_ALERT = 4;
 }
 
 message SendInboundSpanForReplayRequest {
@@ -88,4 +90,22 @@ message SendInboundSpanForReplayRequest {
 
 message SendInboundSpanForReplayResponse {
   bool success = 1;
+}
+
+message SendAlertRequest {
+  oneof alert {
+    InstrumentationVersionMismatchAlert version_mismatch = 1;
+    UnpatchedDependencyAlert unpatched_dependency = 2;
+  }
+}
+
+message InstrumentationVersionMismatchAlert {
+  string module_name = 1;
+  string requested_version = 2;  // Can be empty if version not found
+  repeated string supported_versions = 3;
+}
+
+message UnpatchedDependencyAlert {
+  string stack_trace = 1;
+  string trace_test_server_span_id = 2;
 }
