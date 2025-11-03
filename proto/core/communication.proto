@@ -94,12 +94,12 @@ message SendInboundSpanForReplayResponse {
 
 message SendAlertRequest {
   oneof alert {
-    VersionMismatchAlert version_mismatch = 1;
+    InstrumentationVersionMismatchAlert version_mismatch = 1;
     UnpatchedDependencyAlert unpatched_dependency = 2;
   }
 }
 
-message VersionMismatchAlert {
+message InstrumentationVersionMismatchAlert {
   string module_name = 1;
   string requested_version = 2;  // Can be empty if version not found
   repeated string supported_versions = 3;
@@ -107,5 +107,5 @@ message VersionMismatchAlert {
 
 message UnpatchedDependencyAlert {
   string stack_trace = 1;
-  string trace_id = 2;
+  string trace_test_server_span_id = 2;
 }

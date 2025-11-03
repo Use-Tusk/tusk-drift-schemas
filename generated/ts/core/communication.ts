@@ -238,9 +238,9 @@ export interface SendAlertRequest {
     alert: {
         oneofKind: "versionMismatch";
         /**
-         * @generated from protobuf field: tusk.drift.core.v1.VersionMismatchAlert version_mismatch = 1
+         * @generated from protobuf field: tusk.drift.core.v1.InstrumentationVersionMismatchAlert version_mismatch = 1
          */
-        versionMismatch: VersionMismatchAlert;
+        versionMismatch: InstrumentationVersionMismatchAlert;
     } | {
         oneofKind: "unpatchedDependency";
         /**
@@ -252,9 +252,9 @@ export interface SendAlertRequest {
     };
 }
 /**
- * @generated from protobuf message tusk.drift.core.v1.VersionMismatchAlert
+ * @generated from protobuf message tusk.drift.core.v1.InstrumentationVersionMismatchAlert
  */
-export interface VersionMismatchAlert {
+export interface InstrumentationVersionMismatchAlert {
     /**
      * @generated from protobuf field: string module_name = 1
      */
@@ -277,9 +277,9 @@ export interface UnpatchedDependencyAlert {
      */
     stackTrace: string;
     /**
-     * @generated from protobuf field: string trace_id = 2
+     * @generated from protobuf field: string trace_test_server_span_id = 2
      */
-    traceId: string;
+    traceTestServerSpanId: string;
 }
 /**
  * @generated from protobuf enum tusk.drift.core.v1.MessageType
@@ -919,7 +919,7 @@ export const SendInboundSpanForReplayResponse = new SendInboundSpanForReplayResp
 class SendAlertRequest$Type extends MessageType$<SendAlertRequest> {
     constructor() {
         super("tusk.drift.core.v1.SendAlertRequest", [
-            { no: 1, name: "version_mismatch", kind: "message", oneof: "alert", T: () => VersionMismatchAlert },
+            { no: 1, name: "version_mismatch", kind: "message", oneof: "alert", T: () => InstrumentationVersionMismatchAlert },
             { no: 2, name: "unpatched_dependency", kind: "message", oneof: "alert", T: () => UnpatchedDependencyAlert }
         ]);
     }
@@ -935,10 +935,10 @@ class SendAlertRequest$Type extends MessageType$<SendAlertRequest> {
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* tusk.drift.core.v1.VersionMismatchAlert version_mismatch */ 1:
+                case /* tusk.drift.core.v1.InstrumentationVersionMismatchAlert version_mismatch */ 1:
                     message.alert = {
                         oneofKind: "versionMismatch",
-                        versionMismatch: VersionMismatchAlert.internalBinaryRead(reader, reader.uint32(), options, (message.alert as any).versionMismatch)
+                        versionMismatch: InstrumentationVersionMismatchAlert.internalBinaryRead(reader, reader.uint32(), options, (message.alert as any).versionMismatch)
                     };
                     break;
                 case /* tusk.drift.core.v1.UnpatchedDependencyAlert unpatched_dependency */ 2:
@@ -959,9 +959,9 @@ class SendAlertRequest$Type extends MessageType$<SendAlertRequest> {
         return message;
     }
     internalBinaryWrite(message: SendAlertRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* tusk.drift.core.v1.VersionMismatchAlert version_mismatch = 1; */
+        /* tusk.drift.core.v1.InstrumentationVersionMismatchAlert version_mismatch = 1; */
         if (message.alert.oneofKind === "versionMismatch")
-            VersionMismatchAlert.internalBinaryWrite(message.alert.versionMismatch, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+            InstrumentationVersionMismatchAlert.internalBinaryWrite(message.alert.versionMismatch, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
         /* tusk.drift.core.v1.UnpatchedDependencyAlert unpatched_dependency = 2; */
         if (message.alert.oneofKind === "unpatchedDependency")
             UnpatchedDependencyAlert.internalBinaryWrite(message.alert.unpatchedDependency, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
@@ -976,24 +976,24 @@ class SendAlertRequest$Type extends MessageType$<SendAlertRequest> {
  */
 export const SendAlertRequest = new SendAlertRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class VersionMismatchAlert$Type extends MessageType$<VersionMismatchAlert> {
+class InstrumentationVersionMismatchAlert$Type extends MessageType$<InstrumentationVersionMismatchAlert> {
     constructor() {
-        super("tusk.drift.core.v1.VersionMismatchAlert", [
+        super("tusk.drift.core.v1.InstrumentationVersionMismatchAlert", [
             { no: 1, name: "module_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "requested_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "supported_versions", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<VersionMismatchAlert>): VersionMismatchAlert {
+    create(value?: PartialMessage<InstrumentationVersionMismatchAlert>): InstrumentationVersionMismatchAlert {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.moduleName = "";
         message.requestedVersion = "";
         message.supportedVersions = [];
         if (value !== undefined)
-            reflectionMergePartial<VersionMismatchAlert>(this, message, value);
+            reflectionMergePartial<InstrumentationVersionMismatchAlert>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VersionMismatchAlert): VersionMismatchAlert {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: InstrumentationVersionMismatchAlert): InstrumentationVersionMismatchAlert {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -1018,7 +1018,7 @@ class VersionMismatchAlert$Type extends MessageType$<VersionMismatchAlert> {
         }
         return message;
     }
-    internalBinaryWrite(message: VersionMismatchAlert, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: InstrumentationVersionMismatchAlert, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string module_name = 1; */
         if (message.moduleName !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.moduleName);
@@ -1035,21 +1035,21 @@ class VersionMismatchAlert$Type extends MessageType$<VersionMismatchAlert> {
     }
 }
 /**
- * @generated MessageType for protobuf message tusk.drift.core.v1.VersionMismatchAlert
+ * @generated MessageType for protobuf message tusk.drift.core.v1.InstrumentationVersionMismatchAlert
  */
-export const VersionMismatchAlert = new VersionMismatchAlert$Type();
+export const InstrumentationVersionMismatchAlert = new InstrumentationVersionMismatchAlert$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAlert> {
     constructor() {
         super("tusk.drift.core.v1.UnpatchedDependencyAlert", [
             { no: 1, name: "stack_trace", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "trace_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "trace_test_server_span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UnpatchedDependencyAlert>): UnpatchedDependencyAlert {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.stackTrace = "";
-        message.traceId = "";
+        message.traceTestServerSpanId = "";
         if (value !== undefined)
             reflectionMergePartial<UnpatchedDependencyAlert>(this, message, value);
         return message;
@@ -1062,8 +1062,8 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
                 case /* string stack_trace */ 1:
                     message.stackTrace = reader.string();
                     break;
-                case /* string trace_id */ 2:
-                    message.traceId = reader.string();
+                case /* string trace_test_server_span_id */ 2:
+                    message.traceTestServerSpanId = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1080,9 +1080,9 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
         /* string stack_trace = 1; */
         if (message.stackTrace !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.stackTrace);
-        /* string trace_id = 2; */
-        if (message.traceId !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.traceId);
+        /* string trace_test_server_span_id = 2; */
+        if (message.traceTestServerSpanId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.traceTestServerSpanId);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

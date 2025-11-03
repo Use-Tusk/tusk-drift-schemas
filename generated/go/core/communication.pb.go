@@ -775,7 +775,7 @@ func (x *SendAlertRequest) GetAlert() isSendAlertRequest_Alert {
 	return nil
 }
 
-func (x *SendAlertRequest) GetVersionMismatch() *VersionMismatchAlert {
+func (x *SendAlertRequest) GetVersionMismatch() *InstrumentationVersionMismatchAlert {
 	if x != nil {
 		if x, ok := x.Alert.(*SendAlertRequest_VersionMismatch); ok {
 			return x.VersionMismatch
@@ -798,7 +798,7 @@ type isSendAlertRequest_Alert interface {
 }
 
 type SendAlertRequest_VersionMismatch struct {
-	VersionMismatch *VersionMismatchAlert `protobuf:"bytes,1,opt,name=version_mismatch,json=versionMismatch,proto3,oneof"`
+	VersionMismatch *InstrumentationVersionMismatchAlert `protobuf:"bytes,1,opt,name=version_mismatch,json=versionMismatch,proto3,oneof"`
 }
 
 type SendAlertRequest_UnpatchedDependency struct {
@@ -809,7 +809,7 @@ func (*SendAlertRequest_VersionMismatch) isSendAlertRequest_Alert() {}
 
 func (*SendAlertRequest_UnpatchedDependency) isSendAlertRequest_Alert() {}
 
-type VersionMismatchAlert struct {
+type InstrumentationVersionMismatchAlert struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	ModuleName        string                 `protobuf:"bytes,1,opt,name=module_name,json=moduleName,proto3" json:"module_name,omitempty"`
 	RequestedVersion  string                 `protobuf:"bytes,2,opt,name=requested_version,json=requestedVersion,proto3" json:"requested_version,omitempty"` // Can be empty if version not found
@@ -818,20 +818,20 @@ type VersionMismatchAlert struct {
 	sizeCache         protoimpl.SizeCache
 }
 
-func (x *VersionMismatchAlert) Reset() {
-	*x = VersionMismatchAlert{}
+func (x *InstrumentationVersionMismatchAlert) Reset() {
+	*x = InstrumentationVersionMismatchAlert{}
 	mi := &file_core_communication_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *VersionMismatchAlert) String() string {
+func (x *InstrumentationVersionMismatchAlert) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*VersionMismatchAlert) ProtoMessage() {}
+func (*InstrumentationVersionMismatchAlert) ProtoMessage() {}
 
-func (x *VersionMismatchAlert) ProtoReflect() protoreflect.Message {
+func (x *InstrumentationVersionMismatchAlert) ProtoReflect() protoreflect.Message {
 	mi := &file_core_communication_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -843,26 +843,26 @@ func (x *VersionMismatchAlert) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use VersionMismatchAlert.ProtoReflect.Descriptor instead.
-func (*VersionMismatchAlert) Descriptor() ([]byte, []int) {
+// Deprecated: Use InstrumentationVersionMismatchAlert.ProtoReflect.Descriptor instead.
+func (*InstrumentationVersionMismatchAlert) Descriptor() ([]byte, []int) {
 	return file_core_communication_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *VersionMismatchAlert) GetModuleName() string {
+func (x *InstrumentationVersionMismatchAlert) GetModuleName() string {
 	if x != nil {
 		return x.ModuleName
 	}
 	return ""
 }
 
-func (x *VersionMismatchAlert) GetRequestedVersion() string {
+func (x *InstrumentationVersionMismatchAlert) GetRequestedVersion() string {
 	if x != nil {
 		return x.RequestedVersion
 	}
 	return ""
 }
 
-func (x *VersionMismatchAlert) GetSupportedVersions() []string {
+func (x *InstrumentationVersionMismatchAlert) GetSupportedVersions() []string {
 	if x != nil {
 		return x.SupportedVersions
 	}
@@ -870,11 +870,11 @@ func (x *VersionMismatchAlert) GetSupportedVersions() []string {
 }
 
 type UnpatchedDependencyAlert struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	StackTrace    string                 `protobuf:"bytes,1,opt,name=stack_trace,json=stackTrace,proto3" json:"stack_trace,omitempty"`
-	TraceId       string                 `protobuf:"bytes,2,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                 protoimpl.MessageState `protogen:"open.v1"`
+	StackTrace            string                 `protobuf:"bytes,1,opt,name=stack_trace,json=stackTrace,proto3" json:"stack_trace,omitempty"`
+	TraceTestServerSpanId string                 `protobuf:"bytes,2,opt,name=trace_test_server_span_id,json=traceTestServerSpanId,proto3" json:"trace_test_server_span_id,omitempty"`
+	unknownFields         protoimpl.UnknownFields
+	sizeCache             protoimpl.SizeCache
 }
 
 func (x *UnpatchedDependencyAlert) Reset() {
@@ -914,9 +914,9 @@ func (x *UnpatchedDependencyAlert) GetStackTrace() string {
 	return ""
 }
 
-func (x *UnpatchedDependencyAlert) GetTraceId() string {
+func (x *UnpatchedDependencyAlert) GetTraceTestServerSpanId() string {
 	if x != nil {
-		return x.TraceId
+		return x.TraceTestServerSpanId
 	}
 	return ""
 }
@@ -983,20 +983,20 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x1fSendInboundSpanForReplayRequest\x12,\n" +
 	"\x04span\x18\x01 \x01(\v2\x18.tusk.drift.core.v1.SpanR\x04span\"<\n" +
 	" SendInboundSpanForReplayResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xd5\x01\n" +
-	"\x10SendAlertRequest\x12U\n" +
-	"\x10version_mismatch\x18\x01 \x01(\v2(.tusk.drift.core.v1.VersionMismatchAlertH\x00R\x0fversionMismatch\x12a\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xe4\x01\n" +
+	"\x10SendAlertRequest\x12d\n" +
+	"\x10version_mismatch\x18\x01 \x01(\v27.tusk.drift.core.v1.InstrumentationVersionMismatchAlertH\x00R\x0fversionMismatch\x12a\n" +
 	"\x14unpatched_dependency\x18\x02 \x01(\v2,.tusk.drift.core.v1.UnpatchedDependencyAlertH\x00R\x13unpatchedDependencyB\a\n" +
-	"\x05alert\"\x93\x01\n" +
-	"\x14VersionMismatchAlert\x12\x1f\n" +
+	"\x05alert\"\xa2\x01\n" +
+	"#InstrumentationVersionMismatchAlert\x12\x1f\n" +
 	"\vmodule_name\x18\x01 \x01(\tR\n" +
 	"moduleName\x12+\n" +
 	"\x11requested_version\x18\x02 \x01(\tR\x10requestedVersion\x12-\n" +
-	"\x12supported_versions\x18\x03 \x03(\tR\x11supportedVersions\"V\n" +
+	"\x12supported_versions\x18\x03 \x03(\tR\x11supportedVersions\"u\n" +
 	"\x18UnpatchedDependencyAlert\x12\x1f\n" +
 	"\vstack_trace\x18\x01 \x01(\tR\n" +
-	"stackTrace\x12\x19\n" +
-	"\btrace_id\x18\x02 \x01(\tR\atraceId*\x9f\x01\n" +
+	"stackTrace\x128\n" +
+	"\x19trace_test_server_span_id\x18\x02 \x01(\tR\x15traceTestServerSpanId*\x9f\x01\n" +
 	"\vMessageType\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_SDK_CONNECT\x10\x01\x12\x1d\n" +
@@ -1024,22 +1024,22 @@ func file_core_communication_proto_rawDescGZIP() []byte {
 var file_core_communication_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_core_communication_proto_goTypes = []any{
-	(MessageType)(0),                         // 0: tusk.drift.core.v1.MessageType
-	(*ConnectRequest)(nil),                   // 1: tusk.drift.core.v1.ConnectRequest
-	(*ConnectResponse)(nil),                  // 2: tusk.drift.core.v1.ConnectResponse
-	(*GetMockRequest)(nil),                   // 3: tusk.drift.core.v1.GetMockRequest
-	(*GetMockResponse)(nil),                  // 4: tusk.drift.core.v1.GetMockResponse
-	(*SDKMessage)(nil),                       // 5: tusk.drift.core.v1.SDKMessage
-	(*CLIMessage)(nil),                       // 6: tusk.drift.core.v1.CLIMessage
-	(*SendInboundSpanForReplayRequest)(nil),  // 7: tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	(*SendInboundSpanForReplayResponse)(nil), // 8: tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	(*SendAlertRequest)(nil),                 // 9: tusk.drift.core.v1.SendAlertRequest
-	(*VersionMismatchAlert)(nil),             // 10: tusk.drift.core.v1.VersionMismatchAlert
-	(*UnpatchedDependencyAlert)(nil),         // 11: tusk.drift.core.v1.UnpatchedDependencyAlert
-	nil,                                      // 12: tusk.drift.core.v1.GetMockRequest.TagsEntry
-	(*structpb.Struct)(nil),                  // 13: google.protobuf.Struct
-	(*Span)(nil),                             // 14: tusk.drift.core.v1.Span
-	(*timestamppb.Timestamp)(nil),            // 15: google.protobuf.Timestamp
+	(MessageType)(0),                            // 0: tusk.drift.core.v1.MessageType
+	(*ConnectRequest)(nil),                      // 1: tusk.drift.core.v1.ConnectRequest
+	(*ConnectResponse)(nil),                     // 2: tusk.drift.core.v1.ConnectResponse
+	(*GetMockRequest)(nil),                      // 3: tusk.drift.core.v1.GetMockRequest
+	(*GetMockResponse)(nil),                     // 4: tusk.drift.core.v1.GetMockResponse
+	(*SDKMessage)(nil),                          // 5: tusk.drift.core.v1.SDKMessage
+	(*CLIMessage)(nil),                          // 6: tusk.drift.core.v1.CLIMessage
+	(*SendInboundSpanForReplayRequest)(nil),     // 7: tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	(*SendInboundSpanForReplayResponse)(nil),    // 8: tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	(*SendAlertRequest)(nil),                    // 9: tusk.drift.core.v1.SendAlertRequest
+	(*InstrumentationVersionMismatchAlert)(nil), // 10: tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	(*UnpatchedDependencyAlert)(nil),            // 11: tusk.drift.core.v1.UnpatchedDependencyAlert
+	nil,                                         // 12: tusk.drift.core.v1.GetMockRequest.TagsEntry
+	(*structpb.Struct)(nil),                     // 13: google.protobuf.Struct
+	(*Span)(nil),                                // 14: tusk.drift.core.v1.Span
+	(*timestamppb.Timestamp)(nil),               // 15: google.protobuf.Timestamp
 }
 var file_core_communication_proto_depIdxs = []int32{
 	13, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
@@ -1059,7 +1059,7 @@ var file_core_communication_proto_depIdxs = []int32{
 	4,  // 14: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
 	8,  // 15: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
 	14, // 16: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
-	10, // 17: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.VersionMismatchAlert
+	10, // 17: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
 	11, // 18: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
 	1,  // 19: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
 	3,  // 20: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
