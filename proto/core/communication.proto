@@ -103,9 +103,11 @@ message InstrumentationVersionMismatchAlert {
   string module_name = 1;
   string requested_version = 2;  // Can be empty if version not found
   repeated string supported_versions = 3;
+  string sdk_version = 4;
 }
 
 message UnpatchedDependencyAlert {
   string stack_trace = 1;
   string trace_test_server_span_id = 2;
+  string sdk_version = 3;
 }
