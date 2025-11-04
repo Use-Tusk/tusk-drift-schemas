@@ -814,6 +814,7 @@ type InstrumentationVersionMismatchAlert struct {
 	ModuleName        string                 `protobuf:"bytes,1,opt,name=module_name,json=moduleName,proto3" json:"module_name,omitempty"`
 	RequestedVersion  string                 `protobuf:"bytes,2,opt,name=requested_version,json=requestedVersion,proto3" json:"requested_version,omitempty"` // Can be empty if version not found
 	SupportedVersions []string               `protobuf:"bytes,3,rep,name=supported_versions,json=supportedVersions,proto3" json:"supported_versions,omitempty"`
+	SdkVersion        string                 `protobuf:"bytes,4,opt,name=sdk_version,json=sdkVersion,proto3" json:"sdk_version,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -869,10 +870,18 @@ func (x *InstrumentationVersionMismatchAlert) GetSupportedVersions() []string {
 	return nil
 }
 
+func (x *InstrumentationVersionMismatchAlert) GetSdkVersion() string {
+	if x != nil {
+		return x.SdkVersion
+	}
+	return ""
+}
+
 type UnpatchedDependencyAlert struct {
 	state                 protoimpl.MessageState `protogen:"open.v1"`
 	StackTrace            string                 `protobuf:"bytes,1,opt,name=stack_trace,json=stackTrace,proto3" json:"stack_trace,omitempty"`
 	TraceTestServerSpanId string                 `protobuf:"bytes,2,opt,name=trace_test_server_span_id,json=traceTestServerSpanId,proto3" json:"trace_test_server_span_id,omitempty"`
+	SdkVersion            string                 `protobuf:"bytes,3,opt,name=sdk_version,json=sdkVersion,proto3" json:"sdk_version,omitempty"`
 	unknownFields         protoimpl.UnknownFields
 	sizeCache             protoimpl.SizeCache
 }
@@ -917,6 +926,13 @@ func (x *UnpatchedDependencyAlert) GetStackTrace() string {
 func (x *UnpatchedDependencyAlert) GetTraceTestServerSpanId() string {
 	if x != nil {
 		return x.TraceTestServerSpanId
+	}
+	return ""
+}
+
+func (x *UnpatchedDependencyAlert) GetSdkVersion() string {
+	if x != nil {
+		return x.SdkVersion
 	}
 	return ""
 }
@@ -987,16 +1003,20 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x10SendAlertRequest\x12d\n" +
 	"\x10version_mismatch\x18\x01 \x01(\v27.tusk.drift.core.v1.InstrumentationVersionMismatchAlertH\x00R\x0fversionMismatch\x12a\n" +
 	"\x14unpatched_dependency\x18\x02 \x01(\v2,.tusk.drift.core.v1.UnpatchedDependencyAlertH\x00R\x13unpatchedDependencyB\a\n" +
-	"\x05alert\"\xa2\x01\n" +
+	"\x05alert\"\xc3\x01\n" +
 	"#InstrumentationVersionMismatchAlert\x12\x1f\n" +
 	"\vmodule_name\x18\x01 \x01(\tR\n" +
 	"moduleName\x12+\n" +
 	"\x11requested_version\x18\x02 \x01(\tR\x10requestedVersion\x12-\n" +
-	"\x12supported_versions\x18\x03 \x03(\tR\x11supportedVersions\"u\n" +
+	"\x12supported_versions\x18\x03 \x03(\tR\x11supportedVersions\x12\x1f\n" +
+	"\vsdk_version\x18\x04 \x01(\tR\n" +
+	"sdkVersion\"\x96\x01\n" +
 	"\x18UnpatchedDependencyAlert\x12\x1f\n" +
 	"\vstack_trace\x18\x01 \x01(\tR\n" +
 	"stackTrace\x128\n" +
-	"\x19trace_test_server_span_id\x18\x02 \x01(\tR\x15traceTestServerSpanId*\x9f\x01\n" +
+	"\x19trace_test_server_span_id\x18\x02 \x01(\tR\x15traceTestServerSpanId\x12\x1f\n" +
+	"\vsdk_version\x18\x03 \x01(\tR\n" +
+	"sdkVersion*\x9f\x01\n" +
 	"\vMessageType\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_SDK_CONNECT\x10\x01\x12\x1d\n" +

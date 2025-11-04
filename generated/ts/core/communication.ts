@@ -267,6 +267,10 @@ export interface InstrumentationVersionMismatchAlert {
      * @generated from protobuf field: repeated string supported_versions = 3
      */
     supportedVersions: string[];
+    /**
+     * @generated from protobuf field: string sdk_version = 4
+     */
+    sdkVersion: string;
 }
 /**
  * @generated from protobuf message tusk.drift.core.v1.UnpatchedDependencyAlert
@@ -280,6 +284,10 @@ export interface UnpatchedDependencyAlert {
      * @generated from protobuf field: string trace_test_server_span_id = 2
      */
     traceTestServerSpanId: string;
+    /**
+     * @generated from protobuf field: string sdk_version = 3
+     */
+    sdkVersion: string;
 }
 /**
  * @generated from protobuf enum tusk.drift.core.v1.MessageType
@@ -981,7 +989,8 @@ class InstrumentationVersionMismatchAlert$Type extends MessageType$<Instrumentat
         super("tusk.drift.core.v1.InstrumentationVersionMismatchAlert", [
             { no: 1, name: "module_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "requested_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "supported_versions", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "supported_versions", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "sdk_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<InstrumentationVersionMismatchAlert>): InstrumentationVersionMismatchAlert {
@@ -989,6 +998,7 @@ class InstrumentationVersionMismatchAlert$Type extends MessageType$<Instrumentat
         message.moduleName = "";
         message.requestedVersion = "";
         message.supportedVersions = [];
+        message.sdkVersion = "";
         if (value !== undefined)
             reflectionMergePartial<InstrumentationVersionMismatchAlert>(this, message, value);
         return message;
@@ -1006,6 +1016,9 @@ class InstrumentationVersionMismatchAlert$Type extends MessageType$<Instrumentat
                     break;
                 case /* repeated string supported_versions */ 3:
                     message.supportedVersions.push(reader.string());
+                    break;
+                case /* string sdk_version */ 4:
+                    message.sdkVersion = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1028,6 +1041,9 @@ class InstrumentationVersionMismatchAlert$Type extends MessageType$<Instrumentat
         /* repeated string supported_versions = 3; */
         for (let i = 0; i < message.supportedVersions.length; i++)
             writer.tag(3, WireType.LengthDelimited).string(message.supportedVersions[i]);
+        /* string sdk_version = 4; */
+        if (message.sdkVersion !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.sdkVersion);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1043,13 +1059,15 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
     constructor() {
         super("tusk.drift.core.v1.UnpatchedDependencyAlert", [
             { no: 1, name: "stack_trace", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "trace_test_server_span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 2, name: "trace_test_server_span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "sdk_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<UnpatchedDependencyAlert>): UnpatchedDependencyAlert {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.stackTrace = "";
         message.traceTestServerSpanId = "";
+        message.sdkVersion = "";
         if (value !== undefined)
             reflectionMergePartial<UnpatchedDependencyAlert>(this, message, value);
         return message;
@@ -1064,6 +1082,9 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
                     break;
                 case /* string trace_test_server_span_id */ 2:
                     message.traceTestServerSpanId = reader.string();
+                    break;
+                case /* string sdk_version */ 3:
+                    message.sdkVersion = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1083,6 +1104,9 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
         /* string trace_test_server_span_id = 2; */
         if (message.traceTestServerSpanId !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.traceTestServerSpanId);
+        /* string sdk_version = 3; */
+        if (message.sdkVersion !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.sdkVersion);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
