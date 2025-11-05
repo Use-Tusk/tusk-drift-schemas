@@ -63,6 +63,7 @@ message SDKMessage {
     GetMockRequest get_mock_request = 4;
     SendInboundSpanForReplayRequest send_inbound_span_for_replay_request = 5;
     SendAlertRequest send_alert_request = 6;
+    EnvVarRequest env_var_request = 7;
   }
 }
 
@@ -73,6 +74,7 @@ message CLIMessage {
     ConnectResponse connect_response = 3;
     GetMockResponse get_mock_response = 4;
     SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5;
+    EnvVarResponse env_var_response = 6;
   }
 }
 
@@ -82,6 +84,7 @@ enum MessageType {
   MESSAGE_TYPE_MOCK_REQUEST = 2;
   MESSAGE_TYPE_INBOUND_SPAN = 3;
   MESSAGE_TYPE_ALERT = 4;
+  MESSAGE_TYPE_ENV_VAR_REQUEST = 5;
 }
 
 message SendInboundSpanForReplayRequest {
@@ -101,7 +104,7 @@ message SendAlertRequest {
 
 message InstrumentationVersionMismatchAlert {
   string module_name = 1;
-  string requested_version = 2;  // Can be empty if version not found
+  string requested_version = 2; // Can be empty if version not found
   repeated string supported_versions = 3;
   string sdk_version = 4;
 }
@@ -110,4 +113,12 @@ message UnpatchedDependencyAlert {
   string stack_trace = 1;
   string trace_test_server_span_id = 2;
   string sdk_version = 3;
+}
+
+message EnvVarRequest {
+  string trace_test_server_span_id = 1;
+}
+
+message EnvVarResponse {
+  map<string, string> env_vars = 1;
 }

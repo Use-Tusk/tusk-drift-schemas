@@ -170,6 +170,12 @@ export interface SDKMessage {
          */
         sendAlertRequest: SendAlertRequest;
     } | {
+        oneofKind: "envVarRequest";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.EnvVarRequest env_var_request = 7
+         */
+        envVarRequest: EnvVarRequest;
+    } | {
         oneofKind: undefined;
     };
 }
@@ -206,6 +212,12 @@ export interface CLIMessage {
          * @generated from protobuf field: tusk.drift.core.v1.SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5
          */
         sendInboundSpanForReplayResponse: SendInboundSpanForReplayResponse;
+    } | {
+        oneofKind: "envVarResponse";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.EnvVarResponse env_var_response = 6
+         */
+        envVarResponse: EnvVarResponse;
     } | {
         oneofKind: undefined;
     };
@@ -290,6 +302,26 @@ export interface UnpatchedDependencyAlert {
     sdkVersion: string;
 }
 /**
+ * @generated from protobuf message tusk.drift.core.v1.EnvVarRequest
+ */
+export interface EnvVarRequest {
+    /**
+     * @generated from protobuf field: string trace_test_server_span_id = 1
+     */
+    traceTestServerSpanId: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.core.v1.EnvVarResponse
+ */
+export interface EnvVarResponse {
+    /**
+     * @generated from protobuf field: map<string, string> env_vars = 1
+     */
+    envVars: {
+        [key: string]: string;
+    };
+}
+/**
  * @generated from protobuf enum tusk.drift.core.v1.MessageType
  */
 export enum MessageType {
@@ -312,7 +344,11 @@ export enum MessageType {
     /**
      * @generated from protobuf enum value: MESSAGE_TYPE_ALERT = 4;
      */
-    ALERT = 4
+    ALERT = 4,
+    /**
+     * @generated from protobuf enum value: MESSAGE_TYPE_ENV_VAR_REQUEST = 5;
+     */
+    ENV_VAR_REQUEST = 5
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class ConnectRequest$Type extends MessageType$<ConnectRequest> {
@@ -657,7 +693,8 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
             { no: 3, name: "connect_request", kind: "message", oneof: "payload", T: () => ConnectRequest },
             { no: 4, name: "get_mock_request", kind: "message", oneof: "payload", T: () => GetMockRequest },
             { no: 5, name: "send_inbound_span_for_replay_request", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayRequest },
-            { no: 6, name: "send_alert_request", kind: "message", oneof: "payload", T: () => SendAlertRequest }
+            { no: 6, name: "send_alert_request", kind: "message", oneof: "payload", T: () => SendAlertRequest },
+            { no: 7, name: "env_var_request", kind: "message", oneof: "payload", T: () => EnvVarRequest }
         ]);
     }
     create(value?: PartialMessage<SDKMessage>): SDKMessage {
@@ -704,6 +741,12 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
                         sendAlertRequest: SendAlertRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).sendAlertRequest)
                     };
                     break;
+                case /* tusk.drift.core.v1.EnvVarRequest env_var_request */ 7:
+                    message.payload = {
+                        oneofKind: "envVarRequest",
+                        envVarRequest: EnvVarRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).envVarRequest)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -734,6 +777,9 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
         /* tusk.drift.core.v1.SendAlertRequest send_alert_request = 6; */
         if (message.payload.oneofKind === "sendAlertRequest")
             SendAlertRequest.internalBinaryWrite(message.payload.sendAlertRequest, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.EnvVarRequest env_var_request = 7; */
+        if (message.payload.oneofKind === "envVarRequest")
+            EnvVarRequest.internalBinaryWrite(message.payload.envVarRequest, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -752,7 +798,8 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
             { no: 2, name: "request_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "connect_response", kind: "message", oneof: "payload", T: () => ConnectResponse },
             { no: 4, name: "get_mock_response", kind: "message", oneof: "payload", T: () => GetMockResponse },
-            { no: 5, name: "send_inbound_span_for_replay_response", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayResponse }
+            { no: 5, name: "send_inbound_span_for_replay_response", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayResponse },
+            { no: 6, name: "env_var_response", kind: "message", oneof: "payload", T: () => EnvVarResponse }
         ]);
     }
     create(value?: PartialMessage<CLIMessage>): CLIMessage {
@@ -793,6 +840,12 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
                         sendInboundSpanForReplayResponse: SendInboundSpanForReplayResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).sendInboundSpanForReplayResponse)
                     };
                     break;
+                case /* tusk.drift.core.v1.EnvVarResponse env_var_response */ 6:
+                    message.payload = {
+                        oneofKind: "envVarResponse",
+                        envVarResponse: EnvVarResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).envVarResponse)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -820,6 +873,9 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
         /* tusk.drift.core.v1.SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5; */
         if (message.payload.oneofKind === "sendInboundSpanForReplayResponse")
             SendInboundSpanForReplayResponse.internalBinaryWrite(message.payload.sendInboundSpanForReplayResponse, writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.EnvVarResponse env_var_response = 6; */
+        if (message.payload.oneofKind === "envVarResponse")
+            EnvVarResponse.internalBinaryWrite(message.payload.envVarResponse, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1117,6 +1173,116 @@ class UnpatchedDependencyAlert$Type extends MessageType$<UnpatchedDependencyAler
  * @generated MessageType for protobuf message tusk.drift.core.v1.UnpatchedDependencyAlert
  */
 export const UnpatchedDependencyAlert = new UnpatchedDependencyAlert$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EnvVarRequest$Type extends MessageType$<EnvVarRequest> {
+    constructor() {
+        super("tusk.drift.core.v1.EnvVarRequest", [
+            { no: 1, name: "trace_test_server_span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<EnvVarRequest>): EnvVarRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.traceTestServerSpanId = "";
+        if (value !== undefined)
+            reflectionMergePartial<EnvVarRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EnvVarRequest): EnvVarRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string trace_test_server_span_id */ 1:
+                    message.traceTestServerSpanId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: EnvVarRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string trace_test_server_span_id = 1; */
+        if (message.traceTestServerSpanId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.traceTestServerSpanId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.EnvVarRequest
+ */
+export const EnvVarRequest = new EnvVarRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class EnvVarResponse$Type extends MessageType$<EnvVarResponse> {
+    constructor() {
+        super("tusk.drift.core.v1.EnvVarResponse", [
+            { no: 1, name: "env_vars", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 9 /*ScalarType.STRING*/ } }
+        ]);
+    }
+    create(value?: PartialMessage<EnvVarResponse>): EnvVarResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.envVars = {};
+        if (value !== undefined)
+            reflectionMergePartial<EnvVarResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: EnvVarResponse): EnvVarResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, string> env_vars */ 1:
+                    this.binaryReadMap1(message.envVars, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: EnvVarResponse["envVars"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof EnvVarResponse["envVars"] | undefined, val: EnvVarResponse["envVars"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.string();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.core.v1.EnvVarResponse.env_vars");
+            }
+        }
+        map[key ?? ""] = val ?? "";
+    }
+    internalBinaryWrite(message: EnvVarResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, string> env_vars = 1; */
+        for (let k of globalThis.Object.keys(message.envVars))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.LengthDelimited).string(message.envVars[k]).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.EnvVarResponse
+ */
+export const EnvVarResponse = new EnvVarResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.core.v1.MockService
  */
