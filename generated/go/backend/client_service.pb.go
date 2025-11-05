@@ -220,6 +220,110 @@ func (CreateObservableServiceResponseErrorCode) EnumDescriptor() ([]byte, []int)
 	return file_backend_client_service_proto_rawDescGZIP(), []int{3}
 }
 
+type VerifyRepoAccessResponseErrorCode int32
+
+const (
+	VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED              VerifyRepoAccessResponseErrorCode = 0
+	VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL                 VerifyRepoAccessResponseErrorCode = 1
+	VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED           VerifyRepoAccessResponseErrorCode = 2
+	VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE VerifyRepoAccessResponseErrorCode = 3
+	VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND           VerifyRepoAccessResponseErrorCode = 4
+)
+
+// Enum value maps for VerifyRepoAccessResponseErrorCode.
+var (
+	VerifyRepoAccessResponseErrorCode_name = map[int32]string{
+		0: "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED",
+		1: "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL",
+		2: "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED",
+		3: "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE",
+		4: "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND",
+	}
+	VerifyRepoAccessResponseErrorCode_value = map[string]int32{
+		"VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED":              0,
+		"VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL":                 1,
+		"VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED":           2,
+		"VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE": 3,
+		"VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND":           4,
+	}
+)
+
+func (x VerifyRepoAccessResponseErrorCode) Enum() *VerifyRepoAccessResponseErrorCode {
+	p := new(VerifyRepoAccessResponseErrorCode)
+	*p = x
+	return p
+}
+
+func (x VerifyRepoAccessResponseErrorCode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (VerifyRepoAccessResponseErrorCode) Descriptor() protoreflect.EnumDescriptor {
+	return file_backend_client_service_proto_enumTypes[4].Descriptor()
+}
+
+func (VerifyRepoAccessResponseErrorCode) Type() protoreflect.EnumType {
+	return &file_backend_client_service_proto_enumTypes[4]
+}
+
+func (x VerifyRepoAccessResponseErrorCode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use VerifyRepoAccessResponseErrorCode.Descriptor instead.
+func (VerifyRepoAccessResponseErrorCode) EnumDescriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{4}
+}
+
+type CreateApiKeyResponseErrorCode int32
+
+const (
+	CreateApiKeyResponseErrorCode_CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED    CreateApiKeyResponseErrorCode = 0
+	CreateApiKeyResponseErrorCode_CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL       CreateApiKeyResponseErrorCode = 1
+	CreateApiKeyResponseErrorCode_CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED CreateApiKeyResponseErrorCode = 2
+)
+
+// Enum value maps for CreateApiKeyResponseErrorCode.
+var (
+	CreateApiKeyResponseErrorCode_name = map[int32]string{
+		0: "CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED",
+		1: "CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL",
+		2: "CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED",
+	}
+	CreateApiKeyResponseErrorCode_value = map[string]int32{
+		"CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED":    0,
+		"CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL":       1,
+		"CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED": 2,
+	}
+)
+
+func (x CreateApiKeyResponseErrorCode) Enum() *CreateApiKeyResponseErrorCode {
+	p := new(CreateApiKeyResponseErrorCode)
+	*p = x
+	return p
+}
+
+func (x CreateApiKeyResponseErrorCode) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CreateApiKeyResponseErrorCode) Descriptor() protoreflect.EnumDescriptor {
+	return file_backend_client_service_proto_enumTypes[5].Descriptor()
+}
+
+func (CreateApiKeyResponseErrorCode) Type() protoreflect.EnumType {
+	return &file_backend_client_service_proto_enumTypes[5]
+}
+
+func (x CreateApiKeyResponseErrorCode) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CreateApiKeyResponseErrorCode.Descriptor instead.
+func (CreateApiKeyResponseErrorCode) EnumDescriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{5}
+}
+
 type GetAuthInfoRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ClientId      *string                `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3,oneof" json:"client_id,omitempty"`
@@ -774,6 +878,466 @@ func (*CreateObservableServiceResponse_Success) isCreateObservableServiceRespons
 
 func (*CreateObservableServiceResponse_Error) isCreateObservableServiceResponse_Response() {}
 
+type VerifyRepoAccessRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RepoOwnerName string                 `protobuf:"bytes,1,opt,name=repo_owner_name,json=repoOwnerName,proto3" json:"repo_owner_name,omitempty"`
+	RepoName      string                 `protobuf:"bytes,2,opt,name=repo_name,json=repoName,proto3" json:"repo_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyRepoAccessRequest) Reset() {
+	*x = VerifyRepoAccessRequest{}
+	mi := &file_backend_client_service_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyRepoAccessRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyRepoAccessRequest) ProtoMessage() {}
+
+func (x *VerifyRepoAccessRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyRepoAccessRequest.ProtoReflect.Descriptor instead.
+func (*VerifyRepoAccessRequest) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *VerifyRepoAccessRequest) GetRepoOwnerName() string {
+	if x != nil {
+		return x.RepoOwnerName
+	}
+	return ""
+}
+
+func (x *VerifyRepoAccessRequest) GetRepoName() string {
+	if x != nil {
+		return x.RepoName
+	}
+	return ""
+}
+
+type VerifyRepoAccessResponseSuccess struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RepoId        int64                  `protobuf:"varint,1,opt,name=repo_id,json=repoId,proto3" json:"repo_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyRepoAccessResponseSuccess) Reset() {
+	*x = VerifyRepoAccessResponseSuccess{}
+	mi := &file_backend_client_service_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyRepoAccessResponseSuccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyRepoAccessResponseSuccess) ProtoMessage() {}
+
+func (x *VerifyRepoAccessResponseSuccess) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyRepoAccessResponseSuccess.ProtoReflect.Descriptor instead.
+func (*VerifyRepoAccessResponseSuccess) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *VerifyRepoAccessResponseSuccess) GetRepoId() int64 {
+	if x != nil {
+		return x.RepoId
+	}
+	return 0
+}
+
+type VerifyRepoAccessResponseError struct {
+	state         protoimpl.MessageState            `protogen:"open.v1"`
+	Code          VerifyRepoAccessResponseErrorCode `protobuf:"varint,1,opt,name=code,proto3,enum=tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode" json:"code,omitempty"`
+	Message       string                            `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyRepoAccessResponseError) Reset() {
+	*x = VerifyRepoAccessResponseError{}
+	mi := &file_backend_client_service_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyRepoAccessResponseError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyRepoAccessResponseError) ProtoMessage() {}
+
+func (x *VerifyRepoAccessResponseError) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyRepoAccessResponseError.ProtoReflect.Descriptor instead.
+func (*VerifyRepoAccessResponseError) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *VerifyRepoAccessResponseError) GetCode() VerifyRepoAccessResponseErrorCode {
+	if x != nil {
+		return x.Code
+	}
+	return VerifyRepoAccessResponseErrorCode_VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED
+}
+
+func (x *VerifyRepoAccessResponseError) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type VerifyRepoAccessResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Response:
+	//
+	//	*VerifyRepoAccessResponse_Success
+	//	*VerifyRepoAccessResponse_Error
+	Response      isVerifyRepoAccessResponse_Response `protobuf_oneof:"response"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VerifyRepoAccessResponse) Reset() {
+	*x = VerifyRepoAccessResponse{}
+	mi := &file_backend_client_service_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VerifyRepoAccessResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VerifyRepoAccessResponse) ProtoMessage() {}
+
+func (x *VerifyRepoAccessResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VerifyRepoAccessResponse.ProtoReflect.Descriptor instead.
+func (*VerifyRepoAccessResponse) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *VerifyRepoAccessResponse) GetResponse() isVerifyRepoAccessResponse_Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
+func (x *VerifyRepoAccessResponse) GetSuccess() *VerifyRepoAccessResponseSuccess {
+	if x != nil {
+		if x, ok := x.Response.(*VerifyRepoAccessResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *VerifyRepoAccessResponse) GetError() *VerifyRepoAccessResponseError {
+	if x != nil {
+		if x, ok := x.Response.(*VerifyRepoAccessResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isVerifyRepoAccessResponse_Response interface {
+	isVerifyRepoAccessResponse_Response()
+}
+
+type VerifyRepoAccessResponse_Success struct {
+	Success *VerifyRepoAccessResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type VerifyRepoAccessResponse_Error struct {
+	Error *VerifyRepoAccessResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*VerifyRepoAccessResponse_Success) isVerifyRepoAccessResponse_Response() {}
+
+func (*VerifyRepoAccessResponse_Error) isVerifyRepoAccessResponse_Response() {}
+
+type CreateApiKeyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateApiKeyRequest) Reset() {
+	*x = CreateApiKeyRequest{}
+	mi := &file_backend_client_service_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateApiKeyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateApiKeyRequest) ProtoMessage() {}
+
+func (x *CreateApiKeyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateApiKeyRequest.ProtoReflect.Descriptor instead.
+func (*CreateApiKeyRequest) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *CreateApiKeyRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type CreateApiKeyResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Response:
+	//
+	//	*CreateApiKeyResponse_Success
+	//	*CreateApiKeyResponse_Error
+	Response      isCreateApiKeyResponse_Response `protobuf_oneof:"response"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateApiKeyResponse) Reset() {
+	*x = CreateApiKeyResponse{}
+	mi := &file_backend_client_service_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateApiKeyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateApiKeyResponse) ProtoMessage() {}
+
+func (x *CreateApiKeyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateApiKeyResponse.ProtoReflect.Descriptor instead.
+func (*CreateApiKeyResponse) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *CreateApiKeyResponse) GetResponse() isCreateApiKeyResponse_Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
+func (x *CreateApiKeyResponse) GetSuccess() *CreateApiKeyResponseSuccess {
+	if x != nil {
+		if x, ok := x.Response.(*CreateApiKeyResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *CreateApiKeyResponse) GetError() *CreateApiKeyResponseError {
+	if x != nil {
+		if x, ok := x.Response.(*CreateApiKeyResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isCreateApiKeyResponse_Response interface {
+	isCreateApiKeyResponse_Response()
+}
+
+type CreateApiKeyResponse_Success struct {
+	Success *CreateApiKeyResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type CreateApiKeyResponse_Error struct {
+	Error *CreateApiKeyResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*CreateApiKeyResponse_Success) isCreateApiKeyResponse_Response() {}
+
+func (*CreateApiKeyResponse_Error) isCreateApiKeyResponse_Response() {}
+
+type CreateApiKeyResponseSuccess struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ApiKeyId      string                 `protobuf:"bytes,1,opt,name=api_key_id,json=apiKeyId,proto3" json:"api_key_id,omitempty"`
+	ApiKey        string                 `protobuf:"bytes,2,opt,name=api_key,json=apiKey,proto3" json:"api_key,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateApiKeyResponseSuccess) Reset() {
+	*x = CreateApiKeyResponseSuccess{}
+	mi := &file_backend_client_service_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateApiKeyResponseSuccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateApiKeyResponseSuccess) ProtoMessage() {}
+
+func (x *CreateApiKeyResponseSuccess) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateApiKeyResponseSuccess.ProtoReflect.Descriptor instead.
+func (*CreateApiKeyResponseSuccess) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *CreateApiKeyResponseSuccess) GetApiKeyId() string {
+	if x != nil {
+		return x.ApiKeyId
+	}
+	return ""
+}
+
+func (x *CreateApiKeyResponseSuccess) GetApiKey() string {
+	if x != nil {
+		return x.ApiKey
+	}
+	return ""
+}
+
+type CreateApiKeyResponseError struct {
+	state         protoimpl.MessageState        `protogen:"open.v1"`
+	Code          CreateApiKeyResponseErrorCode `protobuf:"varint,1,opt,name=code,proto3,enum=tusk.drift.backend.v1.CreateApiKeyResponseErrorCode" json:"code,omitempty"`
+	Message       string                        `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateApiKeyResponseError) Reset() {
+	*x = CreateApiKeyResponseError{}
+	mi := &file_backend_client_service_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateApiKeyResponseError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateApiKeyResponseError) ProtoMessage() {}
+
+func (x *CreateApiKeyResponseError) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_client_service_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateApiKeyResponseError.ProtoReflect.Descriptor instead.
+func (*CreateApiKeyResponseError) Descriptor() ([]byte, []int) {
+	return file_backend_client_service_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *CreateApiKeyResponseError) GetCode() CreateApiKeyResponseErrorCode {
+	if x != nil {
+		return x.Code
+	}
+	return CreateApiKeyResponseErrorCode_CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED
+}
+
+func (x *CreateApiKeyResponseError) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_backend_client_service_proto protoreflect.FileDescriptor
 
 const file_backend_client_service_proto_rawDesc = "" +
@@ -823,7 +1387,34 @@ const file_backend_client_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\v2=.tusk.drift.backend.v1.CreateObservableServiceResponseSuccessH\x00R\asuccess\x12S\n" +
 	"\x05error\x18\x02 \x01(\v2;.tusk.drift.backend.v1.CreateObservableServiceResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
-	"\bresponse*P\n" +
+	"\bresponse\"^\n" +
+	"\x17VerifyRepoAccessRequest\x12&\n" +
+	"\x0frepo_owner_name\x18\x01 \x01(\tR\rrepoOwnerName\x12\x1b\n" +
+	"\trepo_name\x18\x02 \x01(\tR\brepoName\":\n" +
+	"\x1fVerifyRepoAccessResponseSuccess\x12\x17\n" +
+	"\arepo_id\x18\x01 \x01(\x03R\x06repoId\"\x87\x01\n" +
+	"\x1dVerifyRepoAccessResponseError\x12L\n" +
+	"\x04code\x18\x01 \x01(\x0e28.tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCodeR\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xc8\x01\n" +
+	"\x18VerifyRepoAccessResponse\x12R\n" +
+	"\asuccess\x18\x01 \x01(\v26.tusk.drift.backend.v1.VerifyRepoAccessResponseSuccessH\x00R\asuccess\x12L\n" +
+	"\x05error\x18\x02 \x01(\v24.tusk.drift.backend.v1.VerifyRepoAccessResponseErrorH\x00R\x05errorB\n" +
+	"\n" +
+	"\bresponse\")\n" +
+	"\x13CreateApiKeyRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\"\xbc\x01\n" +
+	"\x14CreateApiKeyResponse\x12N\n" +
+	"\asuccess\x18\x01 \x01(\v22.tusk.drift.backend.v1.CreateApiKeyResponseSuccessH\x00R\asuccess\x12H\n" +
+	"\x05error\x18\x02 \x01(\v20.tusk.drift.backend.v1.CreateApiKeyResponseErrorH\x00R\x05errorB\n" +
+	"\n" +
+	"\bresponse\"T\n" +
+	"\x1bCreateApiKeyResponseSuccess\x12\x1c\n" +
+	"\n" +
+	"api_key_id\x18\x01 \x01(\tR\bapiKeyId\x12\x17\n" +
+	"\aapi_key\x18\x02 \x01(\tR\x06apiKey\"\x7f\n" +
+	"\x19CreateApiKeyResponseError\x12H\n" +
+	"\x04code\x18\x01 \x01(\x0e24.tusk.drift.backend.v1.CreateApiKeyResponseErrorCodeR\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage*P\n" +
 	"\bUserType\x12\x19\n" +
 	"\x15USER_TYPE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eUSER_TYPE_USER\x10\x01\x12\x15\n" +
@@ -840,10 +1431,22 @@ const file_backend_client_service_proto_rawDesc = "" +
 	"6CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x12@\n" +
 	"<CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NOT_AUTHORIZED\x10\x02\x12J\n" +
 	"FCREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE\x10\x03\x12?\n" +
-	";CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_REPO_FOUND\x10\x042\x80\x02\n" +
+	";CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_REPO_FOUND\x10\x04*\xcb\x02\n" +
+	"!VerifyRepoAccessResponseErrorCode\x126\n" +
+	"2VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED\x10\x00\x123\n" +
+	"/VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x129\n" +
+	"5VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED\x10\x02\x12C\n" +
+	"?VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE\x10\x03\x129\n" +
+	"5VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND\x10\x04*\xbb\x01\n" +
+	"\x1dCreateApiKeyResponseErrorCode\x122\n" +
+	".CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED\x10\x00\x12/\n" +
+	"+CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x125\n" +
+	"1CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED\x10\x022\xde\x03\n" +
 	"\rClientService\x12d\n" +
 	"\vGetAuthInfo\x12).tusk.drift.backend.v1.GetAuthInfoRequest\x1a*.tusk.drift.backend.v1.GetAuthInfoResponse\x12\x88\x01\n" +
-	"\x17CreateObservableService\x125.tusk.drift.backend.v1.CreateObservableServiceRequest\x1a6.tusk.drift.backend.v1.CreateObservableServiceResponseB\xed\x01\n" +
+	"\x17CreateObservableService\x125.tusk.drift.backend.v1.CreateObservableServiceRequest\x1a6.tusk.drift.backend.v1.CreateObservableServiceResponse\x12s\n" +
+	"\x10VerifyRepoAccess\x12..tusk.drift.backend.v1.VerifyRepoAccessRequest\x1a/.tusk.drift.backend.v1.VerifyRepoAccessResponse\x12g\n" +
+	"\fCreateApiKey\x12*.tusk.drift.backend.v1.CreateApiKeyRequest\x1a+.tusk.drift.backend.v1.CreateApiKeyResponseB\xed\x01\n" +
 	"\x19com.tusk.drift.backend.v1B\x12ClientServiceProtoP\x01ZEgithub.com/Use-Tusk/tusk-drift-schemas/generated/go/backend;backendv1\xa2\x02\x03TDB\xaa\x02\x15Tusk.Drift.Backend.V1\xca\x02\x15Tusk\\Drift\\Backend\\V1\xe2\x02!Tusk\\Drift\\Backend\\V1\\GPBMetadata\xea\x02\x18Tusk::Drift::Backend::V1b\x06proto3"
 
 var (
@@ -858,42 +1461,62 @@ func file_backend_client_service_proto_rawDescGZIP() []byte {
 	return file_backend_client_service_proto_rawDescData
 }
 
-var file_backend_client_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_backend_client_service_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_backend_client_service_proto_enumTypes = make([]protoimpl.EnumInfo, 6)
+var file_backend_client_service_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_backend_client_service_proto_goTypes = []any{
 	(UserType)(0),                // 0: tusk.drift.backend.v1.UserType
 	(CodeHostingResourceType)(0), // 1: tusk.drift.backend.v1.CodeHostingResourceType
 	(ServiceType)(0),             // 2: tusk.drift.backend.v1.ServiceType
 	(CreateObservableServiceResponseErrorCode)(0),  // 3: tusk.drift.backend.v1.CreateObservableServiceResponseErrorCode
-	(*GetAuthInfoRequest)(nil),                     // 4: tusk.drift.backend.v1.GetAuthInfoRequest
-	(*UserAuthInfo)(nil),                           // 5: tusk.drift.backend.v1.UserAuthInfo
-	(*AuthInfoClient)(nil),                         // 6: tusk.drift.backend.v1.AuthInfoClient
-	(*CodeHostingResource)(nil),                    // 7: tusk.drift.backend.v1.CodeHostingResource
-	(*GetAuthInfoResponse)(nil),                    // 8: tusk.drift.backend.v1.GetAuthInfoResponse
-	(*CreateObservableServiceRequest)(nil),         // 9: tusk.drift.backend.v1.CreateObservableServiceRequest
-	(*CreateObservableServiceResponseSuccess)(nil), // 10: tusk.drift.backend.v1.CreateObservableServiceResponseSuccess
-	(*CreateObservableServiceResponseError)(nil),   // 11: tusk.drift.backend.v1.CreateObservableServiceResponseError
-	(*CreateObservableServiceResponse)(nil),        // 12: tusk.drift.backend.v1.CreateObservableServiceResponse
+	(VerifyRepoAccessResponseErrorCode)(0),         // 4: tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode
+	(CreateApiKeyResponseErrorCode)(0),             // 5: tusk.drift.backend.v1.CreateApiKeyResponseErrorCode
+	(*GetAuthInfoRequest)(nil),                     // 6: tusk.drift.backend.v1.GetAuthInfoRequest
+	(*UserAuthInfo)(nil),                           // 7: tusk.drift.backend.v1.UserAuthInfo
+	(*AuthInfoClient)(nil),                         // 8: tusk.drift.backend.v1.AuthInfoClient
+	(*CodeHostingResource)(nil),                    // 9: tusk.drift.backend.v1.CodeHostingResource
+	(*GetAuthInfoResponse)(nil),                    // 10: tusk.drift.backend.v1.GetAuthInfoResponse
+	(*CreateObservableServiceRequest)(nil),         // 11: tusk.drift.backend.v1.CreateObservableServiceRequest
+	(*CreateObservableServiceResponseSuccess)(nil), // 12: tusk.drift.backend.v1.CreateObservableServiceResponseSuccess
+	(*CreateObservableServiceResponseError)(nil),   // 13: tusk.drift.backend.v1.CreateObservableServiceResponseError
+	(*CreateObservableServiceResponse)(nil),        // 14: tusk.drift.backend.v1.CreateObservableServiceResponse
+	(*VerifyRepoAccessRequest)(nil),                // 15: tusk.drift.backend.v1.VerifyRepoAccessRequest
+	(*VerifyRepoAccessResponseSuccess)(nil),        // 16: tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess
+	(*VerifyRepoAccessResponseError)(nil),          // 17: tusk.drift.backend.v1.VerifyRepoAccessResponseError
+	(*VerifyRepoAccessResponse)(nil),               // 18: tusk.drift.backend.v1.VerifyRepoAccessResponse
+	(*CreateApiKeyRequest)(nil),                    // 19: tusk.drift.backend.v1.CreateApiKeyRequest
+	(*CreateApiKeyResponse)(nil),                   // 20: tusk.drift.backend.v1.CreateApiKeyResponse
+	(*CreateApiKeyResponseSuccess)(nil),            // 21: tusk.drift.backend.v1.CreateApiKeyResponseSuccess
+	(*CreateApiKeyResponseError)(nil),              // 22: tusk.drift.backend.v1.CreateApiKeyResponseError
 }
 var file_backend_client_service_proto_depIdxs = []int32{
 	0,  // 0: tusk.drift.backend.v1.UserAuthInfo.type:type_name -> tusk.drift.backend.v1.UserType
-	7,  // 1: tusk.drift.backend.v1.AuthInfoClient.code_hosting_resources:type_name -> tusk.drift.backend.v1.CodeHostingResource
+	9,  // 1: tusk.drift.backend.v1.AuthInfoClient.code_hosting_resources:type_name -> tusk.drift.backend.v1.CodeHostingResource
 	1,  // 2: tusk.drift.backend.v1.CodeHostingResource.type:type_name -> tusk.drift.backend.v1.CodeHostingResourceType
-	5,  // 3: tusk.drift.backend.v1.GetAuthInfoResponse.user:type_name -> tusk.drift.backend.v1.UserAuthInfo
-	6,  // 4: tusk.drift.backend.v1.GetAuthInfoResponse.clients:type_name -> tusk.drift.backend.v1.AuthInfoClient
+	7,  // 3: tusk.drift.backend.v1.GetAuthInfoResponse.user:type_name -> tusk.drift.backend.v1.UserAuthInfo
+	8,  // 4: tusk.drift.backend.v1.GetAuthInfoResponse.clients:type_name -> tusk.drift.backend.v1.AuthInfoClient
 	2,  // 5: tusk.drift.backend.v1.CreateObservableServiceRequest.service_type:type_name -> tusk.drift.backend.v1.ServiceType
 	3,  // 6: tusk.drift.backend.v1.CreateObservableServiceResponseError.code:type_name -> tusk.drift.backend.v1.CreateObservableServiceResponseErrorCode
-	10, // 7: tusk.drift.backend.v1.CreateObservableServiceResponse.success:type_name -> tusk.drift.backend.v1.CreateObservableServiceResponseSuccess
-	11, // 8: tusk.drift.backend.v1.CreateObservableServiceResponse.error:type_name -> tusk.drift.backend.v1.CreateObservableServiceResponseError
-	4,  // 9: tusk.drift.backend.v1.ClientService.GetAuthInfo:input_type -> tusk.drift.backend.v1.GetAuthInfoRequest
-	9,  // 10: tusk.drift.backend.v1.ClientService.CreateObservableService:input_type -> tusk.drift.backend.v1.CreateObservableServiceRequest
-	8,  // 11: tusk.drift.backend.v1.ClientService.GetAuthInfo:output_type -> tusk.drift.backend.v1.GetAuthInfoResponse
-	12, // 12: tusk.drift.backend.v1.ClientService.CreateObservableService:output_type -> tusk.drift.backend.v1.CreateObservableServiceResponse
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	12, // 7: tusk.drift.backend.v1.CreateObservableServiceResponse.success:type_name -> tusk.drift.backend.v1.CreateObservableServiceResponseSuccess
+	13, // 8: tusk.drift.backend.v1.CreateObservableServiceResponse.error:type_name -> tusk.drift.backend.v1.CreateObservableServiceResponseError
+	4,  // 9: tusk.drift.backend.v1.VerifyRepoAccessResponseError.code:type_name -> tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode
+	16, // 10: tusk.drift.backend.v1.VerifyRepoAccessResponse.success:type_name -> tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess
+	17, // 11: tusk.drift.backend.v1.VerifyRepoAccessResponse.error:type_name -> tusk.drift.backend.v1.VerifyRepoAccessResponseError
+	21, // 12: tusk.drift.backend.v1.CreateApiKeyResponse.success:type_name -> tusk.drift.backend.v1.CreateApiKeyResponseSuccess
+	22, // 13: tusk.drift.backend.v1.CreateApiKeyResponse.error:type_name -> tusk.drift.backend.v1.CreateApiKeyResponseError
+	5,  // 14: tusk.drift.backend.v1.CreateApiKeyResponseError.code:type_name -> tusk.drift.backend.v1.CreateApiKeyResponseErrorCode
+	6,  // 15: tusk.drift.backend.v1.ClientService.GetAuthInfo:input_type -> tusk.drift.backend.v1.GetAuthInfoRequest
+	11, // 16: tusk.drift.backend.v1.ClientService.CreateObservableService:input_type -> tusk.drift.backend.v1.CreateObservableServiceRequest
+	15, // 17: tusk.drift.backend.v1.ClientService.VerifyRepoAccess:input_type -> tusk.drift.backend.v1.VerifyRepoAccessRequest
+	19, // 18: tusk.drift.backend.v1.ClientService.CreateApiKey:input_type -> tusk.drift.backend.v1.CreateApiKeyRequest
+	10, // 19: tusk.drift.backend.v1.ClientService.GetAuthInfo:output_type -> tusk.drift.backend.v1.GetAuthInfoResponse
+	14, // 20: tusk.drift.backend.v1.ClientService.CreateObservableService:output_type -> tusk.drift.backend.v1.CreateObservableServiceResponse
+	18, // 21: tusk.drift.backend.v1.ClientService.VerifyRepoAccess:output_type -> tusk.drift.backend.v1.VerifyRepoAccessResponse
+	20, // 22: tusk.drift.backend.v1.ClientService.CreateApiKey:output_type -> tusk.drift.backend.v1.CreateApiKeyResponse
+	19, // [19:23] is the sub-list for method output_type
+	15, // [15:19] is the sub-list for method input_type
+	15, // [15:15] is the sub-list for extension type_name
+	15, // [15:15] is the sub-list for extension extendee
+	0,  // [0:15] is the sub-list for field type_name
 }
 
 func init() { file_backend_client_service_proto_init() }
@@ -909,13 +1532,21 @@ func file_backend_client_service_proto_init() {
 		(*CreateObservableServiceResponse_Success)(nil),
 		(*CreateObservableServiceResponse_Error)(nil),
 	}
+	file_backend_client_service_proto_msgTypes[12].OneofWrappers = []any{
+		(*VerifyRepoAccessResponse_Success)(nil),
+		(*VerifyRepoAccessResponse_Error)(nil),
+	}
+	file_backend_client_service_proto_msgTypes[14].OneofWrappers = []any{
+		(*CreateApiKeyResponse_Success)(nil),
+		(*CreateApiKeyResponse_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_client_service_proto_rawDesc), len(file_backend_client_service_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   9,
+			NumEnums:      6,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
