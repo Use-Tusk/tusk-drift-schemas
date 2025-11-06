@@ -167,6 +167,122 @@ export interface CreateObservableServiceResponse {
     };
 }
 /**
+ * @generated from protobuf message tusk.drift.backend.v1.VerifyRepoAccessRequest
+ */
+export interface VerifyRepoAccessRequest {
+    /**
+     * @generated from protobuf field: string repo_owner_name = 1
+     */
+    repoOwnerName: string;
+    /**
+     * @generated from protobuf field: string repo_name = 2
+     */
+    repoName: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess
+ */
+export interface VerifyRepoAccessResponseSuccess {
+    /**
+     * @generated from protobuf field: int64 repo_id = 1
+     */
+    repoId: bigint;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponseError
+ */
+export interface VerifyRepoAccessResponseError {
+    /**
+     * @generated from protobuf field: tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode code = 1
+     */
+    code: VerifyRepoAccessResponseErrorCode;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponse
+ */
+export interface VerifyRepoAccessResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess success = 1
+         */
+        success: VerifyRepoAccessResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.VerifyRepoAccessResponseError error = 2
+         */
+        error: VerifyRepoAccessResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.CreateApiKeyRequest
+ */
+export interface CreateApiKeyRequest {
+    /**
+     * @generated from protobuf field: string name = 1
+     */
+    name: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.CreateApiKeyResponse
+ */
+export interface CreateApiKeyResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.CreateApiKeyResponseSuccess success = 1
+         */
+        success: CreateApiKeyResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.CreateApiKeyResponseError error = 2
+         */
+        error: CreateApiKeyResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.CreateApiKeyResponseSuccess
+ */
+export interface CreateApiKeyResponseSuccess {
+    /**
+     * @generated from protobuf field: string api_key_id = 1
+     */
+    apiKeyId: string;
+    /**
+     * @generated from protobuf field: string api_key = 2
+     */
+    apiKey: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.CreateApiKeyResponseError
+ */
+export interface CreateApiKeyResponseError {
+    /**
+     * @generated from protobuf field: tusk.drift.backend.v1.CreateApiKeyResponseErrorCode code = 1
+     */
+    code: CreateApiKeyResponseErrorCode;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
  * @generated from protobuf enum tusk.drift.backend.v1.UserType
  */
 export enum UserType {
@@ -237,6 +353,48 @@ export enum CreateObservableServiceResponseErrorCode {
      * @generated from protobuf enum value: CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_NO_REPO_FOUND = 4;
      */
     NO_REPO_FOUND = 4
+}
+/**
+ * @generated from protobuf enum tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode
+ */
+export enum VerifyRepoAccessResponseErrorCode {
+    /**
+     * @generated from protobuf enum value: VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+     */
+    UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL = 1;
+     */
+    INTERNAL = 1,
+    /**
+     * @generated from protobuf enum value: VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+     */
+    NOT_AUTHORIZED = 2,
+    /**
+     * @generated from protobuf enum value: VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE = 3;
+     */
+    NO_CODE_HOSTING_RESOURCE = 3,
+    /**
+     * @generated from protobuf enum value: VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND = 4;
+     */
+    REPO_NOT_FOUND = 4
+}
+/**
+ * @generated from protobuf enum tusk.drift.backend.v1.CreateApiKeyResponseErrorCode
+ */
+export enum CreateApiKeyResponseErrorCode {
+    /**
+     * @generated from protobuf enum value: CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+     */
+    UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL = 1;
+     */
+    INTERNAL = 1,
+    /**
+     * @generated from protobuf enum value: CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+     */
+    NOT_AUTHORIZED = 2
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class GetAuthInfoRequest$Type extends MessageType<GetAuthInfoRequest> {
@@ -787,10 +945,446 @@ class CreateObservableServiceResponse$Type extends MessageType<CreateObservableS
  * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateObservableServiceResponse
  */
 export const CreateObservableServiceResponse = new CreateObservableServiceResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyRepoAccessRequest$Type extends MessageType<VerifyRepoAccessRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.VerifyRepoAccessRequest", [
+            { no: 1, name: "repo_owner_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "repo_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyRepoAccessRequest>): VerifyRepoAccessRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.repoOwnerName = "";
+        message.repoName = "";
+        if (value !== undefined)
+            reflectionMergePartial<VerifyRepoAccessRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyRepoAccessRequest): VerifyRepoAccessRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string repo_owner_name */ 1:
+                    message.repoOwnerName = reader.string();
+                    break;
+                case /* string repo_name */ 2:
+                    message.repoName = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyRepoAccessRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string repo_owner_name = 1; */
+        if (message.repoOwnerName !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.repoOwnerName);
+        /* string repo_name = 2; */
+        if (message.repoName !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.repoName);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.VerifyRepoAccessRequest
+ */
+export const VerifyRepoAccessRequest = new VerifyRepoAccessRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyRepoAccessResponseSuccess$Type extends MessageType<VerifyRepoAccessResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess", [
+            { no: 1, name: "repo_id", kind: "scalar", T: 3 /*ScalarType.INT64*/, L: 0 /*LongType.BIGINT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyRepoAccessResponseSuccess>): VerifyRepoAccessResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.repoId = 0n;
+        if (value !== undefined)
+            reflectionMergePartial<VerifyRepoAccessResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyRepoAccessResponseSuccess): VerifyRepoAccessResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int64 repo_id */ 1:
+                    message.repoId = reader.int64().toBigInt();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyRepoAccessResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int64 repo_id = 1; */
+        if (message.repoId !== 0n)
+            writer.tag(1, WireType.Varint).int64(message.repoId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess
+ */
+export const VerifyRepoAccessResponseSuccess = new VerifyRepoAccessResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyRepoAccessResponseError$Type extends MessageType<VerifyRepoAccessResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.VerifyRepoAccessResponseError", [
+            { no: 1, name: "code", kind: "enum", T: () => ["tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode", VerifyRepoAccessResponseErrorCode, "VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_"] },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyRepoAccessResponseError>): VerifyRepoAccessResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = 0;
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<VerifyRepoAccessResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyRepoAccessResponseError): VerifyRepoAccessResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode code */ 1:
+                    message.code = reader.int32();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyRepoAccessResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.VerifyRepoAccessResponseErrorCode code = 1; */
+        if (message.code !== 0)
+            writer.tag(1, WireType.Varint).int32(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponseError
+ */
+export const VerifyRepoAccessResponseError = new VerifyRepoAccessResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class VerifyRepoAccessResponse$Type extends MessageType<VerifyRepoAccessResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.VerifyRepoAccessResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => VerifyRepoAccessResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => VerifyRepoAccessResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<VerifyRepoAccessResponse>): VerifyRepoAccessResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<VerifyRepoAccessResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: VerifyRepoAccessResponse): VerifyRepoAccessResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: VerifyRepoAccessResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.VerifyRepoAccessResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: VerifyRepoAccessResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: VerifyRepoAccessResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.VerifyRepoAccessResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            VerifyRepoAccessResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.VerifyRepoAccessResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            VerifyRepoAccessResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.VerifyRepoAccessResponse
+ */
+export const VerifyRepoAccessResponse = new VerifyRepoAccessResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateApiKeyRequest$Type extends MessageType<CreateApiKeyRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.CreateApiKeyRequest", [
+            { no: 1, name: "name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CreateApiKeyRequest>): CreateApiKeyRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.name = "";
+        if (value !== undefined)
+            reflectionMergePartial<CreateApiKeyRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateApiKeyRequest): CreateApiKeyRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string name */ 1:
+                    message.name = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CreateApiKeyRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string name = 1; */
+        if (message.name !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.name);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateApiKeyRequest
+ */
+export const CreateApiKeyRequest = new CreateApiKeyRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateApiKeyResponse$Type extends MessageType<CreateApiKeyResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.CreateApiKeyResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => CreateApiKeyResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => CreateApiKeyResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<CreateApiKeyResponse>): CreateApiKeyResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<CreateApiKeyResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateApiKeyResponse): CreateApiKeyResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.CreateApiKeyResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: CreateApiKeyResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.CreateApiKeyResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: CreateApiKeyResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CreateApiKeyResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.CreateApiKeyResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            CreateApiKeyResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.CreateApiKeyResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            CreateApiKeyResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateApiKeyResponse
+ */
+export const CreateApiKeyResponse = new CreateApiKeyResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateApiKeyResponseSuccess$Type extends MessageType<CreateApiKeyResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.CreateApiKeyResponseSuccess", [
+            { no: 1, name: "api_key_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "api_key", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CreateApiKeyResponseSuccess>): CreateApiKeyResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.apiKeyId = "";
+        message.apiKey = "";
+        if (value !== undefined)
+            reflectionMergePartial<CreateApiKeyResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateApiKeyResponseSuccess): CreateApiKeyResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string api_key_id */ 1:
+                    message.apiKeyId = reader.string();
+                    break;
+                case /* string api_key */ 2:
+                    message.apiKey = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CreateApiKeyResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string api_key_id = 1; */
+        if (message.apiKeyId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.apiKeyId);
+        /* string api_key = 2; */
+        if (message.apiKey !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.apiKey);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateApiKeyResponseSuccess
+ */
+export const CreateApiKeyResponseSuccess = new CreateApiKeyResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CreateApiKeyResponseError$Type extends MessageType<CreateApiKeyResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.CreateApiKeyResponseError", [
+            { no: 1, name: "code", kind: "enum", T: () => ["tusk.drift.backend.v1.CreateApiKeyResponseErrorCode", CreateApiKeyResponseErrorCode, "CREATE_API_KEY_RESPONSE_ERROR_CODE_"] },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CreateApiKeyResponseError>): CreateApiKeyResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = 0;
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<CreateApiKeyResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CreateApiKeyResponseError): CreateApiKeyResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.CreateApiKeyResponseErrorCode code */ 1:
+                    message.code = reader.int32();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CreateApiKeyResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.CreateApiKeyResponseErrorCode code = 1; */
+        if (message.code !== 0)
+            writer.tag(1, WireType.Varint).int32(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateApiKeyResponseError
+ */
+export const CreateApiKeyResponseError = new CreateApiKeyResponseError$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.ClientService
  */
 export const ClientService = new ServiceType$("tusk.drift.backend.v1.ClientService", [
     { name: "GetAuthInfo", options: {}, I: GetAuthInfoRequest, O: GetAuthInfoResponse },
-    { name: "CreateObservableService", options: {}, I: CreateObservableServiceRequest, O: CreateObservableServiceResponse }
+    { name: "CreateObservableService", options: {}, I: CreateObservableServiceRequest, O: CreateObservableServiceResponse },
+    { name: "VerifyRepoAccess", options: {}, I: VerifyRepoAccessRequest, O: VerifyRepoAccessResponse },
+    { name: "CreateApiKey", options: {}, I: CreateApiKeyRequest, O: CreateApiKeyResponse }
 ]);

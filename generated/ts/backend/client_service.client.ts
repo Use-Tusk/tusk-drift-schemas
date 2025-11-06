@@ -4,6 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { ClientService } from "./client_service";
+import type { CreateApiKeyResponse } from "./client_service";
+import type { CreateApiKeyRequest } from "./client_service";
+import type { VerifyRepoAccessResponse } from "./client_service";
+import type { VerifyRepoAccessRequest } from "./client_service";
 import type { CreateObservableServiceResponse } from "./client_service";
 import type { CreateObservableServiceRequest } from "./client_service";
 import { stackIntercept } from "@protobuf-ts/runtime-rpc";
@@ -23,6 +27,14 @@ export interface IClientServiceClient {
      * @generated from protobuf rpc: CreateObservableService
      */
     createObservableService(input: CreateObservableServiceRequest, options?: RpcOptions): UnaryCall<CreateObservableServiceRequest, CreateObservableServiceResponse>;
+    /**
+     * @generated from protobuf rpc: VerifyRepoAccess
+     */
+    verifyRepoAccess(input: VerifyRepoAccessRequest, options?: RpcOptions): UnaryCall<VerifyRepoAccessRequest, VerifyRepoAccessResponse>;
+    /**
+     * @generated from protobuf rpc: CreateApiKey
+     */
+    createApiKey(input: CreateApiKeyRequest, options?: RpcOptions): UnaryCall<CreateApiKeyRequest, CreateApiKeyResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.ClientService
@@ -46,5 +58,19 @@ export class ClientServiceClient implements IClientServiceClient, ServiceInfo {
     createObservableService(input: CreateObservableServiceRequest, options?: RpcOptions): UnaryCall<CreateObservableServiceRequest, CreateObservableServiceResponse> {
         const method = this.methods[1], opt = this._transport.mergeOptions(options);
         return stackIntercept<CreateObservableServiceRequest, CreateObservableServiceResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: VerifyRepoAccess
+     */
+    verifyRepoAccess(input: VerifyRepoAccessRequest, options?: RpcOptions): UnaryCall<VerifyRepoAccessRequest, VerifyRepoAccessResponse> {
+        const method = this.methods[2], opt = this._transport.mergeOptions(options);
+        return stackIntercept<VerifyRepoAccessRequest, VerifyRepoAccessResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * @generated from protobuf rpc: CreateApiKey
+     */
+    createApiKey(input: CreateApiKeyRequest, options?: RpcOptions): UnaryCall<CreateApiKeyRequest, CreateApiKeyResponse> {
+        const method = this.methods[3], opt = this._transport.mergeOptions(options);
+        return stackIntercept<CreateApiKeyRequest, CreateApiKeyResponse>("unary", this._transport, method, opt, input);
     }
 }

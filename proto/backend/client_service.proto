@@ -6,6 +6,8 @@ option go_package = "./backend";
 service ClientService {
   rpc GetAuthInfo(GetAuthInfoRequest) returns (GetAuthInfoResponse);
   rpc CreateObservableService(CreateObservableServiceRequest) returns (CreateObservableServiceResponse);
+  rpc VerifyRepoAccess(VerifyRepoAccessRequest) returns (VerifyRepoAccessResponse);
+  rpc CreateApiKey(CreateApiKeyRequest) returns (CreateApiKeyResponse);
 }
 
 message GetAuthInfoRequest {
@@ -85,4 +87,60 @@ message CreateObservableServiceResponse {
     CreateObservableServiceResponseSuccess success = 1;
     CreateObservableServiceResponseError error = 2;
   }
+}
+
+message VerifyRepoAccessRequest {
+  string repo_owner_name = 1;
+  string repo_name = 2;
+}
+
+message VerifyRepoAccessResponseSuccess {
+  int64 repo_id = 1;
+}
+
+enum VerifyRepoAccessResponseErrorCode {
+  VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+  VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_NO_CODE_HOSTING_RESOURCE = 3;
+  VERIFY_REPO_ACCESS_RESPONSE_ERROR_CODE_REPO_NOT_FOUND = 4;
+}
+
+message VerifyRepoAccessResponseError {
+  VerifyRepoAccessResponseErrorCode code = 1;
+  string message = 2;
+}
+
+message VerifyRepoAccessResponse {
+  oneof response {
+    VerifyRepoAccessResponseSuccess success = 1;
+    VerifyRepoAccessResponseError error = 2;
+  }
+}
+
+message CreateApiKeyRequest {
+  string name = 1;
+}
+
+message CreateApiKeyResponse {
+  oneof response {
+    CreateApiKeyResponseSuccess success = 1;
+    CreateApiKeyResponseError error = 2;
+  }
+}
+
+message CreateApiKeyResponseSuccess {
+  string api_key_id = 1;
+  string api_key = 2;
+}
+
+enum CreateApiKeyResponseErrorCode {
+  CREATE_API_KEY_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  CREATE_API_KEY_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  CREATE_API_KEY_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+}
+
+message CreateApiKeyResponseError {
+  CreateApiKeyResponseErrorCode code = 1;
+  string message = 2;
 }
