@@ -288,7 +288,13 @@ export enum PackageType {
      *
      * @generated from protobuf enum value: PACKAGE_TYPE_FIRESTORE = 10;
      */
-    FIRESTORE = 10
+    FIRESTORE = 10,
+    /**
+     * Prisma operations
+     *
+     * @generated from protobuf enum value: PACKAGE_TYPE_PRISMA = 11;
+     */
+    PRISMA = 11
 }
 /**
  * OpenTelemetry-compatible span kinds

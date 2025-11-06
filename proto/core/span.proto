@@ -65,6 +65,7 @@ enum PackageType {
   PACKAGE_TYPE_KAFKA = 8; // Apache Kafka messaging
   PACKAGE_TYPE_RABBITMQ = 9; // RabbitMQ messaging
   PACKAGE_TYPE_FIRESTORE = 10; // Firestore operations
+  PACKAGE_TYPE_PRISMA = 11; // Prisma operations
 }
 
 // OpenTelemetry-compatible span kinds

@@ -40,6 +40,7 @@ const (
 	PackageType_PACKAGE_TYPE_KAFKA       PackageType = 8  // Apache Kafka messaging
 	PackageType_PACKAGE_TYPE_RABBITMQ    PackageType = 9  // RabbitMQ messaging
 	PackageType_PACKAGE_TYPE_FIRESTORE   PackageType = 10 // Firestore operations
+	PackageType_PACKAGE_TYPE_PRISMA      PackageType = 11 // Prisma operations
 )
 
 // Enum value maps for PackageType.
@@ -56,6 +57,7 @@ var (
 		8:  "PACKAGE_TYPE_KAFKA",
 		9:  "PACKAGE_TYPE_RABBITMQ",
 		10: "PACKAGE_TYPE_FIRESTORE",
+		11: "PACKAGE_TYPE_PRISMA",
 	}
 	PackageType_value = map[string]int32{
 		"PACKAGE_TYPE_UNSPECIFIED": 0,
@@ -69,6 +71,7 @@ var (
 		"PACKAGE_TYPE_KAFKA":       8,
 		"PACKAGE_TYPE_RABBITMQ":    9,
 		"PACKAGE_TYPE_FIRESTORE":   10,
+		"PACKAGE_TYPE_PRISMA":      11,
 	}
 )
 
@@ -752,7 +755,7 @@ const file_core_span_proto_rawDesc = "" +
 	"\bmetadata\x18\x05 \x03(\v2'.tusk.drift.core.v1.Trace.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xa1\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xba\x02\n" +
 	"\vPackageType\x12\x1c\n" +
 	"\x18PACKAGE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11PACKAGE_TYPE_HTTP\x10\x01\x12\x18\n" +
@@ -765,7 +768,8 @@ const file_core_span_proto_rawDesc = "" +
 	"\x12PACKAGE_TYPE_KAFKA\x10\b\x12\x19\n" +
 	"\x15PACKAGE_TYPE_RABBITMQ\x10\t\x12\x1a\n" +
 	"\x16PACKAGE_TYPE_FIRESTORE\x10\n" +
-	"*\x99\x01\n" +
+	"\x12\x17\n" +
+	"\x13PACKAGE_TYPE_PRISMA\x10\v*\x99\x01\n" +
 	"\bSpanKind\x12\x19\n" +
 	"\x15SPAN_KIND_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12SPAN_KIND_INTERNAL\x10\x01\x12\x14\n" +
