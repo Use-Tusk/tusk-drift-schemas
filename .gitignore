@@ -48,6 +48,7 @@ ehthumbs.db
 Thumbs.db
 
 dist/
+python-dist/
 
 # Python packaging artifacts
 python/.venv/
