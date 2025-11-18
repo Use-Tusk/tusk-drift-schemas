@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tusk-drift-schemas"
+version = "0.1.9"
+description = "Protocol Buffer schemas for Tusk Drift"
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+authors = [
+    {name = "Use Tusk", email = "support@usetusk.ai"}
+]
+keywords = ["protobuf", "grpc", "tusk", "drift", "schemas"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "protobuf>=4.25.0,<7.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/Use-Tusk/tusk-drift-schemas"
+Repository = "https://github.com/Use-Tusk/tusk-drift-schemas"
+Issues = "https://github.com/Use-Tusk/tusk-drift-schemas/issues"
+
+[tool.setuptools]
+packages = ["generated.python.backend", "generated.python.core", "generated.python.postgresql"]
+
+[tool.setuptools.package-dir]
+"generated.python" = "generated/python"
+"generated.python.backend" = "generated/python/backend"
+"generated.python.core" = "generated/python/core"
+"generated.python.postgresql" = "generated/python/postgresql"
+
+[tool.setuptools.package-data]
+"generated.python.backend" = ["*.py"]
+"generated.python.core" = ["*.py"]
+"generated.python.postgresql" = ["*.py"]

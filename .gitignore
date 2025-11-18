@@ -48,3 +48,19 @@ ehthumbs.db
 Thumbs.db
 
 dist/
+
+# Python packaging artifacts
+python/.venv/
+python/build/
+python/dist/
+python/*.egg-info/
+python/.mypy_cache/
+python/.pytest_cache/
+
+# Root-level Python package artifacts
+*.egg-info/
+build/
+.eggs/
+__pycache__/
+*.py[cod]
+*$py.class
