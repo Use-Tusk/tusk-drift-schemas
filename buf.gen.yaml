@@ -1,4 +1,5 @@
 version: v2
+clean: true
 managed:
   enabled: true
   override:
@@ -11,5 +12,5 @@ plugins:
   - remote: buf.build/protocolbuffers/go
     out: generated/go
     opt: paths=source_relative
-  - local: python-betterproto
+  - local: protoc-gen-python_betterproto
     out: generated/python
