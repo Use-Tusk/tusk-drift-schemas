@@ -40,6 +40,28 @@ replace github.com/Use-Tusk/tusk-drift-schemas => ../tusk-drift-schemas
 
 Run `go mod tidy` to update the dependencies.
 
+## Python
+
+### Installing schemas in Python projects
+
+```
+pip install tusk-drift-schemas
+```
+
+Or install a specific version:
+```
+pip install tusk-drift-schemas==0.1.9
+```
+
+Then import like:
+```python
+from generated.python.backend import common_pb2
+from generated.python.core import span_pb2
+from generated.python.postgresql import postgresql_pb2
+```
+
+# Building
+
 ## Releasing
 
 1. Checkout a new branch with the new version number (e.g. `git checkout -b v0.1.1`)

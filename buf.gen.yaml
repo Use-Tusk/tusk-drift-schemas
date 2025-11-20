@@ -11,3 +11,5 @@ plugins:
   - remote: buf.build/protocolbuffers/go
     out: generated/go
     opt: paths=source_relative
+  - remote: buf.build/protocolbuffers/python
+    out: generated/python

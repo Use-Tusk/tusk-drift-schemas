@@ -1,4 +1,4 @@
-name: Publish to NPM registry
+name: Publish to NPM
 
 on:
   release:
@@ -31,6 +31,7 @@ jobs:
 
       - name: Generate code
         run: npm run generate
+
       - name: Build
         run: npm run build
 
