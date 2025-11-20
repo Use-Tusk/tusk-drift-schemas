@@ -35,15 +35,12 @@ Repository = "https://github.com/Use-Tusk/tusk-drift-schemas"
 Issues = "https://github.com/Use-Tusk/tusk-drift-schemas/issues"
 
 [tool.setuptools]
-packages = ["generated.python.backend", "generated.python.core", "generated.python.postgresql"]
+packages = ["tusk", "tusk.drift", "tusk.drift.core", "tusk.drift.core.v1", "tusk.drift.backend", "tusk.drift.backend.v1", "tusk.drift.instrumentation", "tusk.drift.instrumentation.postgresql", "tusk.drift.instrumentation.postgresql.v1"]
 
 [tool.setuptools.package-dir]
-"generated.python" = "generated/python"
-"generated.python.backend" = "generated/python/backend"
-"generated.python.core" = "generated/python/core"
-"generated.python.postgresql" = "generated/python/postgresql"
+"" = "generated/python"
 
 [tool.setuptools.package-data]
-"generated.python.backend" = ["*.py"]
-"generated.python.core" = ["*.py"]
-"generated.python.postgresql" = ["*.py"]
+"tusk.drift.core.v1" = ["*.py"]
+"tusk.drift.backend.v1" = ["*.py"]
+"tusk.drift.instrumentation.postgresql.v1" = ["*.py"]
