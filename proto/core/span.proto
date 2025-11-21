@@ -49,6 +49,9 @@ message Span {
   // Span relationships and state
   bool is_root_span = 22;
   google.protobuf.Struct metadata = 23; // Additional metadata
+
+  // Environment information
+  string environment = 24; // Environment name (e.g., "production", "staging", "development")
 }
 
 // Package type classification enum
