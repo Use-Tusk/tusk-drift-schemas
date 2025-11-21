@@ -131,6 +131,12 @@ export interface Span {
      * @generated from protobuf field: google.protobuf.Struct metadata = 23
      */
     metadata?: Struct; // Additional metadata
+    /**
+     * Environment information
+     *
+     * @generated from protobuf field: optional string environment = 24
+     */
+    environment?: string; // Environment name (e.g., "production", "staging", "development")
 }
 /**
  * Span completion status
@@ -386,7 +392,8 @@ class Span$Type extends MessageType<Span> {
             { no: 20, name: "timestamp", kind: "message", T: () => Timestamp },
             { no: 21, name: "duration", kind: "message", T: () => Duration },
             { no: 22, name: "is_root_span", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
-            { no: 23, name: "metadata", kind: "message", T: () => Struct }
+            { no: 23, name: "metadata", kind: "message", T: () => Struct },
+            { no: 24, name: "environment", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Span>): Span {
@@ -484,6 +491,9 @@ class Span$Type extends MessageType<Span> {
                 case /* google.protobuf.Struct metadata */ 23:
                     message.metadata = Struct.internalBinaryRead(reader, reader.uint32(), options, message.metadata);
                     break;
+                case /* optional string environment */ 24:
+                    message.environment = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -565,6 +575,9 @@ class Span$Type extends MessageType<Span> {
         /* google.protobuf.Struct metadata = 23; */
         if (message.metadata)
             Struct.internalBinaryWrite(message.metadata, writer.tag(23, WireType.LengthDelimited).fork(), options).join();
+        /* optional string environment = 24; */
+        if (message.environment !== undefined)
+            writer.tag(24, WireType.LengthDelimited).string(message.environment);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
