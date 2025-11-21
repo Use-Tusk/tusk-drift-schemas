@@ -3,7 +3,12 @@ name: Publish to PyPI
 on:
   release:
     types: [published]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      temp_version:
+        description: 'Optional version override (ex: 1.2.3-test)'
+        required: false
+        default: ''
 
 jobs:
   publish:
@@ -11,6 +16,8 @@ jobs:
     permissions:
       contents: read
       id-token: write  # Required for trusted publishing to PyPI
+    env:
+      TEMP_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.temp_version || '' }}
 
     steps:
       - name: Checkout
@@ -32,6 +39,11 @@ jobs:
 
       - name: Generate code
         run: buf generate
+
+      - name: Override Python package version for testing
+        if: env.TEMP_VERSION != ''
+        run: |
+          sed -i "0,/^version = \".*\"/s//version = \"$TEMP_VERSION\"/" pyproject.toml
 
       - name: Install Python build tools
         run: pip install build
