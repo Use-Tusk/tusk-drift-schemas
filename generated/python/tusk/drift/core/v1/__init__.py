@@ -209,7 +209,7 @@ class Span(betterproto.Message):
     """Span relationships and state"""
 
     metadata: "betterproto_lib_google_protobuf.Struct" = betterproto.message_field(23)
-    environment: str = betterproto.string_field(24)
+    environment: Optional[str] = betterproto.string_field(24, optional=True)
     """Environment information"""
 
 

@@ -51,7 +51,7 @@ message Span {
   google.protobuf.Struct metadata = 23; // Additional metadata
 
   // Environment information
-  string environment = 24; // Environment name (e.g., "production", "staging", "development")
+  optional string environment = 24; // Environment name (e.g., "production", "staging", "development")
 }
 
 // Package type classification enum

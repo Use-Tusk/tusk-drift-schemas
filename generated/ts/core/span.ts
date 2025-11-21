@@ -134,9 +134,9 @@ export interface Span {
     /**
      * Environment information
      *
-     * @generated from protobuf field: string environment = 24
+     * @generated from protobuf field: optional string environment = 24
      */
-    environment: string; // Environment name (e.g., "production", "staging", "development")
+    environment?: string; // Environment name (e.g., "production", "staging", "development")
 }
 /**
  * Span completion status
@@ -393,7 +393,7 @@ class Span$Type extends MessageType<Span> {
             { no: 21, name: "duration", kind: "message", T: () => Duration },
             { no: 22, name: "is_root_span", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 23, name: "metadata", kind: "message", T: () => Struct },
-            { no: 24, name: "environment", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 24, name: "environment", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Span>): Span {
@@ -413,7 +413,6 @@ class Span$Type extends MessageType<Span> {
         message.kind = 0;
         message.isPreAppStart = false;
         message.isRootSpan = false;
-        message.environment = "";
         if (value !== undefined)
             reflectionMergePartial<Span>(this, message, value);
         return message;
@@ -492,7 +491,7 @@ class Span$Type extends MessageType<Span> {
                 case /* google.protobuf.Struct metadata */ 23:
                     message.metadata = Struct.internalBinaryRead(reader, reader.uint32(), options, message.metadata);
                     break;
-                case /* string environment */ 24:
+                case /* optional string environment */ 24:
                     message.environment = reader.string();
                     break;
                 default:
@@ -576,8 +575,8 @@ class Span$Type extends MessageType<Span> {
         /* google.protobuf.Struct metadata = 23; */
         if (message.metadata)
             Struct.internalBinaryWrite(message.metadata, writer.tag(23, WireType.LengthDelimited).fork(), options).join();
-        /* string environment = 24; */
-        if (message.environment !== "")
+        /* optional string environment = 24; */
+        if (message.environment !== undefined)
             writer.tag(24, WireType.LengthDelimited).string(message.environment);
         let u = options.writeUnknownFields;
         if (u !== false)
