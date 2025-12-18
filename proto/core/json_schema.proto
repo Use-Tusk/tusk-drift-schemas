@@ -54,26 +54,34 @@ enum DecodedType {
   DECODED_TYPE_ZIP = 24;
 }
 
+// Had to create this since proto3 doesn't support optional repeated fields
+message ItemTypesList {
+  repeated JsonSchemaType types = 1;
+}
+
 // Recursive JSON schema message
 // Describes the structure and metadata of JSON data
 message JsonSchema {
   // The type of this schema node
   JsonSchemaType type = 1;
-  
+
   // For OBJECT types: map of property names to their schemas
   map<string, JsonSchema> properties = 2;
-  
+
   // For ORDERED_LIST/UNORDERED_LIST types: schema of list items
   optional JsonSchema items = 3;
-  
+
   // Optional encoding information (e.g., BASE64)
   optional EncodingType encoding = 4;
-  
+
   // Optional decoded content type (e.g., JSON, HTML)
   optional DecodedType decoded_type = 5;
-  
+
   // Match importance for test matching (0.0 to 1.0)
   // 0.0 = lowest importance, 1.0 = highest importance
   optional double match_importance = 6;
-}
 
+  // For mixed-type arrays: list of all types present in the array
+  // Used when type is ORDERED_LIST to represent a union of types
+  optional ItemTypesList item_types = 7;
+}

@@ -43,6 +43,7 @@ class JsonSchemaType(betterproto.Enum):
     ORDERED_LIST = 7
     UNORDERED_LIST = 8
     FUNCTION = 9
+    UNION = 10
 
 
 class EncodingType(betterproto.Enum):
@@ -132,6 +133,15 @@ class MessageType(betterproto.Enum):
 
 
 @dataclass(eq=False, repr=False)
+class ItemTypesList(betterproto.Message):
+    """
+    Had to create this since proto3 doesn't support optional repeated fields
+    """
+
+    types: List["JsonSchemaType"] = betterproto.enum_field(1)
+
+
+@dataclass(eq=False, repr=False)
 class JsonSchema(betterproto.Message):
     """
     Recursive JSON schema message
@@ -159,6 +169,12 @@ class JsonSchema(betterproto.Message):
     """
     Match importance for test matching (0.0 to 1.0)
      0.0 = lowest importance, 1.0 = highest importance
+    """
+
+    item_types: Optional["ItemTypesList"] = betterproto.message_field(7, optional=True)
+    """
+    For mixed-type arrays: list of all types present in the array
+     Used when type is JSON_SCHEMA_TYPE_UNION to represent a union of types
     """
 
 

@@ -3,13 +3,24 @@
 // tslint:disable
 import type { BinaryWriteOptions } from "@protobuf-ts/runtime";
 import type { IBinaryWriter } from "@protobuf-ts/runtime";
-import { WireType } from "@protobuf-ts/runtime";
 import type { BinaryReadOptions } from "@protobuf-ts/runtime";
 import type { IBinaryReader } from "@protobuf-ts/runtime";
 import { UnknownFieldHandler } from "@protobuf-ts/runtime";
+import { WireType } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType } from "@protobuf-ts/runtime";
+/**
+ * Had to create this since proto3 doesn't support optional repeated fields
+ *
+ * @generated from protobuf message tusk.drift.core.v1.ItemTypesList
+ */
+export interface ItemTypesList {
+    /**
+     * @generated from protobuf field: repeated tusk.drift.core.v1.JsonSchemaType types = 1
+     */
+    types: JsonSchemaType[];
+}
 /**
  * Recursive JSON schema message
  * Describes the structure and metadata of JSON data
@@ -56,6 +67,13 @@ export interface JsonSchema {
      * @generated from protobuf field: optional double match_importance = 6
      */
     matchImportance?: number;
+    /**
+     * For mixed-type arrays: list of all types present in the array
+     * Used when type is JSON_SCHEMA_TYPE_UNION to represent a union of types
+     *
+     * @generated from protobuf field: optional tusk.drift.core.v1.ItemTypesList item_types = 7
+     */
+    itemTypes?: ItemTypesList;
 }
 /**
  * JSON schema type enumeration
@@ -103,7 +121,11 @@ export enum JsonSchemaType {
     /**
      * @generated from protobuf enum value: JSON_SCHEMA_TYPE_FUNCTION = 9;
      */
-    FUNCTION = 9
+    FUNCTION = 9,
+    /**
+     * @generated from protobuf enum value: JSON_SCHEMA_TYPE_UNION = 10;
+     */
+    UNION = 10
 }
 /**
  * Encoding type for data serialization
@@ -229,6 +251,61 @@ export enum DecodedType {
     ZIP = 24
 }
 // @generated message type with reflection information, may provide speed optimized methods
+class ItemTypesList$Type extends MessageType<ItemTypesList> {
+    constructor() {
+        super("tusk.drift.core.v1.ItemTypesList", [
+            { no: 1, name: "types", kind: "enum", repeat: 1 /*RepeatType.PACKED*/, T: () => ["tusk.drift.core.v1.JsonSchemaType", JsonSchemaType, "JSON_SCHEMA_TYPE_"] }
+        ]);
+    }
+    create(value?: PartialMessage<ItemTypesList>): ItemTypesList {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.types = [];
+        if (value !== undefined)
+            reflectionMergePartial<ItemTypesList>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: ItemTypesList): ItemTypesList {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated tusk.drift.core.v1.JsonSchemaType types */ 1:
+                    if (wireType === WireType.LengthDelimited)
+                        for (let e = reader.int32() + reader.pos; reader.pos < e;)
+                            message.types.push(reader.int32());
+                    else
+                        message.types.push(reader.int32());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: ItemTypesList, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated tusk.drift.core.v1.JsonSchemaType types = 1; */
+        if (message.types.length) {
+            writer.tag(1, WireType.LengthDelimited).fork();
+            for (let i = 0; i < message.types.length; i++)
+                writer.int32(message.types[i]);
+            writer.join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.ItemTypesList
+ */
+export const ItemTypesList = new ItemTypesList$Type();
+// @generated message type with reflection information, may provide speed optimized methods
 class JsonSchema$Type extends MessageType<JsonSchema> {
     constructor() {
         super("tusk.drift.core.v1.JsonSchema", [
@@ -237,7 +314,8 @@ class JsonSchema$Type extends MessageType<JsonSchema> {
             { no: 3, name: "items", kind: "message", T: () => JsonSchema },
             { no: 4, name: "encoding", kind: "enum", opt: true, T: () => ["tusk.drift.core.v1.EncodingType", EncodingType, "ENCODING_TYPE_"] },
             { no: 5, name: "decoded_type", kind: "enum", opt: true, T: () => ["tusk.drift.core.v1.DecodedType", DecodedType, "DECODED_TYPE_"] },
-            { no: 6, name: "match_importance", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ }
+            { no: 6, name: "match_importance", kind: "scalar", opt: true, T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 7, name: "item_types", kind: "message", T: () => ItemTypesList }
         ]);
     }
     create(value?: PartialMessage<JsonSchema>): JsonSchema {
@@ -270,6 +348,9 @@ class JsonSchema$Type extends MessageType<JsonSchema> {
                     break;
                 case /* optional double match_importance */ 6:
                     message.matchImportance = reader.double();
+                    break;
+                case /* optional tusk.drift.core.v1.ItemTypesList item_types */ 7:
+                    message.itemTypes = ItemTypesList.internalBinaryRead(reader, reader.uint32(), options, message.itemTypes);
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -321,6 +402,9 @@ class JsonSchema$Type extends MessageType<JsonSchema> {
         /* optional double match_importance = 6; */
         if (message.matchImportance !== undefined)
             writer.tag(6, WireType.Bit64).double(message.matchImportance);
+        /* optional tusk.drift.core.v1.ItemTypesList item_types = 7; */
+        if (message.itemTypes)
+            ItemTypesList.internalBinaryWrite(message.itemTypes, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
