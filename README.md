@@ -43,10 +43,13 @@ Remember to remove this before pushing.
 ```
 pip install tusk-drift-schemas
 ```
-
-Or install a specific version:
+Then you can import as
 ```
-pip install tusk-drift-schemas==0.1.9
+# Core schemas
+from tusk.drift.core.v1 import *
+
+# Backend schemas
+from tusk.drift.backend.v1 import *
 ```
 
 # Building
@@ -57,4 +60,7 @@ pip install tusk-drift-schemas==0.1.9
 2. Increment the patch version (e.g. 0.1.0 → 0.1.1), using `npm version patch`. This creates a commit and a tag.
 3. Push the branch and the tag to GitHub.
 4. Create a new release on GitHub with the new version number.
-5. The release will trigger a GitHub Actions workflow to publish the package to NPM, and the new release tag will allow Golang projects to install the new version.
+5. The release will trigger a GitHub Actions workflow to publish the package to NPM an PyPi. Golang just pulls from GitHub so no need for publishing.
+
+Note: if a broken release occurs, or you just want to test some stuff, you can
+supply an optional version override to the GH actions manually, like 0.1.1.dev1.

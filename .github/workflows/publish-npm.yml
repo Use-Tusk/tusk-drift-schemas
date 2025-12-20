@@ -3,7 +3,12 @@ name: Publish to NPM
 on:
   release:
     types: [published]
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      temp_version:
+        description: 'Optional version override (ex: 1.2.3-test)'
+        required: false
+        default: ''
 
 jobs:
   publish:
@@ -11,6 +16,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      TEMP_VERSION: ${{ github.event_name == 'workflow_dispatch' && inputs.temp_version || '' }}
 
     steps:
       - name: Checkout
@@ -42,6 +49,10 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Override package version for testing
+        if: env.TEMP_VERSION != ''
+        run: npm version "$TEMP_VERSION" --no-git-tag-version
 
       - name: Publish to NPM registry
         env:
