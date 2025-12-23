@@ -4,6 +4,14 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { AddTracesToSuiteResponse } from "./test_run_service";
+import type { AddTracesToSuiteRequest } from "./test_run_service";
+import type { DeleteFailedDraftTracesResponse } from "./test_run_service";
+import type { DeleteFailedDraftTracesRequest } from "./test_run_service";
+import type { MarkSpansAsGlobalResponse } from "./test_run_service";
+import type { MarkSpansAsGlobalRequest } from "./test_run_service";
+import type { GetDraftTraceTestsResponse } from "./test_run_service";
+import type { GetDraftTraceTestsRequest } from "./test_run_service";
 import type { UpdateDriftRunCIStatusResponse } from "./test_run_service";
 import type { UpdateDriftRunCIStatusRequest } from "./test_run_service";
 import type { UploadTraceTestResultsResponse } from "./test_run_service";
@@ -78,6 +86,37 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: UpdateDriftRunCIStatus
      */
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>;
+    // We were initially thinking we'd need GetDriftRunTestResults or
+    // GetDriftRunTestStatus Since CI may wait for trace test results to be
+    // uploaded and classified before exiting However, for now CI will just exit
+    // with success if the tests were able to be run
+
+    // Suite validation RPCs - used for validating draft traces on main branch
+
+    /**
+     * Get draft traces not yet in the test suite (status = DRAFT)
+     *
+     * @generated from protobuf rpc: GetDraftTraceTests
+     */
+    getDraftTraceTests(input: GetDraftTraceTestsRequest, options?: RpcOptions): UnaryCall<GetDraftTraceTestsRequest, GetDraftTraceTestsResponse>;
+    /**
+     * Mark spans as global - these spans will be accessible to all traces during replay
+     *
+     * @generated from protobuf rpc: MarkSpansAsGlobal
+     */
+    markSpansAsGlobal(input: MarkSpansAsGlobalRequest, options?: RpcOptions): UnaryCall<MarkSpansAsGlobalRequest, MarkSpansAsGlobalResponse>;
+    /**
+     * Delete draft traces that failed validation on main
+     *
+     * @generated from protobuf rpc: DeleteFailedDraftTraces
+     */
+    deleteFailedDraftTraces(input: DeleteFailedDraftTracesRequest, options?: RpcOptions): UnaryCall<DeleteFailedDraftTracesRequest, DeleteFailedDraftTracesResponse>;
+    /**
+     * Add validated draft traces to the test suite
+     *
+     * @generated from protobuf rpc: AddTracesToSuite
+     */
+    addTracesToSuite(input: AddTracesToSuiteRequest, options?: RpcOptions): UnaryCall<AddTracesToSuiteRequest, AddTracesToSuiteResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -162,5 +201,48 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>("unary", this._transport, method, opt, input);
+    }
+    // We were initially thinking we'd need GetDriftRunTestResults or
+    // GetDriftRunTestStatus Since CI may wait for trace test results to be
+    // uploaded and classified before exiting However, for now CI will just exit
+    // with success if the tests were able to be run
+
+    // Suite validation RPCs - used for validating draft traces on main branch
+
+    /**
+     * Get draft traces not yet in the test suite (status = DRAFT)
+     *
+     * @generated from protobuf rpc: GetDraftTraceTests
+     */
+    getDraftTraceTests(input: GetDraftTraceTestsRequest, options?: RpcOptions): UnaryCall<GetDraftTraceTestsRequest, GetDraftTraceTestsResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetDraftTraceTestsRequest, GetDraftTraceTestsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Mark spans as global - these spans will be accessible to all traces during replay
+     *
+     * @generated from protobuf rpc: MarkSpansAsGlobal
+     */
+    markSpansAsGlobal(input: MarkSpansAsGlobalRequest, options?: RpcOptions): UnaryCall<MarkSpansAsGlobalRequest, MarkSpansAsGlobalResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<MarkSpansAsGlobalRequest, MarkSpansAsGlobalResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Delete draft traces that failed validation on main
+     *
+     * @generated from protobuf rpc: DeleteFailedDraftTraces
+     */
+    deleteFailedDraftTraces(input: DeleteFailedDraftTracesRequest, options?: RpcOptions): UnaryCall<DeleteFailedDraftTracesRequest, DeleteFailedDraftTracesResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<DeleteFailedDraftTracesRequest, DeleteFailedDraftTracesResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Add validated draft traces to the test suite
+     *
+     * @generated from protobuf rpc: AddTracesToSuite
+     */
+    addTracesToSuite(input: AddTracesToSuiteRequest, options?: RpcOptions): UnaryCall<AddTracesToSuiteRequest, AddTracesToSuiteResponse> {
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        return stackIntercept<AddTracesToSuiteRequest, AddTracesToSuiteResponse>("unary", this._transport, method, opt, input);
     }
 }

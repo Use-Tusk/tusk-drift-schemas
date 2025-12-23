@@ -37,6 +37,20 @@ service TestRunService {
   // GetDriftRunTestStatus Since CI may wait for trace test results to be
   // uploaded and classified before exiting However, for now CI will just exit
   // with success if the tests were able to be run
+
+  // Suite validation RPCs - used for validating draft traces on main branch
+
+  // Get draft traces not yet in the test suite (status = DRAFT)
+  rpc GetDraftTraceTests(GetDraftTraceTestsRequest) returns (GetDraftTraceTestsResponse);
+
+  // Mark spans as global - these spans will be accessible to all traces during replay
+  rpc MarkSpansAsGlobal(MarkSpansAsGlobalRequest) returns (MarkSpansAsGlobalResponse);
+
+  // Delete draft traces that failed validation on main
+  rpc DeleteFailedDraftTraces(DeleteFailedDraftTracesRequest) returns (DeleteFailedDraftTracesResponse);
+
+  // Add validated draft traces to the test suite
+  rpc AddTracesToSuite(AddTracesToSuiteRequest) returns (AddTracesToSuiteResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -325,5 +339,100 @@ message UpdateDriftRunCIStatusResponse {
   oneof response {
     UpdateDriftRunCIStatusResponseSuccess success = 1;
     UpdateDriftRunCIStatusResponseError error = 2;
+  }
+}
+
+// =============================================================================
+// Suite Validation Messages
+// =============================================================================
+
+// GetDraftTraceTests - Get draft traces not yet in the test suite
+message GetDraftTraceTestsRequest {
+  string observable_service_id = 1;
+  optional string pagination_cursor = 2;
+  int32 page_size = 3;
+}
+
+message GetDraftTraceTestsResponseSuccess {
+  repeated TraceTest trace_tests = 1;
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetDraftTraceTestsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetDraftTraceTestsResponse {
+  oneof response {
+    GetDraftTraceTestsResponseSuccess success = 1;
+    GetDraftTraceTestsResponseError error = 2;
+  }
+}
+
+// MarkSpansAsGlobal - Mark spans as global for cross-trace matching
+message MarkSpansAsGlobalRequest {
+  string observable_service_id = 1;
+  repeated string span_ids = 2;
+}
+
+message MarkSpansAsGlobalResponseSuccess {
+  int32 spans_marked = 1;
+}
+
+message MarkSpansAsGlobalResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message MarkSpansAsGlobalResponse {
+  oneof response {
+    MarkSpansAsGlobalResponseSuccess success = 1;
+    MarkSpansAsGlobalResponseError error = 2;
+  }
+}
+
+// DeleteFailedDraftTraces - Delete draft traces that failed validation
+message DeleteFailedDraftTracesRequest {
+  string observable_service_id = 1;
+  repeated string trace_test_ids = 2;
+}
+
+message DeleteFailedDraftTracesResponseSuccess {
+  int32 traces_deleted = 1;
+}
+
+message DeleteFailedDraftTracesResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message DeleteFailedDraftTracesResponse {
+  oneof response {
+    DeleteFailedDraftTracesResponseSuccess success = 1;
+    DeleteFailedDraftTracesResponseError error = 2;
+  }
+}
+
+// AddTracesToSuite - Add validated traces to the test suite
+message AddTracesToSuiteRequest {
+  string observable_service_id = 1;
+  repeated string trace_test_ids = 2;
+}
+
+message AddTracesToSuiteResponseSuccess {
+  int32 traces_added = 1;
+}
+
+message AddTracesToSuiteResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message AddTracesToSuiteResponse {
+  oneof response {
+    AddTracesToSuiteResponseSuccess success = 1;
+    AddTracesToSuiteResponseError error = 2;
   }
 }

@@ -535,6 +535,125 @@ class UpdateDriftRunCiStatusResponse(betterproto.Message):
     )
 
 
+@dataclass(eq=False, repr=False)
+class GetDraftTraceTestsRequest(betterproto.Message):
+    """GetDraftTraceTests - Get draft traces not yet in the test suite"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    pagination_cursor: Optional[str] = betterproto.string_field(2, optional=True)
+    page_size: int = betterproto.int32_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class GetDraftTraceTestsResponseSuccess(betterproto.Message):
+    trace_tests: List["TraceTest"] = betterproto.message_field(1)
+    next_cursor: Optional[str] = betterproto.string_field(2, optional=True)
+    total_count: int = betterproto.int32_field(3)
+
+
+@dataclass(eq=False, repr=False)
+class GetDraftTraceTestsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetDraftTraceTestsResponse(betterproto.Message):
+    success: "GetDraftTraceTestsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetDraftTraceTestsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class MarkSpansAsGlobalRequest(betterproto.Message):
+    """MarkSpansAsGlobal - Mark spans as global for cross-trace matching"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    span_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class MarkSpansAsGlobalResponseSuccess(betterproto.Message):
+    spans_marked: int = betterproto.int32_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class MarkSpansAsGlobalResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class MarkSpansAsGlobalResponse(betterproto.Message):
+    success: "MarkSpansAsGlobalResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "MarkSpansAsGlobalResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class DeleteFailedDraftTracesRequest(betterproto.Message):
+    """DeleteFailedDraftTraces - Delete draft traces that failed validation"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    trace_test_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteFailedDraftTracesResponseSuccess(betterproto.Message):
+    traces_deleted: int = betterproto.int32_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteFailedDraftTracesResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class DeleteFailedDraftTracesResponse(betterproto.Message):
+    success: "DeleteFailedDraftTracesResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "DeleteFailedDraftTracesResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class AddTracesToSuiteRequest(betterproto.Message):
+    """AddTracesToSuite - Add validated traces to the test suite"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    trace_test_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class AddTracesToSuiteResponseSuccess(betterproto.Message):
+    traces_added: int = betterproto.int32_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class AddTracesToSuiteResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class AddTracesToSuiteResponse(betterproto.Message):
+    success: "AddTracesToSuiteResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "AddTracesToSuiteResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
 class ClientServiceStub(betterproto.ServiceStub):
     async def get_auth_info(
         self,
@@ -761,6 +880,74 @@ class TestRunServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def get_draft_trace_tests(
+        self,
+        get_draft_trace_tests_request: "GetDraftTraceTestsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetDraftTraceTestsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetDraftTraceTests",
+            get_draft_trace_tests_request,
+            GetDraftTraceTestsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def mark_spans_as_global(
+        self,
+        mark_spans_as_global_request: "MarkSpansAsGlobalRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "MarkSpansAsGlobalResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/MarkSpansAsGlobal",
+            mark_spans_as_global_request,
+            MarkSpansAsGlobalResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def delete_failed_draft_traces(
+        self,
+        delete_failed_draft_traces_request: "DeleteFailedDraftTracesRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "DeleteFailedDraftTracesResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/DeleteFailedDraftTraces",
+            delete_failed_draft_traces_request,
+            DeleteFailedDraftTracesResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def add_traces_to_suite(
+        self,
+        add_traces_to_suite_request: "AddTracesToSuiteRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "AddTracesToSuiteResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/AddTracesToSuite",
+            add_traces_to_suite_request,
+            AddTracesToSuiteResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
 
 class ClientServiceBase(ServiceBase):
 
@@ -910,6 +1097,26 @@ class TestRunServiceBase(ServiceBase):
     ) -> "UpdateDriftRunCiStatusResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def get_draft_trace_tests(
+        self, get_draft_trace_tests_request: "GetDraftTraceTestsRequest"
+    ) -> "GetDraftTraceTestsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def mark_spans_as_global(
+        self, mark_spans_as_global_request: "MarkSpansAsGlobalRequest"
+    ) -> "MarkSpansAsGlobalResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def delete_failed_draft_traces(
+        self, delete_failed_draft_traces_request: "DeleteFailedDraftTracesRequest"
+    ) -> "DeleteFailedDraftTracesResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def add_traces_to_suite(
+        self, add_traces_to_suite_request: "AddTracesToSuiteRequest"
+    ) -> "AddTracesToSuiteResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
     async def __rpc_get_global_spans(
         self,
         stream: "grpclib.server.Stream[GetGlobalSpansRequest, GetGlobalSpansResponse]",
@@ -973,6 +1180,38 @@ class TestRunServiceBase(ServiceBase):
         response = await self.update_drift_run_ci_status(request)
         await stream.send_message(response)
 
+    async def __rpc_get_draft_trace_tests(
+        self,
+        stream: "grpclib.server.Stream[GetDraftTraceTestsRequest, GetDraftTraceTestsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_draft_trace_tests(request)
+        await stream.send_message(response)
+
+    async def __rpc_mark_spans_as_global(
+        self,
+        stream: "grpclib.server.Stream[MarkSpansAsGlobalRequest, MarkSpansAsGlobalResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.mark_spans_as_global(request)
+        await stream.send_message(response)
+
+    async def __rpc_delete_failed_draft_traces(
+        self,
+        stream: "grpclib.server.Stream[DeleteFailedDraftTracesRequest, DeleteFailedDraftTracesResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.delete_failed_draft_traces(request)
+        await stream.send_message(response)
+
+    async def __rpc_add_traces_to_suite(
+        self,
+        stream: "grpclib.server.Stream[AddTracesToSuiteRequest, AddTracesToSuiteResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.add_traces_to_suite(request)
+        await stream.send_message(response)
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/tusk.drift.backend.v1.TestRunService/GetGlobalSpans": grpclib.const.Handler(
@@ -1022,5 +1261,29 @@ class TestRunServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 UpdateDriftRunCiStatusRequest,
                 UpdateDriftRunCiStatusResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetDraftTraceTests": grpclib.const.Handler(
+                self.__rpc_get_draft_trace_tests,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetDraftTraceTestsRequest,
+                GetDraftTraceTestsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/MarkSpansAsGlobal": grpclib.const.Handler(
+                self.__rpc_mark_spans_as_global,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                MarkSpansAsGlobalRequest,
+                MarkSpansAsGlobalResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/DeleteFailedDraftTraces": grpclib.const.Handler(
+                self.__rpc_delete_failed_draft_traces,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                DeleteFailedDraftTracesRequest,
+                DeleteFailedDraftTracesResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/AddTracesToSuite": grpclib.const.Handler(
+                self.__rpc_add_traces_to_suite,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                AddTracesToSuiteRequest,
+                AddTracesToSuiteResponse,
             ),
         }
