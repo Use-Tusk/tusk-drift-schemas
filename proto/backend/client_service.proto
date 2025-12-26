@@ -8,6 +8,9 @@ service ClientService {
   rpc CreateObservableService(CreateObservableServiceRequest) returns (CreateObservableServiceResponse);
   rpc VerifyRepoAccess(VerifyRepoAccessRequest) returns (VerifyRepoAccessResponse);
   rpc CreateApiKey(CreateApiKeyRequest) returns (CreateApiKeyResponse);
+
+  // Get observable service info including default branch
+  rpc GetObservableServiceInfo(GetObservableServiceInfoRequest) returns (GetObservableServiceInfoResponse);
 }
 
 message GetAuthInfoRequest {
@@ -143,4 +146,31 @@ enum CreateApiKeyResponseErrorCode {
 message CreateApiKeyResponseError {
   CreateApiKeyResponseErrorCode code = 1;
   string message = 2;
+}
+
+// =============================================================================
+// GetObservableServiceInfo Messages
+// =============================================================================
+
+message GetObservableServiceInfoRequest {
+  string observable_service_id = 1;
+}
+
+message GetObservableServiceInfoResponseSuccess {
+  string observable_service_id = 1;
+  string default_branch = 2;
+  string repo_owner = 3;
+  string repo_name = 4;
+}
+
+message GetObservableServiceInfoResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetObservableServiceInfoResponse {
+  oneof response {
+    GetObservableServiceInfoResponseSuccess success = 1;
+    GetObservableServiceInfoResponseError error = 2;
+  }
 }

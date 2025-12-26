@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { ClientService } from "./client_service";
+import type { GetObservableServiceInfoResponse } from "./client_service";
+import type { GetObservableServiceInfoRequest } from "./client_service";
 import type { CreateApiKeyResponse } from "./client_service";
 import type { CreateApiKeyRequest } from "./client_service";
 import type { VerifyRepoAccessResponse } from "./client_service";
@@ -35,6 +37,12 @@ export interface IClientServiceClient {
      * @generated from protobuf rpc: CreateApiKey
      */
     createApiKey(input: CreateApiKeyRequest, options?: RpcOptions): UnaryCall<CreateApiKeyRequest, CreateApiKeyResponse>;
+    /**
+     * Get observable service info including default branch
+     *
+     * @generated from protobuf rpc: GetObservableServiceInfo
+     */
+    getObservableServiceInfo(input: GetObservableServiceInfoRequest, options?: RpcOptions): UnaryCall<GetObservableServiceInfoRequest, GetObservableServiceInfoResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.ClientService
@@ -72,5 +80,14 @@ export class ClientServiceClient implements IClientServiceClient, ServiceInfo {
     createApiKey(input: CreateApiKeyRequest, options?: RpcOptions): UnaryCall<CreateApiKeyRequest, CreateApiKeyResponse> {
         const method = this.methods[3], opt = this._transport.mergeOptions(options);
         return stackIntercept<CreateApiKeyRequest, CreateApiKeyResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get observable service info including default branch
+     *
+     * @generated from protobuf rpc: GetObservableServiceInfo
+     */
+    getObservableServiceInfo(input: GetObservableServiceInfoRequest, options?: RpcOptions): UnaryCall<GetObservableServiceInfoRequest, GetObservableServiceInfoResponse> {
+        const method = this.methods[4], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetObservableServiceInfoRequest, GetObservableServiceInfoResponse>("unary", this._transport, method, opt, input);
     }
 }

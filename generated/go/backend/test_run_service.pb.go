@@ -22,6 +22,58 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type TraceTestStatus int32
+
+const (
+	TraceTestStatus_TRACE_TEST_STATUS_UNSPECIFIED TraceTestStatus = 0
+	TraceTestStatus_TRACE_TEST_STATUS_DRAFT       TraceTestStatus = 1
+	TraceTestStatus_TRACE_TEST_STATUS_IN_SUITE    TraceTestStatus = 2
+	TraceTestStatus_TRACE_TEST_STATUS_REMOVED     TraceTestStatus = 3
+)
+
+// Enum value maps for TraceTestStatus.
+var (
+	TraceTestStatus_name = map[int32]string{
+		0: "TRACE_TEST_STATUS_UNSPECIFIED",
+		1: "TRACE_TEST_STATUS_DRAFT",
+		2: "TRACE_TEST_STATUS_IN_SUITE",
+		3: "TRACE_TEST_STATUS_REMOVED",
+	}
+	TraceTestStatus_value = map[string]int32{
+		"TRACE_TEST_STATUS_UNSPECIFIED": 0,
+		"TRACE_TEST_STATUS_DRAFT":       1,
+		"TRACE_TEST_STATUS_IN_SUITE":    2,
+		"TRACE_TEST_STATUS_REMOVED":     3,
+	}
+)
+
+func (x TraceTestStatus) Enum() *TraceTestStatus {
+	p := new(TraceTestStatus)
+	*p = x
+	return p
+}
+
+func (x TraceTestStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (TraceTestStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_backend_test_run_service_proto_enumTypes[0].Descriptor()
+}
+
+func (TraceTestStatus) Type() protoreflect.EnumType {
+	return &file_backend_test_run_service_proto_enumTypes[0]
+}
+
+func (x TraceTestStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use TraceTestStatus.Descriptor instead.
+func (TraceTestStatus) EnumDescriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{0}
+}
+
 type MatchScope int32
 
 const (
@@ -55,11 +107,11 @@ func (x MatchScope) String() string {
 }
 
 func (MatchScope) Descriptor() protoreflect.EnumDescriptor {
-	return file_backend_test_run_service_proto_enumTypes[0].Descriptor()
+	return file_backend_test_run_service_proto_enumTypes[1].Descriptor()
 }
 
 func (MatchScope) Type() protoreflect.EnumType {
-	return &file_backend_test_run_service_proto_enumTypes[0]
+	return &file_backend_test_run_service_proto_enumTypes[1]
 }
 
 func (x MatchScope) Number() protoreflect.EnumNumber {
@@ -68,7 +120,7 @@ func (x MatchScope) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MatchScope.Descriptor instead.
 func (MatchScope) EnumDescriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{0}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{1}
 }
 
 type MatchType int32
@@ -116,11 +168,11 @@ func (x MatchType) String() string {
 }
 
 func (MatchType) Descriptor() protoreflect.EnumDescriptor {
-	return file_backend_test_run_service_proto_enumTypes[1].Descriptor()
+	return file_backend_test_run_service_proto_enumTypes[2].Descriptor()
 }
 
 func (MatchType) Type() protoreflect.EnumType {
-	return &file_backend_test_run_service_proto_enumTypes[1]
+	return &file_backend_test_run_service_proto_enumTypes[2]
 }
 
 func (x MatchType) Number() protoreflect.EnumNumber {
@@ -129,7 +181,7 @@ func (x MatchType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MatchType.Descriptor instead.
 func (MatchType) EnumDescriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{1}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{2}
 }
 
 type TraceTestFailureReason int32
@@ -168,11 +220,11 @@ func (x TraceTestFailureReason) String() string {
 }
 
 func (TraceTestFailureReason) Descriptor() protoreflect.EnumDescriptor {
-	return file_backend_test_run_service_proto_enumTypes[2].Descriptor()
+	return file_backend_test_run_service_proto_enumTypes[3].Descriptor()
 }
 
 func (TraceTestFailureReason) Type() protoreflect.EnumType {
-	return &file_backend_test_run_service_proto_enumTypes[2]
+	return &file_backend_test_run_service_proto_enumTypes[3]
 }
 
 func (x TraceTestFailureReason) Number() protoreflect.EnumNumber {
@@ -181,7 +233,7 @@ func (x TraceTestFailureReason) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use TraceTestFailureReason.Descriptor instead.
 func (TraceTestFailureReason) EnumDescriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{2}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{3}
 }
 
 type DriftRunCIStatus int32
@@ -220,11 +272,11 @@ func (x DriftRunCIStatus) String() string {
 }
 
 func (DriftRunCIStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_backend_test_run_service_proto_enumTypes[3].Descriptor()
+	return file_backend_test_run_service_proto_enumTypes[4].Descriptor()
 }
 
 func (DriftRunCIStatus) Type() protoreflect.EnumType {
-	return &file_backend_test_run_service_proto_enumTypes[3]
+	return &file_backend_test_run_service_proto_enumTypes[4]
 }
 
 func (x DriftRunCIStatus) Number() protoreflect.EnumNumber {
@@ -233,7 +285,7 @@ func (x DriftRunCIStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use DriftRunCIStatus.Descriptor instead.
 func (DriftRunCIStatus) EnumDescriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{3}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{4}
 }
 
 type GetGlobalSpansRequest struct {
@@ -750,12 +802,15 @@ type CreateDriftRunRequest struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
 	CliVersion          string                 `protobuf:"bytes,2,opt,name=cli_version,json=cliVersion,proto3" json:"cli_version,omitempty"`
-	CommitSha           string                 `protobuf:"bytes,3,opt,name=commit_sha,json=commitSha,proto3" json:"commit_sha,omitempty"`
-	PrNumber            string                 `protobuf:"bytes,4,opt,name=pr_number,json=prNumber,proto3" json:"pr_number,omitempty"`
-	BranchName          string                 `protobuf:"bytes,5,opt,name=branch_name,json=branchName,proto3" json:"branch_name,omitempty"`
-	ExternalCheckRunId  string                 `protobuf:"bytes,6,opt,name=external_check_run_id,json=externalCheckRunId,proto3" json:"external_check_run_id,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+	// These fields are optional for validation runs
+	CommitSha          *string `protobuf:"bytes,3,opt,name=commit_sha,json=commitSha,proto3,oneof" json:"commit_sha,omitempty"`
+	PrNumber           *string `protobuf:"bytes,4,opt,name=pr_number,json=prNumber,proto3,oneof" json:"pr_number,omitempty"`
+	BranchName         *string `protobuf:"bytes,5,opt,name=branch_name,json=branchName,proto3,oneof" json:"branch_name,omitempty"`
+	ExternalCheckRunId *string `protobuf:"bytes,6,opt,name=external_check_run_id,json=externalCheckRunId,proto3,oneof" json:"external_check_run_id,omitempty"`
+	// Indicates this is a validation run on the default branch
+	IsValidationRun bool `protobuf:"varint,7,opt,name=is_validation_run,json=isValidationRun,proto3" json:"is_validation_run,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *CreateDriftRunRequest) Reset() {
@@ -803,31 +858,38 @@ func (x *CreateDriftRunRequest) GetCliVersion() string {
 }
 
 func (x *CreateDriftRunRequest) GetCommitSha() string {
-	if x != nil {
-		return x.CommitSha
+	if x != nil && x.CommitSha != nil {
+		return *x.CommitSha
 	}
 	return ""
 }
 
 func (x *CreateDriftRunRequest) GetPrNumber() string {
-	if x != nil {
-		return x.PrNumber
+	if x != nil && x.PrNumber != nil {
+		return *x.PrNumber
 	}
 	return ""
 }
 
 func (x *CreateDriftRunRequest) GetBranchName() string {
-	if x != nil {
-		return x.BranchName
+	if x != nil && x.BranchName != nil {
+		return *x.BranchName
 	}
 	return ""
 }
 
 func (x *CreateDriftRunRequest) GetExternalCheckRunId() string {
-	if x != nil {
-		return x.ExternalCheckRunId
+	if x != nil && x.ExternalCheckRunId != nil {
+		return *x.ExternalCheckRunId
 	}
 	return ""
+}
+
+func (x *CreateDriftRunRequest) GetIsValidationRun() bool {
+	if x != nil {
+		return x.IsValidationRun
+	}
+	return false
 }
 
 type CreateDriftRunResponseSuccess struct {
@@ -1077,8 +1139,10 @@ type TraceTest struct {
 	TraceId               string                 `protobuf:"bytes,2,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
 	ServerSpanRecordingId string                 `protobuf:"bytes,3,opt,name=server_span_recording_id,json=serverSpanRecordingId,proto3" json:"server_span_recording_id,omitempty"`
 	Spans                 []*core.Span           `protobuf:"bytes,4,rep,name=spans,proto3" json:"spans,omitempty"`
-	unknownFields         protoimpl.UnknownFields
-	sizeCache             protoimpl.SizeCache
+	// Status of the trace test (DRAFT, IN_SUITE, REMOVED)
+	Status        TraceTestStatus `protobuf:"varint,5,opt,name=status,proto3,enum=tusk.drift.backend.v1.TraceTestStatus" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TraceTest) Reset() {
@@ -1137,6 +1201,13 @@ func (x *TraceTest) GetSpans() []*core.Span {
 		return x.Spans
 	}
 	return nil
+}
+
+func (x *TraceTest) GetStatus() TraceTestStatus {
+	if x != nil {
+		return x.Status
+	}
+	return TraceTestStatus_TRACE_TEST_STATUS_UNSPECIFIED
 }
 
 type GetDriftRunTraceTestsResponseSuccess struct {
@@ -2657,8 +2728,8 @@ func (*UpdateDriftRunCIStatusResponse_Success) isUpdateDriftRunCIStatusResponse_
 
 func (*UpdateDriftRunCIStatusResponse_Error) isUpdateDriftRunCIStatusResponse_Response() {}
 
-// GetDraftTraceTests - Get draft traces not yet in the test suite
-type GetDraftTraceTestsRequest struct {
+// GetValidationTraceTests - Get all traces for validation (DRAFT and IN_SUITE)
+type GetValidationTraceTestsRequest struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
 	PaginationCursor    *string                `protobuf:"bytes,2,opt,name=pagination_cursor,json=paginationCursor,proto3,oneof" json:"pagination_cursor,omitempty"`
@@ -2667,20 +2738,20 @@ type GetDraftTraceTestsRequest struct {
 	sizeCache           protoimpl.SizeCache
 }
 
-func (x *GetDraftTraceTestsRequest) Reset() {
-	*x = GetDraftTraceTestsRequest{}
+func (x *GetValidationTraceTestsRequest) Reset() {
+	*x = GetValidationTraceTestsRequest{}
 	mi := &file_backend_test_run_service_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDraftTraceTestsRequest) String() string {
+func (x *GetValidationTraceTestsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDraftTraceTestsRequest) ProtoMessage() {}
+func (*GetValidationTraceTestsRequest) ProtoMessage() {}
 
-func (x *GetDraftTraceTestsRequest) ProtoReflect() protoreflect.Message {
+func (x *GetValidationTraceTestsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_backend_test_run_service_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2692,33 +2763,33 @@ func (x *GetDraftTraceTestsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDraftTraceTestsRequest.ProtoReflect.Descriptor instead.
-func (*GetDraftTraceTestsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetValidationTraceTestsRequest.ProtoReflect.Descriptor instead.
+func (*GetValidationTraceTestsRequest) Descriptor() ([]byte, []int) {
 	return file_backend_test_run_service_proto_rawDescGZIP(), []int{38}
 }
 
-func (x *GetDraftTraceTestsRequest) GetObservableServiceId() string {
+func (x *GetValidationTraceTestsRequest) GetObservableServiceId() string {
 	if x != nil {
 		return x.ObservableServiceId
 	}
 	return ""
 }
 
-func (x *GetDraftTraceTestsRequest) GetPaginationCursor() string {
+func (x *GetValidationTraceTestsRequest) GetPaginationCursor() string {
 	if x != nil && x.PaginationCursor != nil {
 		return *x.PaginationCursor
 	}
 	return ""
 }
 
-func (x *GetDraftTraceTestsRequest) GetPageSize() int32 {
+func (x *GetValidationTraceTestsRequest) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-type GetDraftTraceTestsResponseSuccess struct {
+type GetValidationTraceTestsResponseSuccess struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	TraceTests    []*TraceTest           `protobuf:"bytes,1,rep,name=trace_tests,json=traceTests,proto3" json:"trace_tests,omitempty"`
 	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
@@ -2727,20 +2798,20 @@ type GetDraftTraceTestsResponseSuccess struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDraftTraceTestsResponseSuccess) Reset() {
-	*x = GetDraftTraceTestsResponseSuccess{}
+func (x *GetValidationTraceTestsResponseSuccess) Reset() {
+	*x = GetValidationTraceTestsResponseSuccess{}
 	mi := &file_backend_test_run_service_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDraftTraceTestsResponseSuccess) String() string {
+func (x *GetValidationTraceTestsResponseSuccess) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDraftTraceTestsResponseSuccess) ProtoMessage() {}
+func (*GetValidationTraceTestsResponseSuccess) ProtoMessage() {}
 
-func (x *GetDraftTraceTestsResponseSuccess) ProtoReflect() protoreflect.Message {
+func (x *GetValidationTraceTestsResponseSuccess) ProtoReflect() protoreflect.Message {
 	mi := &file_backend_test_run_service_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2752,33 +2823,33 @@ func (x *GetDraftTraceTestsResponseSuccess) ProtoReflect() protoreflect.Message 
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDraftTraceTestsResponseSuccess.ProtoReflect.Descriptor instead.
-func (*GetDraftTraceTestsResponseSuccess) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetValidationTraceTestsResponseSuccess.ProtoReflect.Descriptor instead.
+func (*GetValidationTraceTestsResponseSuccess) Descriptor() ([]byte, []int) {
 	return file_backend_test_run_service_proto_rawDescGZIP(), []int{39}
 }
 
-func (x *GetDraftTraceTestsResponseSuccess) GetTraceTests() []*TraceTest {
+func (x *GetValidationTraceTestsResponseSuccess) GetTraceTests() []*TraceTest {
 	if x != nil {
 		return x.TraceTests
 	}
 	return nil
 }
 
-func (x *GetDraftTraceTestsResponseSuccess) GetNextCursor() string {
+func (x *GetValidationTraceTestsResponseSuccess) GetNextCursor() string {
 	if x != nil && x.NextCursor != nil {
 		return *x.NextCursor
 	}
 	return ""
 }
 
-func (x *GetDraftTraceTestsResponseSuccess) GetTotalCount() int32 {
+func (x *GetValidationTraceTestsResponseSuccess) GetTotalCount() int32 {
 	if x != nil {
 		return x.TotalCount
 	}
 	return 0
 }
 
-type GetDraftTraceTestsResponseError struct {
+type GetValidationTraceTestsResponseError struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
@@ -2786,20 +2857,20 @@ type GetDraftTraceTestsResponseError struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDraftTraceTestsResponseError) Reset() {
-	*x = GetDraftTraceTestsResponseError{}
+func (x *GetValidationTraceTestsResponseError) Reset() {
+	*x = GetValidationTraceTestsResponseError{}
 	mi := &file_backend_test_run_service_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDraftTraceTestsResponseError) String() string {
+func (x *GetValidationTraceTestsResponseError) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDraftTraceTestsResponseError) ProtoMessage() {}
+func (*GetValidationTraceTestsResponseError) ProtoMessage() {}
 
-func (x *GetDraftTraceTestsResponseError) ProtoReflect() protoreflect.Message {
+func (x *GetValidationTraceTestsResponseError) ProtoReflect() protoreflect.Message {
 	mi := &file_backend_test_run_service_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2811,50 +2882,50 @@ func (x *GetDraftTraceTestsResponseError) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDraftTraceTestsResponseError.ProtoReflect.Descriptor instead.
-func (*GetDraftTraceTestsResponseError) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetValidationTraceTestsResponseError.ProtoReflect.Descriptor instead.
+func (*GetValidationTraceTestsResponseError) Descriptor() ([]byte, []int) {
 	return file_backend_test_run_service_proto_rawDescGZIP(), []int{40}
 }
 
-func (x *GetDraftTraceTestsResponseError) GetCode() string {
+func (x *GetValidationTraceTestsResponseError) GetCode() string {
 	if x != nil {
 		return x.Code
 	}
 	return ""
 }
 
-func (x *GetDraftTraceTestsResponseError) GetMessage() string {
+func (x *GetValidationTraceTestsResponseError) GetMessage() string {
 	if x != nil {
 		return x.Message
 	}
 	return ""
 }
 
-type GetDraftTraceTestsResponse struct {
+type GetValidationTraceTestsResponse struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to Response:
 	//
-	//	*GetDraftTraceTestsResponse_Success
-	//	*GetDraftTraceTestsResponse_Error
-	Response      isGetDraftTraceTestsResponse_Response `protobuf_oneof:"response"`
+	//	*GetValidationTraceTestsResponse_Success
+	//	*GetValidationTraceTestsResponse_Error
+	Response      isGetValidationTraceTestsResponse_Response `protobuf_oneof:"response"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDraftTraceTestsResponse) Reset() {
-	*x = GetDraftTraceTestsResponse{}
+func (x *GetValidationTraceTestsResponse) Reset() {
+	*x = GetValidationTraceTestsResponse{}
 	mi := &file_backend_test_run_service_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDraftTraceTestsResponse) String() string {
+func (x *GetValidationTraceTestsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDraftTraceTestsResponse) ProtoMessage() {}
+func (*GetValidationTraceTestsResponse) ProtoMessage() {}
 
-func (x *GetDraftTraceTestsResponse) ProtoReflect() protoreflect.Message {
+func (x *GetValidationTraceTestsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_backend_test_run_service_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -2866,744 +2937,51 @@ func (x *GetDraftTraceTestsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDraftTraceTestsResponse.ProtoReflect.Descriptor instead.
-func (*GetDraftTraceTestsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetValidationTraceTestsResponse.ProtoReflect.Descriptor instead.
+func (*GetValidationTraceTestsResponse) Descriptor() ([]byte, []int) {
 	return file_backend_test_run_service_proto_rawDescGZIP(), []int{41}
 }
 
-func (x *GetDraftTraceTestsResponse) GetResponse() isGetDraftTraceTestsResponse_Response {
+func (x *GetValidationTraceTestsResponse) GetResponse() isGetValidationTraceTestsResponse_Response {
 	if x != nil {
 		return x.Response
 	}
 	return nil
 }
 
-func (x *GetDraftTraceTestsResponse) GetSuccess() *GetDraftTraceTestsResponseSuccess {
+func (x *GetValidationTraceTestsResponse) GetSuccess() *GetValidationTraceTestsResponseSuccess {
 	if x != nil {
-		if x, ok := x.Response.(*GetDraftTraceTestsResponse_Success); ok {
+		if x, ok := x.Response.(*GetValidationTraceTestsResponse_Success); ok {
 			return x.Success
 		}
 	}
 	return nil
 }
 
-func (x *GetDraftTraceTestsResponse) GetError() *GetDraftTraceTestsResponseError {
+func (x *GetValidationTraceTestsResponse) GetError() *GetValidationTraceTestsResponseError {
 	if x != nil {
-		if x, ok := x.Response.(*GetDraftTraceTestsResponse_Error); ok {
+		if x, ok := x.Response.(*GetValidationTraceTestsResponse_Error); ok {
 			return x.Error
 		}
 	}
 	return nil
 }
 
-type isGetDraftTraceTestsResponse_Response interface {
-	isGetDraftTraceTestsResponse_Response()
+type isGetValidationTraceTestsResponse_Response interface {
+	isGetValidationTraceTestsResponse_Response()
 }
 
-type GetDraftTraceTestsResponse_Success struct {
-	Success *GetDraftTraceTestsResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+type GetValidationTraceTestsResponse_Success struct {
+	Success *GetValidationTraceTestsResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
 }
 
-type GetDraftTraceTestsResponse_Error struct {
-	Error *GetDraftTraceTestsResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+type GetValidationTraceTestsResponse_Error struct {
+	Error *GetValidationTraceTestsResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
 }
 
-func (*GetDraftTraceTestsResponse_Success) isGetDraftTraceTestsResponse_Response() {}
+func (*GetValidationTraceTestsResponse_Success) isGetValidationTraceTestsResponse_Response() {}
 
-func (*GetDraftTraceTestsResponse_Error) isGetDraftTraceTestsResponse_Response() {}
-
-// MarkSpansAsGlobal - Mark spans as global for cross-trace matching
-type MarkSpansAsGlobalRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
-	SpanIds             []string               `protobuf:"bytes,2,rep,name=span_ids,json=spanIds,proto3" json:"span_ids,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *MarkSpansAsGlobalRequest) Reset() {
-	*x = MarkSpansAsGlobalRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[42]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MarkSpansAsGlobalRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MarkSpansAsGlobalRequest) ProtoMessage() {}
-
-func (x *MarkSpansAsGlobalRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[42]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MarkSpansAsGlobalRequest.ProtoReflect.Descriptor instead.
-func (*MarkSpansAsGlobalRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{42}
-}
-
-func (x *MarkSpansAsGlobalRequest) GetObservableServiceId() string {
-	if x != nil {
-		return x.ObservableServiceId
-	}
-	return ""
-}
-
-func (x *MarkSpansAsGlobalRequest) GetSpanIds() []string {
-	if x != nil {
-		return x.SpanIds
-	}
-	return nil
-}
-
-type MarkSpansAsGlobalResponseSuccess struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SpansMarked   int32                  `protobuf:"varint,1,opt,name=spans_marked,json=spansMarked,proto3" json:"spans_marked,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MarkSpansAsGlobalResponseSuccess) Reset() {
-	*x = MarkSpansAsGlobalResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[43]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MarkSpansAsGlobalResponseSuccess) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MarkSpansAsGlobalResponseSuccess) ProtoMessage() {}
-
-func (x *MarkSpansAsGlobalResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[43]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MarkSpansAsGlobalResponseSuccess.ProtoReflect.Descriptor instead.
-func (*MarkSpansAsGlobalResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{43}
-}
-
-func (x *MarkSpansAsGlobalResponseSuccess) GetSpansMarked() int32 {
-	if x != nil {
-		return x.SpansMarked
-	}
-	return 0
-}
-
-type MarkSpansAsGlobalResponseError struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MarkSpansAsGlobalResponseError) Reset() {
-	*x = MarkSpansAsGlobalResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[44]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MarkSpansAsGlobalResponseError) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MarkSpansAsGlobalResponseError) ProtoMessage() {}
-
-func (x *MarkSpansAsGlobalResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[44]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MarkSpansAsGlobalResponseError.ProtoReflect.Descriptor instead.
-func (*MarkSpansAsGlobalResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{44}
-}
-
-func (x *MarkSpansAsGlobalResponseError) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *MarkSpansAsGlobalResponseError) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-type MarkSpansAsGlobalResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Response:
-	//
-	//	*MarkSpansAsGlobalResponse_Success
-	//	*MarkSpansAsGlobalResponse_Error
-	Response      isMarkSpansAsGlobalResponse_Response `protobuf_oneof:"response"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *MarkSpansAsGlobalResponse) Reset() {
-	*x = MarkSpansAsGlobalResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[45]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *MarkSpansAsGlobalResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*MarkSpansAsGlobalResponse) ProtoMessage() {}
-
-func (x *MarkSpansAsGlobalResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[45]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use MarkSpansAsGlobalResponse.ProtoReflect.Descriptor instead.
-func (*MarkSpansAsGlobalResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{45}
-}
-
-func (x *MarkSpansAsGlobalResponse) GetResponse() isMarkSpansAsGlobalResponse_Response {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
-
-func (x *MarkSpansAsGlobalResponse) GetSuccess() *MarkSpansAsGlobalResponseSuccess {
-	if x != nil {
-		if x, ok := x.Response.(*MarkSpansAsGlobalResponse_Success); ok {
-			return x.Success
-		}
-	}
-	return nil
-}
-
-func (x *MarkSpansAsGlobalResponse) GetError() *MarkSpansAsGlobalResponseError {
-	if x != nil {
-		if x, ok := x.Response.(*MarkSpansAsGlobalResponse_Error); ok {
-			return x.Error
-		}
-	}
-	return nil
-}
-
-type isMarkSpansAsGlobalResponse_Response interface {
-	isMarkSpansAsGlobalResponse_Response()
-}
-
-type MarkSpansAsGlobalResponse_Success struct {
-	Success *MarkSpansAsGlobalResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
-}
-
-type MarkSpansAsGlobalResponse_Error struct {
-	Error *MarkSpansAsGlobalResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
-}
-
-func (*MarkSpansAsGlobalResponse_Success) isMarkSpansAsGlobalResponse_Response() {}
-
-func (*MarkSpansAsGlobalResponse_Error) isMarkSpansAsGlobalResponse_Response() {}
-
-// DeleteFailedDraftTraces - Delete draft traces that failed validation
-type DeleteFailedDraftTracesRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
-	TraceTestIds        []string               `protobuf:"bytes,2,rep,name=trace_test_ids,json=traceTestIds,proto3" json:"trace_test_ids,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *DeleteFailedDraftTracesRequest) Reset() {
-	*x = DeleteFailedDraftTracesRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[46]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFailedDraftTracesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFailedDraftTracesRequest) ProtoMessage() {}
-
-func (x *DeleteFailedDraftTracesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[46]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFailedDraftTracesRequest.ProtoReflect.Descriptor instead.
-func (*DeleteFailedDraftTracesRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{46}
-}
-
-func (x *DeleteFailedDraftTracesRequest) GetObservableServiceId() string {
-	if x != nil {
-		return x.ObservableServiceId
-	}
-	return ""
-}
-
-func (x *DeleteFailedDraftTracesRequest) GetTraceTestIds() []string {
-	if x != nil {
-		return x.TraceTestIds
-	}
-	return nil
-}
-
-type DeleteFailedDraftTracesResponseSuccess struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TracesDeleted int32                  `protobuf:"varint,1,opt,name=traces_deleted,json=tracesDeleted,proto3" json:"traces_deleted,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFailedDraftTracesResponseSuccess) Reset() {
-	*x = DeleteFailedDraftTracesResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[47]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFailedDraftTracesResponseSuccess) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFailedDraftTracesResponseSuccess) ProtoMessage() {}
-
-func (x *DeleteFailedDraftTracesResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[47]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFailedDraftTracesResponseSuccess.ProtoReflect.Descriptor instead.
-func (*DeleteFailedDraftTracesResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{47}
-}
-
-func (x *DeleteFailedDraftTracesResponseSuccess) GetTracesDeleted() int32 {
-	if x != nil {
-		return x.TracesDeleted
-	}
-	return 0
-}
-
-type DeleteFailedDraftTracesResponseError struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFailedDraftTracesResponseError) Reset() {
-	*x = DeleteFailedDraftTracesResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[48]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFailedDraftTracesResponseError) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFailedDraftTracesResponseError) ProtoMessage() {}
-
-func (x *DeleteFailedDraftTracesResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[48]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFailedDraftTracesResponseError.ProtoReflect.Descriptor instead.
-func (*DeleteFailedDraftTracesResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{48}
-}
-
-func (x *DeleteFailedDraftTracesResponseError) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *DeleteFailedDraftTracesResponseError) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-type DeleteFailedDraftTracesResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Response:
-	//
-	//	*DeleteFailedDraftTracesResponse_Success
-	//	*DeleteFailedDraftTracesResponse_Error
-	Response      isDeleteFailedDraftTracesResponse_Response `protobuf_oneof:"response"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFailedDraftTracesResponse) Reset() {
-	*x = DeleteFailedDraftTracesResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[49]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFailedDraftTracesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFailedDraftTracesResponse) ProtoMessage() {}
-
-func (x *DeleteFailedDraftTracesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[49]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFailedDraftTracesResponse.ProtoReflect.Descriptor instead.
-func (*DeleteFailedDraftTracesResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{49}
-}
-
-func (x *DeleteFailedDraftTracesResponse) GetResponse() isDeleteFailedDraftTracesResponse_Response {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
-
-func (x *DeleteFailedDraftTracesResponse) GetSuccess() *DeleteFailedDraftTracesResponseSuccess {
-	if x != nil {
-		if x, ok := x.Response.(*DeleteFailedDraftTracesResponse_Success); ok {
-			return x.Success
-		}
-	}
-	return nil
-}
-
-func (x *DeleteFailedDraftTracesResponse) GetError() *DeleteFailedDraftTracesResponseError {
-	if x != nil {
-		if x, ok := x.Response.(*DeleteFailedDraftTracesResponse_Error); ok {
-			return x.Error
-		}
-	}
-	return nil
-}
-
-type isDeleteFailedDraftTracesResponse_Response interface {
-	isDeleteFailedDraftTracesResponse_Response()
-}
-
-type DeleteFailedDraftTracesResponse_Success struct {
-	Success *DeleteFailedDraftTracesResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
-}
-
-type DeleteFailedDraftTracesResponse_Error struct {
-	Error *DeleteFailedDraftTracesResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
-}
-
-func (*DeleteFailedDraftTracesResponse_Success) isDeleteFailedDraftTracesResponse_Response() {}
-
-func (*DeleteFailedDraftTracesResponse_Error) isDeleteFailedDraftTracesResponse_Response() {}
-
-// AddTracesToSuite - Add validated traces to the test suite
-type AddTracesToSuiteRequest struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
-	TraceTestIds        []string               `protobuf:"bytes,2,rep,name=trace_test_ids,json=traceTestIds,proto3" json:"trace_test_ids,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *AddTracesToSuiteRequest) Reset() {
-	*x = AddTracesToSuiteRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[50]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddTracesToSuiteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddTracesToSuiteRequest) ProtoMessage() {}
-
-func (x *AddTracesToSuiteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[50]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddTracesToSuiteRequest.ProtoReflect.Descriptor instead.
-func (*AddTracesToSuiteRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{50}
-}
-
-func (x *AddTracesToSuiteRequest) GetObservableServiceId() string {
-	if x != nil {
-		return x.ObservableServiceId
-	}
-	return ""
-}
-
-func (x *AddTracesToSuiteRequest) GetTraceTestIds() []string {
-	if x != nil {
-		return x.TraceTestIds
-	}
-	return nil
-}
-
-type AddTracesToSuiteResponseSuccess struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TracesAdded   int32                  `protobuf:"varint,1,opt,name=traces_added,json=tracesAdded,proto3" json:"traces_added,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddTracesToSuiteResponseSuccess) Reset() {
-	*x = AddTracesToSuiteResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[51]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddTracesToSuiteResponseSuccess) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddTracesToSuiteResponseSuccess) ProtoMessage() {}
-
-func (x *AddTracesToSuiteResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[51]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddTracesToSuiteResponseSuccess.ProtoReflect.Descriptor instead.
-func (*AddTracesToSuiteResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{51}
-}
-
-func (x *AddTracesToSuiteResponseSuccess) GetTracesAdded() int32 {
-	if x != nil {
-		return x.TracesAdded
-	}
-	return 0
-}
-
-type AddTracesToSuiteResponseError struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddTracesToSuiteResponseError) Reset() {
-	*x = AddTracesToSuiteResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[52]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddTracesToSuiteResponseError) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddTracesToSuiteResponseError) ProtoMessage() {}
-
-func (x *AddTracesToSuiteResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[52]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddTracesToSuiteResponseError.ProtoReflect.Descriptor instead.
-func (*AddTracesToSuiteResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{52}
-}
-
-func (x *AddTracesToSuiteResponseError) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *AddTracesToSuiteResponseError) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-type AddTracesToSuiteResponse struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Types that are valid to be assigned to Response:
-	//
-	//	*AddTracesToSuiteResponse_Success
-	//	*AddTracesToSuiteResponse_Error
-	Response      isAddTracesToSuiteResponse_Response `protobuf_oneof:"response"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddTracesToSuiteResponse) Reset() {
-	*x = AddTracesToSuiteResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[53]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddTracesToSuiteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddTracesToSuiteResponse) ProtoMessage() {}
-
-func (x *AddTracesToSuiteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[53]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddTracesToSuiteResponse.ProtoReflect.Descriptor instead.
-func (*AddTracesToSuiteResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{53}
-}
-
-func (x *AddTracesToSuiteResponse) GetResponse() isAddTracesToSuiteResponse_Response {
-	if x != nil {
-		return x.Response
-	}
-	return nil
-}
-
-func (x *AddTracesToSuiteResponse) GetSuccess() *AddTracesToSuiteResponseSuccess {
-	if x != nil {
-		if x, ok := x.Response.(*AddTracesToSuiteResponse_Success); ok {
-			return x.Success
-		}
-	}
-	return nil
-}
-
-func (x *AddTracesToSuiteResponse) GetError() *AddTracesToSuiteResponseError {
-	if x != nil {
-		if x, ok := x.Response.(*AddTracesToSuiteResponse_Error); ok {
-			return x.Error
-		}
-	}
-	return nil
-}
-
-type isAddTracesToSuiteResponse_Response interface {
-	isAddTracesToSuiteResponse_Response()
-}
-
-type AddTracesToSuiteResponse_Success struct {
-	Success *AddTracesToSuiteResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
-}
-
-type AddTracesToSuiteResponse_Error struct {
-	Error *AddTracesToSuiteResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
-}
-
-func (*AddTracesToSuiteResponse_Success) isAddTracesToSuiteResponse_Response() {}
-
-func (*AddTracesToSuiteResponse_Error) isAddTracesToSuiteResponse_Response() {}
+func (*GetValidationTraceTestsResponse_Error) isGetValidationTraceTestsResponse_Response() {}
 
 var File_backend_test_run_service_proto protoreflect.FileDescriptor
 
@@ -3649,17 +3027,23 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\v29.tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccessH\x00R\asuccess\x12O\n" +
 	"\x05error\x18\x02 \x01(\v27.tusk.drift.backend.v1.GetPreAppStartSpansResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
-	"\bresponse\"\xfc\x01\n" +
+	"\bresponse\"\x83\x03\n" +
 	"\x15CreateDriftRunRequest\x122\n" +
 	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x12\x1f\n" +
 	"\vcli_version\x18\x02 \x01(\tR\n" +
-	"cliVersion\x12\x1d\n" +
+	"cliVersion\x12\"\n" +
 	"\n" +
-	"commit_sha\x18\x03 \x01(\tR\tcommitSha\x12\x1b\n" +
-	"\tpr_number\x18\x04 \x01(\tR\bprNumber\x12\x1f\n" +
-	"\vbranch_name\x18\x05 \x01(\tR\n" +
-	"branchName\x121\n" +
-	"\x15external_check_run_id\x18\x06 \x01(\tR\x12externalCheckRunId\"A\n" +
+	"commit_sha\x18\x03 \x01(\tH\x00R\tcommitSha\x88\x01\x01\x12 \n" +
+	"\tpr_number\x18\x04 \x01(\tH\x01R\bprNumber\x88\x01\x01\x12$\n" +
+	"\vbranch_name\x18\x05 \x01(\tH\x02R\n" +
+	"branchName\x88\x01\x01\x126\n" +
+	"\x15external_check_run_id\x18\x06 \x01(\tH\x03R\x12externalCheckRunId\x88\x01\x01\x12*\n" +
+	"\x11is_validation_run\x18\a \x01(\bR\x0fisValidationRunB\r\n" +
+	"\v_commit_shaB\f\n" +
+	"\n" +
+	"_pr_numberB\x0e\n" +
+	"\f_branch_nameB\x18\n" +
+	"\x16_external_check_run_id\"A\n" +
 	"\x1dCreateDriftRunResponseSuccess\x12 \n" +
 	"\fdrift_run_id\x18\x01 \x01(\tR\n" +
 	"driftRunId\"K\n" +
@@ -3676,12 +3060,13 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"driftRunId\x120\n" +
 	"\x11pagination_cursor\x18\x02 \x01(\tH\x00R\x10paginationCursor\x88\x01\x01\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSizeB\x14\n" +
-	"\x12_pagination_cursor\"\x9f\x01\n" +
+	"\x12_pagination_cursor\"\xdf\x01\n" +
 	"\tTraceTest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\btrace_id\x18\x02 \x01(\tR\atraceId\x127\n" +
 	"\x18server_span_recording_id\x18\x03 \x01(\tR\x15serverSpanRecordingId\x12.\n" +
-	"\x05spans\x18\x04 \x03(\v2\x18.tusk.drift.core.v1.SpanR\x05spans\"\xc0\x01\n" +
+	"\x05spans\x18\x04 \x03(\v2\x18.tusk.drift.core.v1.SpanR\x05spans\x12>\n" +
+	"\x06status\x18\x05 \x01(\x0e2&.tusk.drift.backend.v1.TraceTestStatusR\x06status\"\xc0\x01\n" +
 	"$GetDriftRunTraceTestsResponseSuccess\x12A\n" +
 	"\vtrace_tests\x18\x01 \x03(\v2 .tusk.drift.backend.v1.TraceTestR\n" +
 	"traceTests\x12$\n" +
@@ -3808,67 +3193,33 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\v2<.tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccessH\x00R\asuccess\x12R\n" +
 	"\x05error\x18\x02 \x01(\v2:.tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
-	"\bresponse\"\xb4\x01\n" +
-	"\x19GetDraftTraceTestsRequest\x122\n" +
+	"\bresponse\"\xb9\x01\n" +
+	"\x1eGetValidationTraceTestsRequest\x122\n" +
 	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x120\n" +
 	"\x11pagination_cursor\x18\x02 \x01(\tH\x00R\x10paginationCursor\x88\x01\x01\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSizeB\x14\n" +
-	"\x12_pagination_cursor\"\xbd\x01\n" +
-	"!GetDraftTraceTestsResponseSuccess\x12A\n" +
+	"\x12_pagination_cursor\"\xc2\x01\n" +
+	"&GetValidationTraceTestsResponseSuccess\x12A\n" +
 	"\vtrace_tests\x18\x01 \x03(\v2 .tusk.drift.backend.v1.TraceTestR\n" +
 	"traceTests\x12$\n" +
 	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
 	"nextCursor\x88\x01\x01\x12\x1f\n" +
 	"\vtotal_count\x18\x03 \x01(\x05R\n" +
 	"totalCountB\x0e\n" +
-	"\f_next_cursor\"O\n" +
-	"\x1fGetDraftTraceTestsResponseError\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xce\x01\n" +
-	"\x1aGetDraftTraceTestsResponse\x12T\n" +
-	"\asuccess\x18\x01 \x01(\v28.tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccessH\x00R\asuccess\x12N\n" +
-	"\x05error\x18\x02 \x01(\v26.tusk.drift.backend.v1.GetDraftTraceTestsResponseErrorH\x00R\x05errorB\n" +
-	"\n" +
-	"\bresponse\"i\n" +
-	"\x18MarkSpansAsGlobalRequest\x122\n" +
-	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x12\x19\n" +
-	"\bspan_ids\x18\x02 \x03(\tR\aspanIds\"E\n" +
-	" MarkSpansAsGlobalResponseSuccess\x12!\n" +
-	"\fspans_marked\x18\x01 \x01(\x05R\vspansMarked\"N\n" +
-	"\x1eMarkSpansAsGlobalResponseError\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xcb\x01\n" +
-	"\x19MarkSpansAsGlobalResponse\x12S\n" +
-	"\asuccess\x18\x01 \x01(\v27.tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccessH\x00R\asuccess\x12M\n" +
-	"\x05error\x18\x02 \x01(\v25.tusk.drift.backend.v1.MarkSpansAsGlobalResponseErrorH\x00R\x05errorB\n" +
-	"\n" +
-	"\bresponse\"z\n" +
-	"\x1eDeleteFailedDraftTracesRequest\x122\n" +
-	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x12$\n" +
-	"\x0etrace_test_ids\x18\x02 \x03(\tR\ftraceTestIds\"O\n" +
-	"&DeleteFailedDraftTracesResponseSuccess\x12%\n" +
-	"\x0etraces_deleted\x18\x01 \x01(\x05R\rtracesDeleted\"T\n" +
-	"$DeleteFailedDraftTracesResponseError\x12\x12\n" +
+	"\f_next_cursor\"T\n" +
+	"$GetValidationTraceTestsResponseError\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\"\xdd\x01\n" +
-	"\x1fDeleteFailedDraftTracesResponse\x12Y\n" +
-	"\asuccess\x18\x01 \x01(\v2=.tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccessH\x00R\asuccess\x12S\n" +
-	"\x05error\x18\x02 \x01(\v2;.tusk.drift.backend.v1.DeleteFailedDraftTracesResponseErrorH\x00R\x05errorB\n" +
+	"\x1fGetValidationTraceTestsResponse\x12Y\n" +
+	"\asuccess\x18\x01 \x01(\v2=.tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccessH\x00R\asuccess\x12S\n" +
+	"\x05error\x18\x02 \x01(\v2;.tusk.drift.backend.v1.GetValidationTraceTestsResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
-	"\bresponse\"s\n" +
-	"\x17AddTracesToSuiteRequest\x122\n" +
-	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x12$\n" +
-	"\x0etrace_test_ids\x18\x02 \x03(\tR\ftraceTestIds\"D\n" +
-	"\x1fAddTracesToSuiteResponseSuccess\x12!\n" +
-	"\ftraces_added\x18\x01 \x01(\x05R\vtracesAdded\"M\n" +
-	"\x1dAddTracesToSuiteResponseError\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xc8\x01\n" +
-	"\x18AddTracesToSuiteResponse\x12R\n" +
-	"\asuccess\x18\x01 \x01(\v26.tusk.drift.backend.v1.AddTracesToSuiteResponseSuccessH\x00R\asuccess\x12L\n" +
-	"\x05error\x18\x02 \x01(\v24.tusk.drift.backend.v1.AddTracesToSuiteResponseErrorH\x00R\x05errorB\n" +
-	"\n" +
-	"\bresponse*X\n" +
+	"\bresponse*\x90\x01\n" +
+	"\x0fTraceTestStatus\x12!\n" +
+	"\x1dTRACE_TEST_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
+	"\x17TRACE_TEST_STATUS_DRAFT\x10\x01\x12\x1e\n" +
+	"\x1aTRACE_TEST_STATUS_IN_SUITE\x10\x02\x12\x1d\n" +
+	"\x19TRACE_TEST_STATUS_REMOVED\x10\x03*X\n" +
 	"\n" +
 	"MatchScope\x12\x1b\n" +
 	"\x17MATCH_SCOPE_UNSPECIFIED\x10\x00\x12\x15\n" +
@@ -3891,7 +3242,7 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\x1fDRIFT_RUN_CI_STATUS_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bDRIFT_RUN_CI_STATUS_RUNNING\x10\x01\x12\x1f\n" +
 	"\x1bDRIFT_RUN_CI_STATUS_SUCCESS\x10\x02\x12\x1f\n" +
-	"\x1bDRIFT_RUN_CI_STATUS_FAILURE\x10\x032\xd2\v\n" +
+	"\x1bDRIFT_RUN_CI_STATUS_FAILURE\x10\x032\xea\b\n" +
 	"\x0eTestRunService\x12m\n" +
 	"\x0eGetGlobalSpans\x12,.tusk.drift.backend.v1.GetGlobalSpansRequest\x1a-.tusk.drift.backend.v1.GetGlobalSpansResponse\x12|\n" +
 	"\x13GetPreAppStartSpans\x121.tusk.drift.backend.v1.GetPreAppStartSpansRequest\x1a2.tusk.drift.backend.v1.GetPreAppStartSpansResponse\x12m\n" +
@@ -3900,11 +3251,8 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\x10GetAllTraceTests\x12..tusk.drift.backend.v1.GetAllTraceTestsRequest\x1a/.tusk.drift.backend.v1.GetAllTraceTestsResponse\x12g\n" +
 	"\fGetTraceTest\x12*.tusk.drift.backend.v1.GetTraceTestRequest\x1a+.tusk.drift.backend.v1.GetTraceTestResponse\x12\x85\x01\n" +
 	"\x16UploadTraceTestResults\x124.tusk.drift.backend.v1.UploadTraceTestResultsRequest\x1a5.tusk.drift.backend.v1.UploadTraceTestResultsResponse\x12\x85\x01\n" +
-	"\x16UpdateDriftRunCIStatus\x124.tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest\x1a5.tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse\x12y\n" +
-	"\x12GetDraftTraceTests\x120.tusk.drift.backend.v1.GetDraftTraceTestsRequest\x1a1.tusk.drift.backend.v1.GetDraftTraceTestsResponse\x12v\n" +
-	"\x11MarkSpansAsGlobal\x12/.tusk.drift.backend.v1.MarkSpansAsGlobalRequest\x1a0.tusk.drift.backend.v1.MarkSpansAsGlobalResponse\x12\x88\x01\n" +
-	"\x17DeleteFailedDraftTraces\x125.tusk.drift.backend.v1.DeleteFailedDraftTracesRequest\x1a6.tusk.drift.backend.v1.DeleteFailedDraftTracesResponse\x12s\n" +
-	"\x10AddTracesToSuite\x12..tusk.drift.backend.v1.AddTracesToSuiteRequest\x1a/.tusk.drift.backend.v1.AddTracesToSuiteResponseB\xee\x01\n" +
+	"\x16UpdateDriftRunCIStatus\x124.tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest\x1a5.tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse\x12\x88\x01\n" +
+	"\x17GetValidationTraceTests\x125.tusk.drift.backend.v1.GetValidationTraceTestsRequest\x1a6.tusk.drift.backend.v1.GetValidationTraceTestsResponseB\xee\x01\n" +
 	"\x19com.tusk.drift.backend.v1B\x13TestRunServiceProtoP\x01ZEgithub.com/Use-Tusk/tusk-drift-schemas/generated/go/backend;backendv1\xa2\x02\x03TDB\xaa\x02\x15Tusk.Drift.Backend.V1\xca\x02\x15Tusk\\Drift\\Backend\\V1\xe2\x02!Tusk\\Drift\\Backend\\V1\\GPBMetadata\xea\x02\x18Tusk::Drift::Backend::V1b\x06proto3"
 
 var (
@@ -3919,140 +3267,118 @@ func file_backend_test_run_service_proto_rawDescGZIP() []byte {
 	return file_backend_test_run_service_proto_rawDescData
 }
 
-var file_backend_test_run_service_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 54)
+var file_backend_test_run_service_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 42)
 var file_backend_test_run_service_proto_goTypes = []any{
-	(MatchScope)(0),                                // 0: tusk.drift.backend.v1.MatchScope
-	(MatchType)(0),                                 // 1: tusk.drift.backend.v1.MatchType
-	(TraceTestFailureReason)(0),                    // 2: tusk.drift.backend.v1.TraceTestFailureReason
-	(DriftRunCIStatus)(0),                          // 3: tusk.drift.backend.v1.DriftRunCIStatus
-	(*GetGlobalSpansRequest)(nil),                  // 4: tusk.drift.backend.v1.GetGlobalSpansRequest
-	(*GetGlobalSpansResponseSuccess)(nil),          // 5: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
-	(*GetGlobalSpansResponseError)(nil),            // 6: tusk.drift.backend.v1.GetGlobalSpansResponseError
-	(*GetGlobalSpansResponse)(nil),                 // 7: tusk.drift.backend.v1.GetGlobalSpansResponse
-	(*GetPreAppStartSpansRequest)(nil),             // 8: tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	(*GetPreAppStartSpansResponseSuccess)(nil),     // 9: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
-	(*GetPreAppStartSpansResponseError)(nil),       // 10: tusk.drift.backend.v1.GetPreAppStartSpansResponseError
-	(*GetPreAppStartSpansResponse)(nil),            // 11: tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	(*CreateDriftRunRequest)(nil),                  // 12: tusk.drift.backend.v1.CreateDriftRunRequest
-	(*CreateDriftRunResponseSuccess)(nil),          // 13: tusk.drift.backend.v1.CreateDriftRunResponseSuccess
-	(*CreateDriftRunResponseError)(nil),            // 14: tusk.drift.backend.v1.CreateDriftRunResponseError
-	(*CreateDriftRunResponse)(nil),                 // 15: tusk.drift.backend.v1.CreateDriftRunResponse
-	(*GetDriftRunTraceTestsRequest)(nil),           // 16: tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	(*TraceTest)(nil),                              // 17: tusk.drift.backend.v1.TraceTest
-	(*GetDriftRunTraceTestsResponseSuccess)(nil),   // 18: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
-	(*GetDriftRunTraceTestsResponseError)(nil),     // 19: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseError
-	(*GetDriftRunTraceTestsResponse)(nil),          // 20: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	(*GetTraceTestRequest)(nil),                    // 21: tusk.drift.backend.v1.GetTraceTestRequest
-	(*GetTraceTestResponse)(nil),                   // 22: tusk.drift.backend.v1.GetTraceTestResponse
-	(*GetTraceTestResponseSuccess)(nil),            // 23: tusk.drift.backend.v1.GetTraceTestResponseSuccess
-	(*GetTraceTestResponseError)(nil),              // 24: tusk.drift.backend.v1.GetTraceTestResponseError
-	(*GetAllTraceTestsRequest)(nil),                // 25: tusk.drift.backend.v1.GetAllTraceTestsRequest
-	(*GetAllTraceTestsResponseSuccess)(nil),        // 26: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
-	(*GetAllTraceTestsResponseError)(nil),          // 27: tusk.drift.backend.v1.GetAllTraceTestsResponseError
-	(*GetAllTraceTestsResponse)(nil),               // 28: tusk.drift.backend.v1.GetAllTraceTestsResponse
-	(*Deviation)(nil),                              // 29: tusk.drift.backend.v1.Deviation
-	(*MatchLevel)(nil),                             // 30: tusk.drift.backend.v1.MatchLevel
-	(*SimilarityCandidate)(nil),                    // 31: tusk.drift.backend.v1.SimilarityCandidate
-	(*TraceTestSpanResult)(nil),                    // 32: tusk.drift.backend.v1.TraceTestSpanResult
-	(*TraceTestResult)(nil),                        // 33: tusk.drift.backend.v1.TraceTestResult
-	(*UploadTraceTestResultsRequest)(nil),          // 34: tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	(*UploadTraceTestResultsResponseSuccess)(nil),  // 35: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	(*UploadTraceTestResultsResponseError)(nil),    // 36: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	(*UploadTraceTestResultsResponse)(nil),         // 37: tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	(*UpdateDriftRunCIStatusRequest)(nil),          // 38: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	(*UpdateDriftRunCIStatusResponseSuccess)(nil),  // 39: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	(*UpdateDriftRunCIStatusResponseError)(nil),    // 40: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	(*UpdateDriftRunCIStatusResponse)(nil),         // 41: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	(*GetDraftTraceTestsRequest)(nil),              // 42: tusk.drift.backend.v1.GetDraftTraceTestsRequest
-	(*GetDraftTraceTestsResponseSuccess)(nil),      // 43: tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess
-	(*GetDraftTraceTestsResponseError)(nil),        // 44: tusk.drift.backend.v1.GetDraftTraceTestsResponseError
-	(*GetDraftTraceTestsResponse)(nil),             // 45: tusk.drift.backend.v1.GetDraftTraceTestsResponse
-	(*MarkSpansAsGlobalRequest)(nil),               // 46: tusk.drift.backend.v1.MarkSpansAsGlobalRequest
-	(*MarkSpansAsGlobalResponseSuccess)(nil),       // 47: tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess
-	(*MarkSpansAsGlobalResponseError)(nil),         // 48: tusk.drift.backend.v1.MarkSpansAsGlobalResponseError
-	(*MarkSpansAsGlobalResponse)(nil),              // 49: tusk.drift.backend.v1.MarkSpansAsGlobalResponse
-	(*DeleteFailedDraftTracesRequest)(nil),         // 50: tusk.drift.backend.v1.DeleteFailedDraftTracesRequest
-	(*DeleteFailedDraftTracesResponseSuccess)(nil), // 51: tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess
-	(*DeleteFailedDraftTracesResponseError)(nil),   // 52: tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError
-	(*DeleteFailedDraftTracesResponse)(nil),        // 53: tusk.drift.backend.v1.DeleteFailedDraftTracesResponse
-	(*AddTracesToSuiteRequest)(nil),                // 54: tusk.drift.backend.v1.AddTracesToSuiteRequest
-	(*AddTracesToSuiteResponseSuccess)(nil),        // 55: tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess
-	(*AddTracesToSuiteResponseError)(nil),          // 56: tusk.drift.backend.v1.AddTracesToSuiteResponseError
-	(*AddTracesToSuiteResponse)(nil),               // 57: tusk.drift.backend.v1.AddTracesToSuiteResponse
-	(*core.Span)(nil),                              // 58: tusk.drift.core.v1.Span
+	(TraceTestStatus)(0),                           // 0: tusk.drift.backend.v1.TraceTestStatus
+	(MatchScope)(0),                                // 1: tusk.drift.backend.v1.MatchScope
+	(MatchType)(0),                                 // 2: tusk.drift.backend.v1.MatchType
+	(TraceTestFailureReason)(0),                    // 3: tusk.drift.backend.v1.TraceTestFailureReason
+	(DriftRunCIStatus)(0),                          // 4: tusk.drift.backend.v1.DriftRunCIStatus
+	(*GetGlobalSpansRequest)(nil),                  // 5: tusk.drift.backend.v1.GetGlobalSpansRequest
+	(*GetGlobalSpansResponseSuccess)(nil),          // 6: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
+	(*GetGlobalSpansResponseError)(nil),            // 7: tusk.drift.backend.v1.GetGlobalSpansResponseError
+	(*GetGlobalSpansResponse)(nil),                 // 8: tusk.drift.backend.v1.GetGlobalSpansResponse
+	(*GetPreAppStartSpansRequest)(nil),             // 9: tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	(*GetPreAppStartSpansResponseSuccess)(nil),     // 10: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
+	(*GetPreAppStartSpansResponseError)(nil),       // 11: tusk.drift.backend.v1.GetPreAppStartSpansResponseError
+	(*GetPreAppStartSpansResponse)(nil),            // 12: tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	(*CreateDriftRunRequest)(nil),                  // 13: tusk.drift.backend.v1.CreateDriftRunRequest
+	(*CreateDriftRunResponseSuccess)(nil),          // 14: tusk.drift.backend.v1.CreateDriftRunResponseSuccess
+	(*CreateDriftRunResponseError)(nil),            // 15: tusk.drift.backend.v1.CreateDriftRunResponseError
+	(*CreateDriftRunResponse)(nil),                 // 16: tusk.drift.backend.v1.CreateDriftRunResponse
+	(*GetDriftRunTraceTestsRequest)(nil),           // 17: tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	(*TraceTest)(nil),                              // 18: tusk.drift.backend.v1.TraceTest
+	(*GetDriftRunTraceTestsResponseSuccess)(nil),   // 19: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
+	(*GetDriftRunTraceTestsResponseError)(nil),     // 20: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseError
+	(*GetDriftRunTraceTestsResponse)(nil),          // 21: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	(*GetTraceTestRequest)(nil),                    // 22: tusk.drift.backend.v1.GetTraceTestRequest
+	(*GetTraceTestResponse)(nil),                   // 23: tusk.drift.backend.v1.GetTraceTestResponse
+	(*GetTraceTestResponseSuccess)(nil),            // 24: tusk.drift.backend.v1.GetTraceTestResponseSuccess
+	(*GetTraceTestResponseError)(nil),              // 25: tusk.drift.backend.v1.GetTraceTestResponseError
+	(*GetAllTraceTestsRequest)(nil),                // 26: tusk.drift.backend.v1.GetAllTraceTestsRequest
+	(*GetAllTraceTestsResponseSuccess)(nil),        // 27: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
+	(*GetAllTraceTestsResponseError)(nil),          // 28: tusk.drift.backend.v1.GetAllTraceTestsResponseError
+	(*GetAllTraceTestsResponse)(nil),               // 29: tusk.drift.backend.v1.GetAllTraceTestsResponse
+	(*Deviation)(nil),                              // 30: tusk.drift.backend.v1.Deviation
+	(*MatchLevel)(nil),                             // 31: tusk.drift.backend.v1.MatchLevel
+	(*SimilarityCandidate)(nil),                    // 32: tusk.drift.backend.v1.SimilarityCandidate
+	(*TraceTestSpanResult)(nil),                    // 33: tusk.drift.backend.v1.TraceTestSpanResult
+	(*TraceTestResult)(nil),                        // 34: tusk.drift.backend.v1.TraceTestResult
+	(*UploadTraceTestResultsRequest)(nil),          // 35: tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	(*UploadTraceTestResultsResponseSuccess)(nil),  // 36: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	(*UploadTraceTestResultsResponseError)(nil),    // 37: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	(*UploadTraceTestResultsResponse)(nil),         // 38: tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	(*UpdateDriftRunCIStatusRequest)(nil),          // 39: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	(*UpdateDriftRunCIStatusResponseSuccess)(nil),  // 40: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	(*UpdateDriftRunCIStatusResponseError)(nil),    // 41: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	(*UpdateDriftRunCIStatusResponse)(nil),         // 42: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	(*GetValidationTraceTestsRequest)(nil),         // 43: tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	(*GetValidationTraceTestsResponseSuccess)(nil), // 44: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
+	(*GetValidationTraceTestsResponseError)(nil),   // 45: tusk.drift.backend.v1.GetValidationTraceTestsResponseError
+	(*GetValidationTraceTestsResponse)(nil),        // 46: tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	(*core.Span)(nil),                              // 47: tusk.drift.core.v1.Span
 }
 var file_backend_test_run_service_proto_depIdxs = []int32{
-	58, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	5,  // 1: tusk.drift.backend.v1.GetGlobalSpansResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
-	6,  // 2: tusk.drift.backend.v1.GetGlobalSpansResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseError
-	58, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	9,  // 4: tusk.drift.backend.v1.GetPreAppStartSpansResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
-	10, // 5: tusk.drift.backend.v1.GetPreAppStartSpansResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseError
-	13, // 6: tusk.drift.backend.v1.CreateDriftRunResponse.success:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseSuccess
-	14, // 7: tusk.drift.backend.v1.CreateDriftRunResponse.error:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseError
-	58, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
-	17, // 9: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	18, // 10: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
-	19, // 11: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseError
-	23, // 12: tusk.drift.backend.v1.GetTraceTestResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestResponseSuccess
-	24, // 13: tusk.drift.backend.v1.GetTraceTestResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestResponseError
-	17, // 14: tusk.drift.backend.v1.GetTraceTestResponseSuccess.trace_test:type_name -> tusk.drift.backend.v1.TraceTest
-	17, // 15: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	26, // 16: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
-	27, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
-	1,  // 18: tusk.drift.backend.v1.MatchLevel.match_type:type_name -> tusk.drift.backend.v1.MatchType
-	0,  // 19: tusk.drift.backend.v1.MatchLevel.match_scope:type_name -> tusk.drift.backend.v1.MatchScope
-	31, // 20: tusk.drift.backend.v1.MatchLevel.top_candidates:type_name -> tusk.drift.backend.v1.SimilarityCandidate
-	58, // 21: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
-	30, // 22: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.backend.v1.MatchLevel
-	29, // 23: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
-	2,  // 24: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
-	32, // 25: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
-	33, // 26: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
-	35, // 27: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	36, // 28: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	3,  // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
-	39, // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	40, // 31: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	17, // 32: tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	43, // 33: tusk.drift.backend.v1.GetDraftTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess
-	44, // 34: tusk.drift.backend.v1.GetDraftTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetDraftTraceTestsResponseError
-	47, // 35: tusk.drift.backend.v1.MarkSpansAsGlobalResponse.success:type_name -> tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess
-	48, // 36: tusk.drift.backend.v1.MarkSpansAsGlobalResponse.error:type_name -> tusk.drift.backend.v1.MarkSpansAsGlobalResponseError
-	51, // 37: tusk.drift.backend.v1.DeleteFailedDraftTracesResponse.success:type_name -> tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess
-	52, // 38: tusk.drift.backend.v1.DeleteFailedDraftTracesResponse.error:type_name -> tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError
-	55, // 39: tusk.drift.backend.v1.AddTracesToSuiteResponse.success:type_name -> tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess
-	56, // 40: tusk.drift.backend.v1.AddTracesToSuiteResponse.error:type_name -> tusk.drift.backend.v1.AddTracesToSuiteResponseError
-	4,  // 41: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
-	8,  // 42: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	12, // 43: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
-	16, // 44: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	25, // 45: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
-	21, // 46: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
-	34, // 47: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	38, // 48: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	42, // 49: tusk.drift.backend.v1.TestRunService.GetDraftTraceTests:input_type -> tusk.drift.backend.v1.GetDraftTraceTestsRequest
-	46, // 50: tusk.drift.backend.v1.TestRunService.MarkSpansAsGlobal:input_type -> tusk.drift.backend.v1.MarkSpansAsGlobalRequest
-	50, // 51: tusk.drift.backend.v1.TestRunService.DeleteFailedDraftTraces:input_type -> tusk.drift.backend.v1.DeleteFailedDraftTracesRequest
-	54, // 52: tusk.drift.backend.v1.TestRunService.AddTracesToSuite:input_type -> tusk.drift.backend.v1.AddTracesToSuiteRequest
-	7,  // 53: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
-	11, // 54: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	15, // 55: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
-	20, // 56: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	28, // 57: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
-	22, // 58: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
-	37, // 59: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	41, // 60: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	45, // 61: tusk.drift.backend.v1.TestRunService.GetDraftTraceTests:output_type -> tusk.drift.backend.v1.GetDraftTraceTestsResponse
-	49, // 62: tusk.drift.backend.v1.TestRunService.MarkSpansAsGlobal:output_type -> tusk.drift.backend.v1.MarkSpansAsGlobalResponse
-	53, // 63: tusk.drift.backend.v1.TestRunService.DeleteFailedDraftTraces:output_type -> tusk.drift.backend.v1.DeleteFailedDraftTracesResponse
-	57, // 64: tusk.drift.backend.v1.TestRunService.AddTracesToSuite:output_type -> tusk.drift.backend.v1.AddTracesToSuiteResponse
-	53, // [53:65] is the sub-list for method output_type
-	41, // [41:53] is the sub-list for method input_type
-	41, // [41:41] is the sub-list for extension type_name
-	41, // [41:41] is the sub-list for extension extendee
-	0,  // [0:41] is the sub-list for field type_name
+	47, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	6,  // 1: tusk.drift.backend.v1.GetGlobalSpansResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
+	7,  // 2: tusk.drift.backend.v1.GetGlobalSpansResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseError
+	47, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	10, // 4: tusk.drift.backend.v1.GetPreAppStartSpansResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
+	11, // 5: tusk.drift.backend.v1.GetPreAppStartSpansResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseError
+	14, // 6: tusk.drift.backend.v1.CreateDriftRunResponse.success:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseSuccess
+	15, // 7: tusk.drift.backend.v1.CreateDriftRunResponse.error:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseError
+	47, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
+	0,  // 9: tusk.drift.backend.v1.TraceTest.status:type_name -> tusk.drift.backend.v1.TraceTestStatus
+	18, // 10: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	19, // 11: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
+	20, // 12: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseError
+	24, // 13: tusk.drift.backend.v1.GetTraceTestResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestResponseSuccess
+	25, // 14: tusk.drift.backend.v1.GetTraceTestResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestResponseError
+	18, // 15: tusk.drift.backend.v1.GetTraceTestResponseSuccess.trace_test:type_name -> tusk.drift.backend.v1.TraceTest
+	18, // 16: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	27, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
+	28, // 18: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
+	2,  // 19: tusk.drift.backend.v1.MatchLevel.match_type:type_name -> tusk.drift.backend.v1.MatchType
+	1,  // 20: tusk.drift.backend.v1.MatchLevel.match_scope:type_name -> tusk.drift.backend.v1.MatchScope
+	32, // 21: tusk.drift.backend.v1.MatchLevel.top_candidates:type_name -> tusk.drift.backend.v1.SimilarityCandidate
+	47, // 22: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
+	31, // 23: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.backend.v1.MatchLevel
+	30, // 24: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
+	3,  // 25: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
+	33, // 26: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
+	34, // 27: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
+	36, // 28: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	37, // 29: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	4,  // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
+	40, // 31: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	41, // 32: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	18, // 33: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	44, // 34: tusk.drift.backend.v1.GetValidationTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
+	45, // 35: tusk.drift.backend.v1.GetValidationTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseError
+	5,  // 36: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
+	9,  // 37: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	13, // 38: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
+	17, // 39: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	26, // 40: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
+	22, // 41: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
+	35, // 42: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	39, // 43: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	43, // 44: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	8,  // 45: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
+	12, // 46: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	16, // 47: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
+	21, // 48: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	29, // 49: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
+	23, // 50: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
+	38, // 51: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	42, // 52: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	46, // 53: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	45, // [45:54] is the sub-list for method output_type
+	36, // [36:45] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_backend_test_run_service_proto_init() }
@@ -4072,6 +3398,7 @@ func file_backend_test_run_service_proto_init() {
 		(*GetPreAppStartSpansResponse_Success)(nil),
 		(*GetPreAppStartSpansResponse_Error)(nil),
 	}
+	file_backend_test_run_service_proto_msgTypes[8].OneofWrappers = []any{}
 	file_backend_test_run_service_proto_msgTypes[11].OneofWrappers = []any{
 		(*CreateDriftRunResponse_Success)(nil),
 		(*CreateDriftRunResponse_Error)(nil),
@@ -4107,28 +3434,16 @@ func file_backend_test_run_service_proto_init() {
 	file_backend_test_run_service_proto_msgTypes[38].OneofWrappers = []any{}
 	file_backend_test_run_service_proto_msgTypes[39].OneofWrappers = []any{}
 	file_backend_test_run_service_proto_msgTypes[41].OneofWrappers = []any{
-		(*GetDraftTraceTestsResponse_Success)(nil),
-		(*GetDraftTraceTestsResponse_Error)(nil),
-	}
-	file_backend_test_run_service_proto_msgTypes[45].OneofWrappers = []any{
-		(*MarkSpansAsGlobalResponse_Success)(nil),
-		(*MarkSpansAsGlobalResponse_Error)(nil),
-	}
-	file_backend_test_run_service_proto_msgTypes[49].OneofWrappers = []any{
-		(*DeleteFailedDraftTracesResponse_Success)(nil),
-		(*DeleteFailedDraftTracesResponse_Error)(nil),
-	}
-	file_backend_test_run_service_proto_msgTypes[53].OneofWrappers = []any{
-		(*AddTracesToSuiteResponse_Success)(nil),
-		(*AddTracesToSuiteResponse_Error)(nil),
+		(*GetValidationTraceTestsResponse_Success)(nil),
+		(*GetValidationTraceTestsResponse_Error)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_test_run_service_proto_rawDesc), len(file_backend_test_run_service_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   54,
+			NumEnums:      5,
+			NumMessages:   42,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

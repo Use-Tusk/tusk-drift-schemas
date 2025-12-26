@@ -169,21 +169,29 @@ export interface CreateDriftRunRequest {
      */
     cliVersion: string;
     /**
-     * @generated from protobuf field: string commit_sha = 3
+     * These fields are optional for validation runs
+     *
+     * @generated from protobuf field: optional string commit_sha = 3
      */
-    commitSha: string;
+    commitSha?: string;
     /**
-     * @generated from protobuf field: string pr_number = 4
+     * @generated from protobuf field: optional string pr_number = 4
      */
-    prNumber: string;
+    prNumber?: string;
     /**
-     * @generated from protobuf field: string branch_name = 5
+     * @generated from protobuf field: optional string branch_name = 5
      */
-    branchName: string;
+    branchName?: string;
     /**
-     * @generated from protobuf field: string external_check_run_id = 6
+     * @generated from protobuf field: optional string external_check_run_id = 6
      */
-    externalCheckRunId: string;
+    externalCheckRunId?: string;
+    /**
+     * Indicates this is a validation run on the default branch
+     *
+     * @generated from protobuf field: bool is_validation_run = 7
+     */
+    isValidationRun: boolean;
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.CreateDriftRunResponseSuccess
@@ -273,6 +281,12 @@ export interface TraceTest {
      * @generated from protobuf field: repeated tusk.drift.core.v1.Span spans = 4
      */
     spans: Span[];
+    /**
+     * Status of the trace test (DRAFT, IN_SUITE, REMOVED)
+     *
+     * @generated from protobuf field: tusk.drift.backend.v1.TraceTestStatus status = 5
+     */
+    status: TraceTestStatus;
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
@@ -711,11 +725,11 @@ export interface UpdateDriftRunCIStatusResponse {
 // =============================================================================
 
 /**
- * GetDraftTraceTests - Get draft traces not yet in the test suite
+ * GetValidationTraceTests - Get all traces for validation (DRAFT and IN_SUITE)
  *
- * @generated from protobuf message tusk.drift.backend.v1.GetDraftTraceTestsRequest
+ * @generated from protobuf message tusk.drift.backend.v1.GetValidationTraceTestsRequest
  */
-export interface GetDraftTraceTestsRequest {
+export interface GetValidationTraceTestsRequest {
     /**
      * @generated from protobuf field: string observable_service_id = 1
      */
@@ -730,9 +744,9 @@ export interface GetDraftTraceTestsRequest {
     pageSize: number;
 }
 /**
- * @generated from protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess
+ * @generated from protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
  */
-export interface GetDraftTraceTestsResponseSuccess {
+export interface GetValidationTraceTestsResponseSuccess {
     /**
      * @generated from protobuf field: repeated tusk.drift.backend.v1.TraceTest trace_tests = 1
      */
@@ -747,9 +761,9 @@ export interface GetDraftTraceTestsResponseSuccess {
     totalCount: number;
 }
 /**
- * @generated from protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponseError
+ * @generated from protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponseError
  */
-export interface GetDraftTraceTestsResponseError {
+export interface GetValidationTraceTestsResponseError {
     /**
      * @generated from protobuf field: string code = 1
      */
@@ -760,207 +774,48 @@ export interface GetDraftTraceTestsResponseError {
     message: string;
 }
 /**
- * @generated from protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponse
+ * @generated from protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponse
  */
-export interface GetDraftTraceTestsResponse {
+export interface GetValidationTraceTestsResponse {
     /**
      * @generated from protobuf oneof: response
      */
     response: {
         oneofKind: "success";
         /**
-         * @generated from protobuf field: tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess success = 1
+         * @generated from protobuf field: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess success = 1
          */
-        success: GetDraftTraceTestsResponseSuccess;
+        success: GetValidationTraceTestsResponseSuccess;
     } | {
         oneofKind: "error";
         /**
-         * @generated from protobuf field: tusk.drift.backend.v1.GetDraftTraceTestsResponseError error = 2
+         * @generated from protobuf field: tusk.drift.backend.v1.GetValidationTraceTestsResponseError error = 2
          */
-        error: GetDraftTraceTestsResponseError;
+        error: GetValidationTraceTestsResponseError;
     } | {
         oneofKind: undefined;
     };
 }
 /**
- * MarkSpansAsGlobal - Mark spans as global for cross-trace matching
- *
- * @generated from protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalRequest
+ * @generated from protobuf enum tusk.drift.backend.v1.TraceTestStatus
  */
-export interface MarkSpansAsGlobalRequest {
+export enum TraceTestStatus {
     /**
-     * @generated from protobuf field: string observable_service_id = 1
+     * @generated from protobuf enum value: TRACE_TEST_STATUS_UNSPECIFIED = 0;
      */
-    observableServiceId: string;
+    UNSPECIFIED = 0,
     /**
-     * @generated from protobuf field: repeated string span_ids = 2
+     * @generated from protobuf enum value: TRACE_TEST_STATUS_DRAFT = 1;
      */
-    spanIds: string[];
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess
- */
-export interface MarkSpansAsGlobalResponseSuccess {
+    DRAFT = 1,
     /**
-     * @generated from protobuf field: int32 spans_marked = 1
+     * @generated from protobuf enum value: TRACE_TEST_STATUS_IN_SUITE = 2;
      */
-    spansMarked: number;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponseError
- */
-export interface MarkSpansAsGlobalResponseError {
+    IN_SUITE = 2,
     /**
-     * @generated from protobuf field: string code = 1
+     * @generated from protobuf enum value: TRACE_TEST_STATUS_REMOVED = 3;
      */
-    code: string;
-    /**
-     * @generated from protobuf field: string message = 2
-     */
-    message: string;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponse
- */
-export interface MarkSpansAsGlobalResponse {
-    /**
-     * @generated from protobuf oneof: response
-     */
-    response: {
-        oneofKind: "success";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess success = 1
-         */
-        success: MarkSpansAsGlobalResponseSuccess;
-    } | {
-        oneofKind: "error";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.MarkSpansAsGlobalResponseError error = 2
-         */
-        error: MarkSpansAsGlobalResponseError;
-    } | {
-        oneofKind: undefined;
-    };
-}
-/**
- * DeleteFailedDraftTraces - Delete draft traces that failed validation
- *
- * @generated from protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesRequest
- */
-export interface DeleteFailedDraftTracesRequest {
-    /**
-     * @generated from protobuf field: string observable_service_id = 1
-     */
-    observableServiceId: string;
-    /**
-     * @generated from protobuf field: repeated string trace_test_ids = 2
-     */
-    traceTestIds: string[];
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess
- */
-export interface DeleteFailedDraftTracesResponseSuccess {
-    /**
-     * @generated from protobuf field: int32 traces_deleted = 1
-     */
-    tracesDeleted: number;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError
- */
-export interface DeleteFailedDraftTracesResponseError {
-    /**
-     * @generated from protobuf field: string code = 1
-     */
-    code: string;
-    /**
-     * @generated from protobuf field: string message = 2
-     */
-    message: string;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponse
- */
-export interface DeleteFailedDraftTracesResponse {
-    /**
-     * @generated from protobuf oneof: response
-     */
-    response: {
-        oneofKind: "success";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess success = 1
-         */
-        success: DeleteFailedDraftTracesResponseSuccess;
-    } | {
-        oneofKind: "error";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError error = 2
-         */
-        error: DeleteFailedDraftTracesResponseError;
-    } | {
-        oneofKind: undefined;
-    };
-}
-/**
- * AddTracesToSuite - Add validated traces to the test suite
- *
- * @generated from protobuf message tusk.drift.backend.v1.AddTracesToSuiteRequest
- */
-export interface AddTracesToSuiteRequest {
-    /**
-     * @generated from protobuf field: string observable_service_id = 1
-     */
-    observableServiceId: string;
-    /**
-     * @generated from protobuf field: repeated string trace_test_ids = 2
-     */
-    traceTestIds: string[];
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess
- */
-export interface AddTracesToSuiteResponseSuccess {
-    /**
-     * @generated from protobuf field: int32 traces_added = 1
-     */
-    tracesAdded: number;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponseError
- */
-export interface AddTracesToSuiteResponseError {
-    /**
-     * @generated from protobuf field: string code = 1
-     */
-    code: string;
-    /**
-     * @generated from protobuf field: string message = 2
-     */
-    message: string;
-}
-/**
- * @generated from protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponse
- */
-export interface AddTracesToSuiteResponse {
-    /**
-     * @generated from protobuf oneof: response
-     */
-    response: {
-        oneofKind: "success";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess success = 1
-         */
-        success: AddTracesToSuiteResponseSuccess;
-    } | {
-        oneofKind: "error";
-        /**
-         * @generated from protobuf field: tusk.drift.backend.v1.AddTracesToSuiteResponseError error = 2
-         */
-        error: AddTracesToSuiteResponseError;
-    } | {
-        oneofKind: undefined;
-    };
+    REMOVED = 3
 }
 /**
  * @generated from protobuf enum tusk.drift.backend.v1.MatchScope
@@ -1538,20 +1393,18 @@ class CreateDriftRunRequest$Type extends MessageType<CreateDriftRunRequest> {
         super("tusk.drift.backend.v1.CreateDriftRunRequest", [
             { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "cli_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "commit_sha", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "pr_number", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 5, name: "branch_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "external_check_run_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "commit_sha", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "pr_number", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "branch_name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 6, name: "external_check_run_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "is_validation_run", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
         ]);
     }
     create(value?: PartialMessage<CreateDriftRunRequest>): CreateDriftRunRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.observableServiceId = "";
         message.cliVersion = "";
-        message.commitSha = "";
-        message.prNumber = "";
-        message.branchName = "";
-        message.externalCheckRunId = "";
+        message.isValidationRun = false;
         if (value !== undefined)
             reflectionMergePartial<CreateDriftRunRequest>(this, message, value);
         return message;
@@ -1567,17 +1420,20 @@ class CreateDriftRunRequest$Type extends MessageType<CreateDriftRunRequest> {
                 case /* string cli_version */ 2:
                     message.cliVersion = reader.string();
                     break;
-                case /* string commit_sha */ 3:
+                case /* optional string commit_sha */ 3:
                     message.commitSha = reader.string();
                     break;
-                case /* string pr_number */ 4:
+                case /* optional string pr_number */ 4:
                     message.prNumber = reader.string();
                     break;
-                case /* string branch_name */ 5:
+                case /* optional string branch_name */ 5:
                     message.branchName = reader.string();
                     break;
-                case /* string external_check_run_id */ 6:
+                case /* optional string external_check_run_id */ 6:
                     message.externalCheckRunId = reader.string();
+                    break;
+                case /* bool is_validation_run */ 7:
+                    message.isValidationRun = reader.bool();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1597,18 +1453,21 @@ class CreateDriftRunRequest$Type extends MessageType<CreateDriftRunRequest> {
         /* string cli_version = 2; */
         if (message.cliVersion !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.cliVersion);
-        /* string commit_sha = 3; */
-        if (message.commitSha !== "")
+        /* optional string commit_sha = 3; */
+        if (message.commitSha !== undefined)
             writer.tag(3, WireType.LengthDelimited).string(message.commitSha);
-        /* string pr_number = 4; */
-        if (message.prNumber !== "")
+        /* optional string pr_number = 4; */
+        if (message.prNumber !== undefined)
             writer.tag(4, WireType.LengthDelimited).string(message.prNumber);
-        /* string branch_name = 5; */
-        if (message.branchName !== "")
+        /* optional string branch_name = 5; */
+        if (message.branchName !== undefined)
             writer.tag(5, WireType.LengthDelimited).string(message.branchName);
-        /* string external_check_run_id = 6; */
-        if (message.externalCheckRunId !== "")
+        /* optional string external_check_run_id = 6; */
+        if (message.externalCheckRunId !== undefined)
             writer.tag(6, WireType.LengthDelimited).string(message.externalCheckRunId);
+        /* bool is_validation_run = 7; */
+        if (message.isValidationRun !== false)
+            writer.tag(7, WireType.Varint).bool(message.isValidationRun);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1850,7 +1709,8 @@ class TraceTest$Type extends MessageType<TraceTest> {
             { no: 1, name: "id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "trace_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "server_span_recording_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "spans", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Span }
+            { no: 4, name: "spans", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Span },
+            { no: 5, name: "status", kind: "enum", T: () => ["tusk.drift.backend.v1.TraceTestStatus", TraceTestStatus, "TRACE_TEST_STATUS_"] }
         ]);
     }
     create(value?: PartialMessage<TraceTest>): TraceTest {
@@ -1859,6 +1719,7 @@ class TraceTest$Type extends MessageType<TraceTest> {
         message.traceId = "";
         message.serverSpanRecordingId = "";
         message.spans = [];
+        message.status = 0;
         if (value !== undefined)
             reflectionMergePartial<TraceTest>(this, message, value);
         return message;
@@ -1879,6 +1740,9 @@ class TraceTest$Type extends MessageType<TraceTest> {
                     break;
                 case /* repeated tusk.drift.core.v1.Span spans */ 4:
                     message.spans.push(Span.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                case /* tusk.drift.backend.v1.TraceTestStatus status */ 5:
+                    message.status = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -1904,6 +1768,9 @@ class TraceTest$Type extends MessageType<TraceTest> {
         /* repeated tusk.drift.core.v1.Span spans = 4; */
         for (let i = 0; i < message.spans.length; i++)
             Span.internalBinaryWrite(message.spans[i], writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.TraceTestStatus status = 5; */
+        if (message.status !== 0)
+            writer.tag(5, WireType.Varint).int32(message.status);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3358,23 +3225,23 @@ class UpdateDriftRunCIStatusResponse$Type extends MessageType<UpdateDriftRunCISt
  */
 export const UpdateDriftRunCIStatusResponse = new UpdateDriftRunCIStatusResponse$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetDraftTraceTestsRequest$Type extends MessageType<GetDraftTraceTestsRequest> {
+class GetValidationTraceTestsRequest$Type extends MessageType<GetValidationTraceTestsRequest> {
     constructor() {
-        super("tusk.drift.backend.v1.GetDraftTraceTestsRequest", [
+        super("tusk.drift.backend.v1.GetValidationTraceTestsRequest", [
             { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "pagination_cursor", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
-    create(value?: PartialMessage<GetDraftTraceTestsRequest>): GetDraftTraceTestsRequest {
+    create(value?: PartialMessage<GetValidationTraceTestsRequest>): GetValidationTraceTestsRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.observableServiceId = "";
         message.pageSize = 0;
         if (value !== undefined)
-            reflectionMergePartial<GetDraftTraceTestsRequest>(this, message, value);
+            reflectionMergePartial<GetValidationTraceTestsRequest>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDraftTraceTestsRequest): GetDraftTraceTestsRequest {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetValidationTraceTestsRequest): GetValidationTraceTestsRequest {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -3399,7 +3266,7 @@ class GetDraftTraceTestsRequest$Type extends MessageType<GetDraftTraceTestsReque
         }
         return message;
     }
-    internalBinaryWrite(message: GetDraftTraceTestsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: GetValidationTraceTestsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string observable_service_id = 1; */
         if (message.observableServiceId !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
@@ -3416,27 +3283,27 @@ class GetDraftTraceTestsRequest$Type extends MessageType<GetDraftTraceTestsReque
     }
 }
 /**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.GetDraftTraceTestsRequest
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetValidationTraceTestsRequest
  */
-export const GetDraftTraceTestsRequest = new GetDraftTraceTestsRequest$Type();
+export const GetValidationTraceTestsRequest = new GetValidationTraceTestsRequest$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetDraftTraceTestsResponseSuccess$Type extends MessageType<GetDraftTraceTestsResponseSuccess> {
+class GetValidationTraceTestsResponseSuccess$Type extends MessageType<GetValidationTraceTestsResponseSuccess> {
     constructor() {
-        super("tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess", [
+        super("tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess", [
             { no: 1, name: "trace_tests", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TraceTest },
             { no: 2, name: "next_cursor", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "total_count", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
         ]);
     }
-    create(value?: PartialMessage<GetDraftTraceTestsResponseSuccess>): GetDraftTraceTestsResponseSuccess {
+    create(value?: PartialMessage<GetValidationTraceTestsResponseSuccess>): GetValidationTraceTestsResponseSuccess {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.traceTests = [];
         message.totalCount = 0;
         if (value !== undefined)
-            reflectionMergePartial<GetDraftTraceTestsResponseSuccess>(this, message, value);
+            reflectionMergePartial<GetValidationTraceTestsResponseSuccess>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDraftTraceTestsResponseSuccess): GetDraftTraceTestsResponseSuccess {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetValidationTraceTestsResponseSuccess): GetValidationTraceTestsResponseSuccess {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -3461,7 +3328,7 @@ class GetDraftTraceTestsResponseSuccess$Type extends MessageType<GetDraftTraceTe
         }
         return message;
     }
-    internalBinaryWrite(message: GetDraftTraceTestsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: GetValidationTraceTestsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* repeated tusk.drift.backend.v1.TraceTest trace_tests = 1; */
         for (let i = 0; i < message.traceTests.length; i++)
             TraceTest.internalBinaryWrite(message.traceTests[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
@@ -3478,26 +3345,26 @@ class GetDraftTraceTestsResponseSuccess$Type extends MessageType<GetDraftTraceTe
     }
 }
 /**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
  */
-export const GetDraftTraceTestsResponseSuccess = new GetDraftTraceTestsResponseSuccess$Type();
+export const GetValidationTraceTestsResponseSuccess = new GetValidationTraceTestsResponseSuccess$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetDraftTraceTestsResponseError$Type extends MessageType<GetDraftTraceTestsResponseError> {
+class GetValidationTraceTestsResponseError$Type extends MessageType<GetValidationTraceTestsResponseError> {
     constructor() {
-        super("tusk.drift.backend.v1.GetDraftTraceTestsResponseError", [
+        super("tusk.drift.backend.v1.GetValidationTraceTestsResponseError", [
             { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
-    create(value?: PartialMessage<GetDraftTraceTestsResponseError>): GetDraftTraceTestsResponseError {
+    create(value?: PartialMessage<GetValidationTraceTestsResponseError>): GetValidationTraceTestsResponseError {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.code = "";
         message.message = "";
         if (value !== undefined)
-            reflectionMergePartial<GetDraftTraceTestsResponseError>(this, message, value);
+            reflectionMergePartial<GetValidationTraceTestsResponseError>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDraftTraceTestsResponseError): GetDraftTraceTestsResponseError {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetValidationTraceTestsResponseError): GetValidationTraceTestsResponseError {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
@@ -3519,7 +3386,7 @@ class GetDraftTraceTestsResponseError$Type extends MessageType<GetDraftTraceTest
         }
         return message;
     }
-    internalBinaryWrite(message: GetDraftTraceTestsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+    internalBinaryWrite(message: GetValidationTraceTestsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
         /* string code = 1; */
         if (message.code !== "")
             writer.tag(1, WireType.LengthDelimited).string(message.code);
@@ -3533,39 +3400,39 @@ class GetDraftTraceTestsResponseError$Type extends MessageType<GetDraftTraceTest
     }
 }
 /**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponseError
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponseError
  */
-export const GetDraftTraceTestsResponseError = new GetDraftTraceTestsResponseError$Type();
+export const GetValidationTraceTestsResponseError = new GetValidationTraceTestsResponseError$Type();
 // @generated message type with reflection information, may provide speed optimized methods
-class GetDraftTraceTestsResponse$Type extends MessageType<GetDraftTraceTestsResponse> {
+class GetValidationTraceTestsResponse$Type extends MessageType<GetValidationTraceTestsResponse> {
     constructor() {
-        super("tusk.drift.backend.v1.GetDraftTraceTestsResponse", [
-            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetDraftTraceTestsResponseSuccess },
-            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetDraftTraceTestsResponseError }
+        super("tusk.drift.backend.v1.GetValidationTraceTestsResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetValidationTraceTestsResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetValidationTraceTestsResponseError }
         ]);
     }
-    create(value?: PartialMessage<GetDraftTraceTestsResponse>): GetDraftTraceTestsResponse {
+    create(value?: PartialMessage<GetValidationTraceTestsResponse>): GetValidationTraceTestsResponse {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.response = { oneofKind: undefined };
         if (value !== undefined)
-            reflectionMergePartial<GetDraftTraceTestsResponse>(this, message, value);
+            reflectionMergePartial<GetValidationTraceTestsResponse>(this, message, value);
         return message;
     }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetDraftTraceTestsResponse): GetDraftTraceTestsResponse {
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetValidationTraceTestsResponse): GetValidationTraceTestsResponse {
         let message = target ?? this.create(), end = reader.pos + length;
         while (reader.pos < end) {
             let [fieldNo, wireType] = reader.tag();
             switch (fieldNo) {
-                case /* tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess success */ 1:
+                case /* tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess success */ 1:
                     message.response = {
                         oneofKind: "success",
-                        success: GetDraftTraceTestsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                        success: GetValidationTraceTestsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
                     };
                     break;
-                case /* tusk.drift.backend.v1.GetDraftTraceTestsResponseError error */ 2:
+                case /* tusk.drift.backend.v1.GetValidationTraceTestsResponseError error */ 2:
                     message.response = {
                         oneofKind: "error",
-                        error: GetDraftTraceTestsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                        error: GetValidationTraceTestsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
                     };
                     break;
                 default:
@@ -3579,13 +3446,13 @@ class GetDraftTraceTestsResponse$Type extends MessageType<GetDraftTraceTestsResp
         }
         return message;
     }
-    internalBinaryWrite(message: GetDraftTraceTestsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* tusk.drift.backend.v1.GetDraftTraceTestsResponseSuccess success = 1; */
+    internalBinaryWrite(message: GetValidationTraceTestsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess success = 1; */
         if (message.response.oneofKind === "success")
-            GetDraftTraceTestsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* tusk.drift.backend.v1.GetDraftTraceTestsResponseError error = 2; */
+            GetValidationTraceTestsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetValidationTraceTestsResponseError error = 2; */
         if (message.response.oneofKind === "error")
-            GetDraftTraceTestsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+            GetValidationTraceTestsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3593,660 +3460,9 @@ class GetDraftTraceTestsResponse$Type extends MessageType<GetDraftTraceTestsResp
     }
 }
 /**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.GetDraftTraceTestsResponse
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetValidationTraceTestsResponse
  */
-export const GetDraftTraceTestsResponse = new GetDraftTraceTestsResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class MarkSpansAsGlobalRequest$Type extends MessageType<MarkSpansAsGlobalRequest> {
-    constructor() {
-        super("tusk.drift.backend.v1.MarkSpansAsGlobalRequest", [
-            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "span_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<MarkSpansAsGlobalRequest>): MarkSpansAsGlobalRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.observableServiceId = "";
-        message.spanIds = [];
-        if (value !== undefined)
-            reflectionMergePartial<MarkSpansAsGlobalRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MarkSpansAsGlobalRequest): MarkSpansAsGlobalRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string observable_service_id */ 1:
-                    message.observableServiceId = reader.string();
-                    break;
-                case /* repeated string span_ids */ 2:
-                    message.spanIds.push(reader.string());
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: MarkSpansAsGlobalRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string observable_service_id = 1; */
-        if (message.observableServiceId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
-        /* repeated string span_ids = 2; */
-        for (let i = 0; i < message.spanIds.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.spanIds[i]);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalRequest
- */
-export const MarkSpansAsGlobalRequest = new MarkSpansAsGlobalRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class MarkSpansAsGlobalResponseSuccess$Type extends MessageType<MarkSpansAsGlobalResponseSuccess> {
-    constructor() {
-        super("tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess", [
-            { no: 1, name: "spans_marked", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
-        ]);
-    }
-    create(value?: PartialMessage<MarkSpansAsGlobalResponseSuccess>): MarkSpansAsGlobalResponseSuccess {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.spansMarked = 0;
-        if (value !== undefined)
-            reflectionMergePartial<MarkSpansAsGlobalResponseSuccess>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MarkSpansAsGlobalResponseSuccess): MarkSpansAsGlobalResponseSuccess {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* int32 spans_marked */ 1:
-                    message.spansMarked = reader.int32();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: MarkSpansAsGlobalResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 spans_marked = 1; */
-        if (message.spansMarked !== 0)
-            writer.tag(1, WireType.Varint).int32(message.spansMarked);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess
- */
-export const MarkSpansAsGlobalResponseSuccess = new MarkSpansAsGlobalResponseSuccess$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class MarkSpansAsGlobalResponseError$Type extends MessageType<MarkSpansAsGlobalResponseError> {
-    constructor() {
-        super("tusk.drift.backend.v1.MarkSpansAsGlobalResponseError", [
-            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<MarkSpansAsGlobalResponseError>): MarkSpansAsGlobalResponseError {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.code = "";
-        message.message = "";
-        if (value !== undefined)
-            reflectionMergePartial<MarkSpansAsGlobalResponseError>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MarkSpansAsGlobalResponseError): MarkSpansAsGlobalResponseError {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string code */ 1:
-                    message.code = reader.string();
-                    break;
-                case /* string message */ 2:
-                    message.message = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: MarkSpansAsGlobalResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string code = 1; */
-        if (message.code !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.code);
-        /* string message = 2; */
-        if (message.message !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.message);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponseError
- */
-export const MarkSpansAsGlobalResponseError = new MarkSpansAsGlobalResponseError$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class MarkSpansAsGlobalResponse$Type extends MessageType<MarkSpansAsGlobalResponse> {
-    constructor() {
-        super("tusk.drift.backend.v1.MarkSpansAsGlobalResponse", [
-            { no: 1, name: "success", kind: "message", oneof: "response", T: () => MarkSpansAsGlobalResponseSuccess },
-            { no: 2, name: "error", kind: "message", oneof: "response", T: () => MarkSpansAsGlobalResponseError }
-        ]);
-    }
-    create(value?: PartialMessage<MarkSpansAsGlobalResponse>): MarkSpansAsGlobalResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.response = { oneofKind: undefined };
-        if (value !== undefined)
-            reflectionMergePartial<MarkSpansAsGlobalResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MarkSpansAsGlobalResponse): MarkSpansAsGlobalResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess success */ 1:
-                    message.response = {
-                        oneofKind: "success",
-                        success: MarkSpansAsGlobalResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
-                    };
-                    break;
-                case /* tusk.drift.backend.v1.MarkSpansAsGlobalResponseError error */ 2:
-                    message.response = {
-                        oneofKind: "error",
-                        error: MarkSpansAsGlobalResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
-                    };
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: MarkSpansAsGlobalResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* tusk.drift.backend.v1.MarkSpansAsGlobalResponseSuccess success = 1; */
-        if (message.response.oneofKind === "success")
-            MarkSpansAsGlobalResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* tusk.drift.backend.v1.MarkSpansAsGlobalResponseError error = 2; */
-        if (message.response.oneofKind === "error")
-            MarkSpansAsGlobalResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.MarkSpansAsGlobalResponse
- */
-export const MarkSpansAsGlobalResponse = new MarkSpansAsGlobalResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteFailedDraftTracesRequest$Type extends MessageType<DeleteFailedDraftTracesRequest> {
-    constructor() {
-        super("tusk.drift.backend.v1.DeleteFailedDraftTracesRequest", [
-            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "trace_test_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<DeleteFailedDraftTracesRequest>): DeleteFailedDraftTracesRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.observableServiceId = "";
-        message.traceTestIds = [];
-        if (value !== undefined)
-            reflectionMergePartial<DeleteFailedDraftTracesRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteFailedDraftTracesRequest): DeleteFailedDraftTracesRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string observable_service_id */ 1:
-                    message.observableServiceId = reader.string();
-                    break;
-                case /* repeated string trace_test_ids */ 2:
-                    message.traceTestIds.push(reader.string());
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: DeleteFailedDraftTracesRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string observable_service_id = 1; */
-        if (message.observableServiceId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
-        /* repeated string trace_test_ids = 2; */
-        for (let i = 0; i < message.traceTestIds.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.traceTestIds[i]);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesRequest
- */
-export const DeleteFailedDraftTracesRequest = new DeleteFailedDraftTracesRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteFailedDraftTracesResponseSuccess$Type extends MessageType<DeleteFailedDraftTracesResponseSuccess> {
-    constructor() {
-        super("tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess", [
-            { no: 1, name: "traces_deleted", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
-        ]);
-    }
-    create(value?: PartialMessage<DeleteFailedDraftTracesResponseSuccess>): DeleteFailedDraftTracesResponseSuccess {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.tracesDeleted = 0;
-        if (value !== undefined)
-            reflectionMergePartial<DeleteFailedDraftTracesResponseSuccess>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteFailedDraftTracesResponseSuccess): DeleteFailedDraftTracesResponseSuccess {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* int32 traces_deleted */ 1:
-                    message.tracesDeleted = reader.int32();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: DeleteFailedDraftTracesResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 traces_deleted = 1; */
-        if (message.tracesDeleted !== 0)
-            writer.tag(1, WireType.Varint).int32(message.tracesDeleted);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess
- */
-export const DeleteFailedDraftTracesResponseSuccess = new DeleteFailedDraftTracesResponseSuccess$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteFailedDraftTracesResponseError$Type extends MessageType<DeleteFailedDraftTracesResponseError> {
-    constructor() {
-        super("tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError", [
-            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<DeleteFailedDraftTracesResponseError>): DeleteFailedDraftTracesResponseError {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.code = "";
-        message.message = "";
-        if (value !== undefined)
-            reflectionMergePartial<DeleteFailedDraftTracesResponseError>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteFailedDraftTracesResponseError): DeleteFailedDraftTracesResponseError {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string code */ 1:
-                    message.code = reader.string();
-                    break;
-                case /* string message */ 2:
-                    message.message = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: DeleteFailedDraftTracesResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string code = 1; */
-        if (message.code !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.code);
-        /* string message = 2; */
-        if (message.message !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.message);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError
- */
-export const DeleteFailedDraftTracesResponseError = new DeleteFailedDraftTracesResponseError$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class DeleteFailedDraftTracesResponse$Type extends MessageType<DeleteFailedDraftTracesResponse> {
-    constructor() {
-        super("tusk.drift.backend.v1.DeleteFailedDraftTracesResponse", [
-            { no: 1, name: "success", kind: "message", oneof: "response", T: () => DeleteFailedDraftTracesResponseSuccess },
-            { no: 2, name: "error", kind: "message", oneof: "response", T: () => DeleteFailedDraftTracesResponseError }
-        ]);
-    }
-    create(value?: PartialMessage<DeleteFailedDraftTracesResponse>): DeleteFailedDraftTracesResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.response = { oneofKind: undefined };
-        if (value !== undefined)
-            reflectionMergePartial<DeleteFailedDraftTracesResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: DeleteFailedDraftTracesResponse): DeleteFailedDraftTracesResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess success */ 1:
-                    message.response = {
-                        oneofKind: "success",
-                        success: DeleteFailedDraftTracesResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
-                    };
-                    break;
-                case /* tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError error */ 2:
-                    message.response = {
-                        oneofKind: "error",
-                        error: DeleteFailedDraftTracesResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
-                    };
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: DeleteFailedDraftTracesResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* tusk.drift.backend.v1.DeleteFailedDraftTracesResponseSuccess success = 1; */
-        if (message.response.oneofKind === "success")
-            DeleteFailedDraftTracesResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* tusk.drift.backend.v1.DeleteFailedDraftTracesResponseError error = 2; */
-        if (message.response.oneofKind === "error")
-            DeleteFailedDraftTracesResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.DeleteFailedDraftTracesResponse
- */
-export const DeleteFailedDraftTracesResponse = new DeleteFailedDraftTracesResponse$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AddTracesToSuiteRequest$Type extends MessageType<AddTracesToSuiteRequest> {
-    constructor() {
-        super("tusk.drift.backend.v1.AddTracesToSuiteRequest", [
-            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "trace_test_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<AddTracesToSuiteRequest>): AddTracesToSuiteRequest {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.observableServiceId = "";
-        message.traceTestIds = [];
-        if (value !== undefined)
-            reflectionMergePartial<AddTracesToSuiteRequest>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddTracesToSuiteRequest): AddTracesToSuiteRequest {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string observable_service_id */ 1:
-                    message.observableServiceId = reader.string();
-                    break;
-                case /* repeated string trace_test_ids */ 2:
-                    message.traceTestIds.push(reader.string());
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: AddTracesToSuiteRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string observable_service_id = 1; */
-        if (message.observableServiceId !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
-        /* repeated string trace_test_ids = 2; */
-        for (let i = 0; i < message.traceTestIds.length; i++)
-            writer.tag(2, WireType.LengthDelimited).string(message.traceTestIds[i]);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.AddTracesToSuiteRequest
- */
-export const AddTracesToSuiteRequest = new AddTracesToSuiteRequest$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AddTracesToSuiteResponseSuccess$Type extends MessageType<AddTracesToSuiteResponseSuccess> {
-    constructor() {
-        super("tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess", [
-            { no: 1, name: "traces_added", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
-        ]);
-    }
-    create(value?: PartialMessage<AddTracesToSuiteResponseSuccess>): AddTracesToSuiteResponseSuccess {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.tracesAdded = 0;
-        if (value !== undefined)
-            reflectionMergePartial<AddTracesToSuiteResponseSuccess>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddTracesToSuiteResponseSuccess): AddTracesToSuiteResponseSuccess {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* int32 traces_added */ 1:
-                    message.tracesAdded = reader.int32();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: AddTracesToSuiteResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* int32 traces_added = 1; */
-        if (message.tracesAdded !== 0)
-            writer.tag(1, WireType.Varint).int32(message.tracesAdded);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess
- */
-export const AddTracesToSuiteResponseSuccess = new AddTracesToSuiteResponseSuccess$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AddTracesToSuiteResponseError$Type extends MessageType<AddTracesToSuiteResponseError> {
-    constructor() {
-        super("tusk.drift.backend.v1.AddTracesToSuiteResponseError", [
-            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
-        ]);
-    }
-    create(value?: PartialMessage<AddTracesToSuiteResponseError>): AddTracesToSuiteResponseError {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.code = "";
-        message.message = "";
-        if (value !== undefined)
-            reflectionMergePartial<AddTracesToSuiteResponseError>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddTracesToSuiteResponseError): AddTracesToSuiteResponseError {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* string code */ 1:
-                    message.code = reader.string();
-                    break;
-                case /* string message */ 2:
-                    message.message = reader.string();
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: AddTracesToSuiteResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* string code = 1; */
-        if (message.code !== "")
-            writer.tag(1, WireType.LengthDelimited).string(message.code);
-        /* string message = 2; */
-        if (message.message !== "")
-            writer.tag(2, WireType.LengthDelimited).string(message.message);
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponseError
- */
-export const AddTracesToSuiteResponseError = new AddTracesToSuiteResponseError$Type();
-// @generated message type with reflection information, may provide speed optimized methods
-class AddTracesToSuiteResponse$Type extends MessageType<AddTracesToSuiteResponse> {
-    constructor() {
-        super("tusk.drift.backend.v1.AddTracesToSuiteResponse", [
-            { no: 1, name: "success", kind: "message", oneof: "response", T: () => AddTracesToSuiteResponseSuccess },
-            { no: 2, name: "error", kind: "message", oneof: "response", T: () => AddTracesToSuiteResponseError }
-        ]);
-    }
-    create(value?: PartialMessage<AddTracesToSuiteResponse>): AddTracesToSuiteResponse {
-        const message = globalThis.Object.create((this.messagePrototype!));
-        message.response = { oneofKind: undefined };
-        if (value !== undefined)
-            reflectionMergePartial<AddTracesToSuiteResponse>(this, message, value);
-        return message;
-    }
-    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: AddTracesToSuiteResponse): AddTracesToSuiteResponse {
-        let message = target ?? this.create(), end = reader.pos + length;
-        while (reader.pos < end) {
-            let [fieldNo, wireType] = reader.tag();
-            switch (fieldNo) {
-                case /* tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess success */ 1:
-                    message.response = {
-                        oneofKind: "success",
-                        success: AddTracesToSuiteResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
-                    };
-                    break;
-                case /* tusk.drift.backend.v1.AddTracesToSuiteResponseError error */ 2:
-                    message.response = {
-                        oneofKind: "error",
-                        error: AddTracesToSuiteResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
-                    };
-                    break;
-                default:
-                    let u = options.readUnknownField;
-                    if (u === "throw")
-                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
-                    let d = reader.skip(wireType);
-                    if (u !== false)
-                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
-            }
-        }
-        return message;
-    }
-    internalBinaryWrite(message: AddTracesToSuiteResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
-        /* tusk.drift.backend.v1.AddTracesToSuiteResponseSuccess success = 1; */
-        if (message.response.oneofKind === "success")
-            AddTracesToSuiteResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
-        /* tusk.drift.backend.v1.AddTracesToSuiteResponseError error = 2; */
-        if (message.response.oneofKind === "error")
-            AddTracesToSuiteResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
-        let u = options.writeUnknownFields;
-        if (u !== false)
-            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
-        return writer;
-    }
-}
-/**
- * @generated MessageType for protobuf message tusk.drift.backend.v1.AddTracesToSuiteResponse
- */
-export const AddTracesToSuiteResponse = new AddTracesToSuiteResponse$Type();
+export const GetValidationTraceTestsResponse = new GetValidationTraceTestsResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.TestRunService
  */
@@ -4259,8 +3475,5 @@ export const TestRunService = new ServiceType("tusk.drift.backend.v1.TestRunServ
     { name: "GetTraceTest", options: {}, I: GetTraceTestRequest, O: GetTraceTestResponse },
     { name: "UploadTraceTestResults", options: {}, I: UploadTraceTestResultsRequest, O: UploadTraceTestResultsResponse },
     { name: "UpdateDriftRunCIStatus", options: {}, I: UpdateDriftRunCIStatusRequest, O: UpdateDriftRunCIStatusResponse },
-    { name: "GetDraftTraceTests", options: {}, I: GetDraftTraceTestsRequest, O: GetDraftTraceTestsResponse },
-    { name: "MarkSpansAsGlobal", options: {}, I: MarkSpansAsGlobalRequest, O: MarkSpansAsGlobalResponse },
-    { name: "DeleteFailedDraftTraces", options: {}, I: DeleteFailedDraftTracesRequest, O: DeleteFailedDraftTracesResponse },
-    { name: "AddTracesToSuite", options: {}, I: AddTracesToSuiteRequest, O: AddTracesToSuiteResponse }
+    { name: "GetValidationTraceTests", options: {}, I: GetValidationTraceTestsRequest, O: GetValidationTraceTestsResponse }
 ]);

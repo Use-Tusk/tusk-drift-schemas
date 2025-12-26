@@ -38,19 +38,10 @@ service TestRunService {
   // uploaded and classified before exiting However, for now CI will just exit
   // with success if the tests were able to be run
 
-  // Suite validation RPCs - used for validating draft traces on main branch
+  // Suite validation RPCs - used for validating traces on main branch
 
-  // Get draft traces not yet in the test suite (status = DRAFT)
-  rpc GetDraftTraceTests(GetDraftTraceTestsRequest) returns (GetDraftTraceTestsResponse);
-
-  // Mark spans as global - these spans will be accessible to all traces during replay
-  rpc MarkSpansAsGlobal(MarkSpansAsGlobalRequest) returns (MarkSpansAsGlobalResponse);
-
-  // Delete draft traces that failed validation on main
-  rpc DeleteFailedDraftTraces(DeleteFailedDraftTracesRequest) returns (DeleteFailedDraftTracesResponse);
-
-  // Add validated draft traces to the test suite
-  rpc AddTracesToSuite(AddTracesToSuiteRequest) returns (AddTracesToSuiteResponse);
+  // Get all traces for validation (both DRAFT and IN_SUITE)
+  rpc GetValidationTraceTests(GetValidationTraceTestsRequest) returns (GetValidationTraceTestsResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -110,10 +101,15 @@ message GetPreAppStartSpansResponse {
 message CreateDriftRunRequest {
   string observable_service_id = 1;
   string cli_version = 2;
-  string commit_sha = 3;
-  string pr_number = 4;
-  string branch_name = 5;
-  string external_check_run_id = 6;
+
+  // These fields are optional for validation runs
+  optional string commit_sha = 3;
+  optional string pr_number = 4;
+  optional string branch_name = 5;
+  optional string external_check_run_id = 6;
+
+  // Indicates this is a validation run on the default branch
+  bool is_validation_run = 7;
 }
 
 message CreateDriftRunResponseSuccess {
@@ -142,12 +138,22 @@ message GetDriftRunTraceTestsRequest {
   int32 page_size = 3;
 }
 
+enum TraceTestStatus {
+  TRACE_TEST_STATUS_UNSPECIFIED = 0;
+  TRACE_TEST_STATUS_DRAFT = 1;
+  TRACE_TEST_STATUS_IN_SUITE = 2;
+  TRACE_TEST_STATUS_REMOVED = 3;
+}
+
 message TraceTest {
   string id = 1; // DB id
   string trace_id = 2;
   string server_span_recording_id = 3;
 
   repeated tusk.drift.core.v1.Span spans = 4;
+
+  // Status of the trace test (DRAFT, IN_SUITE, REMOVED)
+  TraceTestStatus status = 5;
 }
 
 message GetDriftRunTraceTestsResponseSuccess {
@@ -346,93 +352,27 @@ message UpdateDriftRunCIStatusResponse {
 // Suite Validation Messages
 // =============================================================================
 
-// GetDraftTraceTests - Get draft traces not yet in the test suite
-message GetDraftTraceTestsRequest {
+// GetValidationTraceTests - Get all traces for validation (DRAFT and IN_SUITE)
+message GetValidationTraceTestsRequest {
   string observable_service_id = 1;
   optional string pagination_cursor = 2;
   int32 page_size = 3;
 }
 
-message GetDraftTraceTestsResponseSuccess {
+message GetValidationTraceTestsResponseSuccess {
   repeated TraceTest trace_tests = 1;
   optional string next_cursor = 2;
   int32 total_count = 3;
 }
 
-message GetDraftTraceTestsResponseError {
+message GetValidationTraceTestsResponseError {
   string code = 1;
   string message = 2;
 }
 
-message GetDraftTraceTestsResponse {
+message GetValidationTraceTestsResponse {
   oneof response {
-    GetDraftTraceTestsResponseSuccess success = 1;
-    GetDraftTraceTestsResponseError error = 2;
-  }
-}
-
-// MarkSpansAsGlobal - Mark spans as global for cross-trace matching
-message MarkSpansAsGlobalRequest {
-  string observable_service_id = 1;
-  repeated string span_ids = 2;
-}
-
-message MarkSpansAsGlobalResponseSuccess {
-  int32 spans_marked = 1;
-}
-
-message MarkSpansAsGlobalResponseError {
-  string code = 1;
-  string message = 2;
-}
-
-message MarkSpansAsGlobalResponse {
-  oneof response {
-    MarkSpansAsGlobalResponseSuccess success = 1;
-    MarkSpansAsGlobalResponseError error = 2;
-  }
-}
-
-// DeleteFailedDraftTraces - Delete draft traces that failed validation
-message DeleteFailedDraftTracesRequest {
-  string observable_service_id = 1;
-  repeated string trace_test_ids = 2;
-}
-
-message DeleteFailedDraftTracesResponseSuccess {
-  int32 traces_deleted = 1;
-}
-
-message DeleteFailedDraftTracesResponseError {
-  string code = 1;
-  string message = 2;
-}
-
-message DeleteFailedDraftTracesResponse {
-  oneof response {
-    DeleteFailedDraftTracesResponseSuccess success = 1;
-    DeleteFailedDraftTracesResponseError error = 2;
-  }
-}
-
-// AddTracesToSuite - Add validated traces to the test suite
-message AddTracesToSuiteRequest {
-  string observable_service_id = 1;
-  repeated string trace_test_ids = 2;
-}
-
-message AddTracesToSuiteResponseSuccess {
-  int32 traces_added = 1;
-}
-
-message AddTracesToSuiteResponseError {
-  string code = 1;
-  string message = 2;
-}
-
-message AddTracesToSuiteResponse {
-  oneof response {
-    AddTracesToSuiteResponseSuccess success = 1;
-    AddTracesToSuiteResponseError error = 2;
+    GetValidationTraceTestsResponseSuccess success = 1;
+    GetValidationTraceTestsResponseError error = 2;
   }
 }
