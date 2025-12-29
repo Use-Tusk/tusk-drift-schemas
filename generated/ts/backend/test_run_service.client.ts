@@ -4,6 +4,8 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { GetValidationTraceTestsResponse } from "./test_run_service";
+import type { GetValidationTraceTestsRequest } from "./test_run_service";
 import type { UpdateDriftRunCIStatusResponse } from "./test_run_service";
 import type { UpdateDriftRunCIStatusRequest } from "./test_run_service";
 import type { UploadTraceTestResultsResponse } from "./test_run_service";
@@ -78,6 +80,19 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: UpdateDriftRunCIStatus
      */
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>;
+    // We were initially thinking we'd need GetDriftRunTestResults or
+    // GetDriftRunTestStatus Since CI may wait for trace test results to be
+    // uploaded and classified before exiting However, for now CI will just exit
+    // with success if the tests were able to be run
+
+    // Suite validation RPCs - used for validating traces on main branch
+
+    /**
+     * Get all traces for validation (both DRAFT and IN_SUITE)
+     *
+     * @generated from protobuf rpc: GetValidationTraceTests
+     */
+    getValidationTraceTests(input: GetValidationTraceTestsRequest, options?: RpcOptions): UnaryCall<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -162,5 +177,21 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     updateDriftRunCIStatus(input: UpdateDriftRunCIStatusRequest, options?: RpcOptions): UnaryCall<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse> {
         const method = this.methods[7], opt = this._transport.mergeOptions(options);
         return stackIntercept<UpdateDriftRunCIStatusRequest, UpdateDriftRunCIStatusResponse>("unary", this._transport, method, opt, input);
+    }
+    // We were initially thinking we'd need GetDriftRunTestResults or
+    // GetDriftRunTestStatus Since CI may wait for trace test results to be
+    // uploaded and classified before exiting However, for now CI will just exit
+    // with success if the tests were able to be run
+
+    // Suite validation RPCs - used for validating traces on main branch
+
+    /**
+     * Get all traces for validation (both DRAFT and IN_SUITE)
+     *
+     * @generated from protobuf rpc: GetValidationTraceTests
+     */
+    getValidationTraceTests(input: GetValidationTraceTestsRequest, options?: RpcOptions): UnaryCall<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse> {
+        const method = this.methods[8], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse>("unary", this._transport, method, opt, input);
     }
 }

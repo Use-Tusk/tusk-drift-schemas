@@ -37,6 +37,11 @@ service TestRunService {
   // GetDriftRunTestStatus Since CI may wait for trace test results to be
   // uploaded and classified before exiting However, for now CI will just exit
   // with success if the tests were able to be run
+
+  // Suite validation RPCs - used for validating traces on main branch
+
+  // Get all traces for validation (both DRAFT and IN_SUITE)
+  rpc GetValidationTraceTests(GetValidationTraceTestsRequest) returns (GetValidationTraceTestsResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -96,10 +101,15 @@ message GetPreAppStartSpansResponse {
 message CreateDriftRunRequest {
   string observable_service_id = 1;
   string cli_version = 2;
-  string commit_sha = 3;
-  string pr_number = 4;
-  string branch_name = 5;
-  string external_check_run_id = 6;
+
+  // These fields are optional for validation runs
+  optional string commit_sha = 3;
+  optional string pr_number = 4;
+  optional string branch_name = 5;
+  optional string external_check_run_id = 6;
+
+  // Indicates this is a validation run on the default branch
+  bool is_validation_run = 7;
 }
 
 message CreateDriftRunResponseSuccess {
@@ -128,12 +138,22 @@ message GetDriftRunTraceTestsRequest {
   int32 page_size = 3;
 }
 
+enum TraceTestStatus {
+  TRACE_TEST_STATUS_UNSPECIFIED = 0;
+  TRACE_TEST_STATUS_DRAFT = 1;
+  TRACE_TEST_STATUS_IN_SUITE = 2;
+  TRACE_TEST_STATUS_REMOVED = 3;
+}
+
 message TraceTest {
   string id = 1; // DB id
   string trace_id = 2;
   string server_span_recording_id = 3;
 
   repeated tusk.drift.core.v1.Span spans = 4;
+
+  // Status of the trace test (DRAFT, IN_SUITE, REMOVED)
+  TraceTestStatus status = 5;
 }
 
 message GetDriftRunTraceTestsResponseSuccess {
@@ -325,5 +345,34 @@ message UpdateDriftRunCIStatusResponse {
   oneof response {
     UpdateDriftRunCIStatusResponseSuccess success = 1;
     UpdateDriftRunCIStatusResponseError error = 2;
+  }
+}
+
+// =============================================================================
+// Suite Validation Messages
+// =============================================================================
+
+// GetValidationTraceTests - Get all traces for validation (DRAFT and IN_SUITE)
+message GetValidationTraceTestsRequest {
+  string observable_service_id = 1;
+  optional string pagination_cursor = 2;
+  int32 page_size = 3;
+}
+
+message GetValidationTraceTestsResponseSuccess {
+  repeated TraceTest trace_tests = 1;
+  optional string next_cursor = 2;
+  int32 total_count = 3;
+}
+
+message GetValidationTraceTestsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetValidationTraceTestsResponse {
+  oneof response {
+    GetValidationTraceTestsResponseSuccess success = 1;
+    GetValidationTraceTestsResponseError error = 2;
   }
 }

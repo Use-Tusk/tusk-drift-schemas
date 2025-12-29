@@ -282,6 +282,76 @@ export interface CreateApiKeyResponseError {
      */
     message: string;
 }
+// =============================================================================
+// GetObservableServiceInfo Messages
+// =============================================================================
+
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetObservableServiceInfoRequest
+ */
+export interface GetObservableServiceInfoRequest {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess
+ */
+export interface GetObservableServiceInfoResponseSuccess {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+    /**
+     * @generated from protobuf field: string default_branch = 2
+     */
+    defaultBranch: string;
+    /**
+     * @generated from protobuf field: string repo_owner = 3
+     */
+    repoOwner: string;
+    /**
+     * @generated from protobuf field: string repo_name = 4
+     */
+    repoName: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponseError
+ */
+export interface GetObservableServiceInfoResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponse
+ */
+export interface GetObservableServiceInfoResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess success = 1
+         */
+        success: GetObservableServiceInfoResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetObservableServiceInfoResponseError error = 2
+         */
+        error: GetObservableServiceInfoResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
 /**
  * @generated from protobuf enum tusk.drift.backend.v1.UserType
  */
@@ -1379,6 +1449,239 @@ class CreateApiKeyResponseError$Type extends MessageType<CreateApiKeyResponseErr
  * @generated MessageType for protobuf message tusk.drift.backend.v1.CreateApiKeyResponseError
  */
 export const CreateApiKeyResponseError = new CreateApiKeyResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetObservableServiceInfoRequest$Type extends MessageType<GetObservableServiceInfoRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetObservableServiceInfoRequest", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetObservableServiceInfoRequest>): GetObservableServiceInfoRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetObservableServiceInfoRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetObservableServiceInfoRequest): GetObservableServiceInfoRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetObservableServiceInfoRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetObservableServiceInfoRequest
+ */
+export const GetObservableServiceInfoRequest = new GetObservableServiceInfoRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetObservableServiceInfoResponseSuccess$Type extends MessageType<GetObservableServiceInfoResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "default_branch", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "repo_owner", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "repo_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetObservableServiceInfoResponseSuccess>): GetObservableServiceInfoResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        message.defaultBranch = "";
+        message.repoOwner = "";
+        message.repoName = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetObservableServiceInfoResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetObservableServiceInfoResponseSuccess): GetObservableServiceInfoResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                case /* string default_branch */ 2:
+                    message.defaultBranch = reader.string();
+                    break;
+                case /* string repo_owner */ 3:
+                    message.repoOwner = reader.string();
+                    break;
+                case /* string repo_name */ 4:
+                    message.repoName = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetObservableServiceInfoResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        /* string default_branch = 2; */
+        if (message.defaultBranch !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.defaultBranch);
+        /* string repo_owner = 3; */
+        if (message.repoOwner !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.repoOwner);
+        /* string repo_name = 4; */
+        if (message.repoName !== "")
+            writer.tag(4, WireType.LengthDelimited).string(message.repoName);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess
+ */
+export const GetObservableServiceInfoResponseSuccess = new GetObservableServiceInfoResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetObservableServiceInfoResponseError$Type extends MessageType<GetObservableServiceInfoResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetObservableServiceInfoResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetObservableServiceInfoResponseError>): GetObservableServiceInfoResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetObservableServiceInfoResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetObservableServiceInfoResponseError): GetObservableServiceInfoResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetObservableServiceInfoResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponseError
+ */
+export const GetObservableServiceInfoResponseError = new GetObservableServiceInfoResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetObservableServiceInfoResponse$Type extends MessageType<GetObservableServiceInfoResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetObservableServiceInfoResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetObservableServiceInfoResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetObservableServiceInfoResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<GetObservableServiceInfoResponse>): GetObservableServiceInfoResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<GetObservableServiceInfoResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetObservableServiceInfoResponse): GetObservableServiceInfoResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: GetObservableServiceInfoResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.GetObservableServiceInfoResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: GetObservableServiceInfoResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetObservableServiceInfoResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetObservableServiceInfoResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            GetObservableServiceInfoResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetObservableServiceInfoResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            GetObservableServiceInfoResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetObservableServiceInfoResponse
+ */
+export const GetObservableServiceInfoResponse = new GetObservableServiceInfoResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.ClientService
  */
@@ -1386,5 +1689,6 @@ export const ClientService = new ServiceType$("tusk.drift.backend.v1.ClientServi
     { name: "GetAuthInfo", options: {}, I: GetAuthInfoRequest, O: GetAuthInfoResponse },
     { name: "CreateObservableService", options: {}, I: CreateObservableServiceRequest, O: CreateObservableServiceResponse },
     { name: "VerifyRepoAccess", options: {}, I: VerifyRepoAccessRequest, O: VerifyRepoAccessResponse },
-    { name: "CreateApiKey", options: {}, I: CreateApiKeyRequest, O: CreateApiKeyResponse }
+    { name: "CreateApiKey", options: {}, I: CreateApiKeyRequest, O: CreateApiKeyResponse },
+    { name: "GetObservableServiceInfo", options: {}, I: GetObservableServiceInfoRequest, O: GetObservableServiceInfoResponse }
 ]);
