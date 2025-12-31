@@ -307,6 +307,8 @@ type GetMockResponse struct {
 	// Mock metadata
 	MatchedSpanId string                 `protobuf:"bytes,7,opt,name=matched_span_id,json=matchedSpanId,proto3" json:"matched_span_id,omitempty"` // Which span was matched
 	MatchedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=matched_at,json=matchedAt,proto3" json:"matched_at,omitempty"`               // When the match occurred
+	// Match information (populated when found=true)
+	MatchLevel    *MatchLevel `protobuf:"bytes,9,opt,name=match_level,json=matchLevel,proto3,oneof" json:"match_level,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -393,6 +395,13 @@ func (x *GetMockResponse) GetMatchedSpanId() string {
 func (x *GetMockResponse) GetMatchedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.MatchedAt
+	}
+	return nil
+}
+
+func (x *GetMockResponse) GetMatchLevel() *MatchLevel {
+	if x != nil {
+		return x.MatchLevel
 	}
 	return nil
 }
@@ -1087,7 +1096,7 @@ const file_core_communication_proto_rawDesc = "" +
 	"\frequested_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\vrequestedAt\x1a7\n" +
 	"\tTagsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd1\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa7\x03\n" +
 	"\x0fGetMockResponse\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12\x14\n" +
@@ -1099,7 +1108,10 @@ const file_core_communication_proto_rawDesc = "" +
 	"error_code\x18\x06 \x01(\tR\terrorCode\x12&\n" +
 	"\x0fmatched_span_id\x18\a \x01(\tR\rmatchedSpanId\x129\n" +
 	"\n" +
-	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\"\xb4\x04\n" +
+	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\x12D\n" +
+	"\vmatch_level\x18\t \x01(\v2\x1e.tusk.drift.core.v1.MatchLevelH\x00R\n" +
+	"matchLevel\x88\x01\x01B\x0e\n" +
+	"\f_match_level\"\xb4\x04\n" +
 	"\n" +
 	"SDKMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -1196,6 +1208,7 @@ var file_core_communication_proto_goTypes = []any{
 	(*structpb.Struct)(nil),                     // 16: google.protobuf.Struct
 	(*Span)(nil),                                // 17: tusk.drift.core.v1.Span
 	(*timestamppb.Timestamp)(nil),               // 18: google.protobuf.Timestamp
+	(*MatchLevel)(nil),                          // 19: tusk.drift.core.v1.MatchLevel
 }
 var file_core_communication_proto_depIdxs = []int32{
 	16, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
@@ -1205,32 +1218,33 @@ var file_core_communication_proto_depIdxs = []int32{
 	16, // 4: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
 	16, // 5: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
 	18, // 6: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
-	0,  // 7: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	1,  // 8: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
-	3,  // 9: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
-	7,  // 10: tusk.drift.core.v1.SDKMessage.send_inbound_span_for_replay_request:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	9,  // 11: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
-	12, // 12: tusk.drift.core.v1.SDKMessage.env_var_request:type_name -> tusk.drift.core.v1.EnvVarRequest
-	0,  // 13: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	2,  // 14: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
-	4,  // 15: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
-	8,  // 16: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	13, // 17: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
-	17, // 18: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
-	10, // 19: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
-	11, // 20: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
-	15, // 21: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
-	1,  // 22: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
-	3,  // 23: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
-	7,  // 24: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	2,  // 25: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
-	4,  // 26: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
-	8,  // 27: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	25, // [25:28] is the sub-list for method output_type
-	22, // [22:25] is the sub-list for method input_type
-	22, // [22:22] is the sub-list for extension type_name
-	22, // [22:22] is the sub-list for extension extendee
-	0,  // [0:22] is the sub-list for field type_name
+	19, // 7: tusk.drift.core.v1.GetMockResponse.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	0,  // 8: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	1,  // 9: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
+	3,  // 10: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
+	7,  // 11: tusk.drift.core.v1.SDKMessage.send_inbound_span_for_replay_request:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	9,  // 12: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
+	12, // 13: tusk.drift.core.v1.SDKMessage.env_var_request:type_name -> tusk.drift.core.v1.EnvVarRequest
+	0,  // 14: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	2,  // 15: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
+	4,  // 16: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
+	8,  // 17: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	13, // 18: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
+	17, // 19: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
+	10, // 20: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	11, // 21: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
+	15, // 22: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
+	1,  // 23: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
+	3,  // 24: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
+	7,  // 25: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	2,  // 26: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
+	4,  // 27: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
+	8,  // 28: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	26, // [26:29] is the sub-list for method output_type
+	23, // [23:26] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_core_communication_proto_init() }
@@ -1239,6 +1253,7 @@ func file_core_communication_proto_init() {
 		return
 	}
 	file_core_span_proto_init()
+	file_core_communication_proto_msgTypes[3].OneofWrappers = []any{}
 	file_core_communication_proto_msgTypes[4].OneofWrappers = []any{
 		(*SDKMessage_ConnectRequest)(nil),
 		(*SDKMessage_GetMockRequest)(nil),

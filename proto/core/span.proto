@@ -115,3 +115,37 @@ message Trace {
   google.protobuf.Timestamp completed_at = 4;
   map<string, string> metadata = 5; // Trace-level metadata
 }
+
+// Match scope - where the match was found
+enum MatchScope {
+  MATCH_SCOPE_UNSPECIFIED = 0;
+  MATCH_SCOPE_TRACE = 1;
+  MATCH_SCOPE_GLOBAL = 2;
+}
+
+// Match type - how the match was found
+enum MatchType {
+  MATCH_TYPE_UNSPECIFIED = 0;
+  MATCH_TYPE_INPUT_VALUE_HASH = 1;
+  MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA = 2;
+  MATCH_TYPE_INPUT_SCHEMA_HASH = 3;
+  MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4;
+  MATCH_TYPE_FUZZY = 5;
+  MATCH_TYPE_FALLBACK = 6;
+}
+
+// Similarity candidate for ranking matches
+message SimilarityCandidate {
+  string span_id = 1;
+  float score = 2;
+}
+
+// Match level information
+message MatchLevel {
+  MatchType match_type = 1; // How the match was found
+  MatchScope match_scope = 2; // Scope of where the match was found
+  string match_description = 3; // Natural language description for match
+  // Similarity scoring fields (populated when multiple matches exist)
+  optional float similarity_score = 4; // The similarity score of the selected match (0.0-1.0)
+  repeated SimilarityCandidate top_candidates = 5; // Top 5 alternative matches with scores
+}

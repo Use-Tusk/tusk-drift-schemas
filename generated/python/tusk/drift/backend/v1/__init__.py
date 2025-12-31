@@ -70,22 +70,6 @@ class TraceTestStatus(betterproto.Enum):
     REMOVED = 3
 
 
-class MatchScope(betterproto.Enum):
-    UNSPECIFIED = 0
-    TRACE = 1
-    GLOBAL = 2
-
-
-class MatchType(betterproto.Enum):
-    UNSPECIFIED = 0
-    INPUT_VALUE_HASH = 1
-    INPUT_VALUE_HASH_REDUCED_SCHEMA = 2
-    INPUT_SCHEMA_HASH = 3
-    INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4
-    FUZZY = 5
-    FALLBACK = 6
-
-
 class TraceTestFailureReason(betterproto.Enum):
     UNSPECIFIED = 0
     MOCK_NOT_FOUND = 1
@@ -470,23 +454,6 @@ class Deviation(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
-class MatchLevel(betterproto.Message):
-    match_type: "MatchType" = betterproto.enum_field(1)
-    match_scope: "MatchScope" = betterproto.enum_field(2)
-    match_description: str = betterproto.string_field(3)
-    similarity_score: Optional[float] = betterproto.float_field(4, optional=True)
-    """Similarity scoring fields (populated when multiple matches exist)"""
-
-    top_candidates: List["SimilarityCandidate"] = betterproto.message_field(5)
-
-
-@dataclass(eq=False, repr=False)
-class SimilarityCandidate(betterproto.Message):
-    span_id: str = betterproto.string_field(1)
-    score: float = betterproto.float_field(2)
-
-
-@dataclass(eq=False, repr=False)
 class TraceTestSpanResult(betterproto.Message):
     replay_span: "__core_v1__.Span" = betterproto.message_field(1)
     """
@@ -502,7 +469,9 @@ class TraceTestSpanResult(betterproto.Message):
      This should be the DB id of the matched span_recording
     """
 
-    match_level: Optional["MatchLevel"] = betterproto.message_field(3, optional=True)
+    match_level: Optional["__core_v1__.MatchLevel"] = betterproto.message_field(
+        3, optional=True
+    )
     stack_trace: Optional[str] = betterproto.string_field(4, optional=True)
     deviations: List["Deviation"] = betterproto.message_field(5)
 

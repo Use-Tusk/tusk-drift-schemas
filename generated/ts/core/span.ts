@@ -225,6 +225,50 @@ export interface Trace {
     }; // Trace-level metadata
 }
 /**
+ * Similarity candidate for ranking matches
+ *
+ * @generated from protobuf message tusk.drift.core.v1.SimilarityCandidate
+ */
+export interface SimilarityCandidate {
+    /**
+     * @generated from protobuf field: string span_id = 1
+     */
+    spanId: string;
+    /**
+     * @generated from protobuf field: float score = 2
+     */
+    score: number;
+}
+/**
+ * Match level information
+ *
+ * @generated from protobuf message tusk.drift.core.v1.MatchLevel
+ */
+export interface MatchLevel {
+    /**
+     * @generated from protobuf field: tusk.drift.core.v1.MatchType match_type = 1
+     */
+    matchType: MatchType; // How the match was found
+    /**
+     * @generated from protobuf field: tusk.drift.core.v1.MatchScope match_scope = 2
+     */
+    matchScope: MatchScope; // Scope of where the match was found
+    /**
+     * @generated from protobuf field: string match_description = 3
+     */
+    matchDescription: string; // Natural language description for match
+    /**
+     * Similarity scoring fields (populated when multiple matches exist)
+     *
+     * @generated from protobuf field: optional float similarity_score = 4
+     */
+    similarityScore?: number; // The similarity score of the selected match (0.0-1.0)
+    /**
+     * @generated from protobuf field: repeated tusk.drift.core.v1.SimilarityCandidate top_candidates = 5
+     */
+    topCandidates: SimilarityCandidate[]; // Top 5 alternative matches with scores
+}
+/**
  * Package type classification enum
  * Langauge agnostic
  *
@@ -365,6 +409,60 @@ export enum StatusCode {
      * @generated from protobuf enum value: STATUS_CODE_ERROR = 2;
      */
     ERROR = 2
+}
+/**
+ * Match scope - where the match was found
+ *
+ * @generated from protobuf enum tusk.drift.core.v1.MatchScope
+ */
+export enum MatchScope {
+    /**
+     * @generated from protobuf enum value: MATCH_SCOPE_UNSPECIFIED = 0;
+     */
+    UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: MATCH_SCOPE_TRACE = 1;
+     */
+    TRACE = 1,
+    /**
+     * @generated from protobuf enum value: MATCH_SCOPE_GLOBAL = 2;
+     */
+    GLOBAL = 2
+}
+/**
+ * Match type - how the match was found
+ *
+ * @generated from protobuf enum tusk.drift.core.v1.MatchType
+ */
+export enum MatchType {
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_UNSPECIFIED = 0;
+     */
+    UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_INPUT_VALUE_HASH = 1;
+     */
+    INPUT_VALUE_HASH = 1,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA = 2;
+     */
+    INPUT_VALUE_HASH_REDUCED_SCHEMA = 2,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_INPUT_SCHEMA_HASH = 3;
+     */
+    INPUT_SCHEMA_HASH = 3,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4;
+     */
+    INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_FUZZY = 5;
+     */
+    FUZZY = 5,
+    /**
+     * @generated from protobuf enum value: MATCH_TYPE_FALLBACK = 6;
+     */
+    FALLBACK = 6
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class Span$Type extends MessageType<Span> {
@@ -901,3 +999,136 @@ class Trace$Type extends MessageType<Trace> {
  * @generated MessageType for protobuf message tusk.drift.core.v1.Trace
  */
 export const Trace = new Trace$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SimilarityCandidate$Type extends MessageType<SimilarityCandidate> {
+    constructor() {
+        super("tusk.drift.core.v1.SimilarityCandidate", [
+            { no: 1, name: "span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "score", kind: "scalar", T: 2 /*ScalarType.FLOAT*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SimilarityCandidate>): SimilarityCandidate {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.spanId = "";
+        message.score = 0;
+        if (value !== undefined)
+            reflectionMergePartial<SimilarityCandidate>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SimilarityCandidate): SimilarityCandidate {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string span_id */ 1:
+                    message.spanId = reader.string();
+                    break;
+                case /* float score */ 2:
+                    message.score = reader.float();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SimilarityCandidate, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string span_id = 1; */
+        if (message.spanId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.spanId);
+        /* float score = 2; */
+        if (message.score !== 0)
+            writer.tag(2, WireType.Bit32).float(message.score);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.SimilarityCandidate
+ */
+export const SimilarityCandidate = new SimilarityCandidate$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class MatchLevel$Type extends MessageType<MatchLevel> {
+    constructor() {
+        super("tusk.drift.core.v1.MatchLevel", [
+            { no: 1, name: "match_type", kind: "enum", T: () => ["tusk.drift.core.v1.MatchType", MatchType, "MATCH_TYPE_"] },
+            { no: 2, name: "match_scope", kind: "enum", T: () => ["tusk.drift.core.v1.MatchScope", MatchScope, "MATCH_SCOPE_"] },
+            { no: 3, name: "match_description", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "similarity_score", kind: "scalar", opt: true, T: 2 /*ScalarType.FLOAT*/ },
+            { no: 5, name: "top_candidates", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => SimilarityCandidate }
+        ]);
+    }
+    create(value?: PartialMessage<MatchLevel>): MatchLevel {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.matchType = 0;
+        message.matchScope = 0;
+        message.matchDescription = "";
+        message.topCandidates = [];
+        if (value !== undefined)
+            reflectionMergePartial<MatchLevel>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: MatchLevel): MatchLevel {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.core.v1.MatchType match_type */ 1:
+                    message.matchType = reader.int32();
+                    break;
+                case /* tusk.drift.core.v1.MatchScope match_scope */ 2:
+                    message.matchScope = reader.int32();
+                    break;
+                case /* string match_description */ 3:
+                    message.matchDescription = reader.string();
+                    break;
+                case /* optional float similarity_score */ 4:
+                    message.similarityScore = reader.float();
+                    break;
+                case /* repeated tusk.drift.core.v1.SimilarityCandidate top_candidates */ 5:
+                    message.topCandidates.push(SimilarityCandidate.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: MatchLevel, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.core.v1.MatchType match_type = 1; */
+        if (message.matchType !== 0)
+            writer.tag(1, WireType.Varint).int32(message.matchType);
+        /* tusk.drift.core.v1.MatchScope match_scope = 2; */
+        if (message.matchScope !== 0)
+            writer.tag(2, WireType.Varint).int32(message.matchScope);
+        /* string match_description = 3; */
+        if (message.matchDescription !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.matchDescription);
+        /* optional float similarity_score = 4; */
+        if (message.similarityScore !== undefined)
+            writer.tag(4, WireType.Bit32).float(message.similarityScore);
+        /* repeated tusk.drift.core.v1.SimilarityCandidate top_candidates = 5; */
+        for (let i = 0; i < message.topCandidates.length; i++)
+            SimilarityCandidate.internalBinaryWrite(message.topCandidates[i], writer.tag(5, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.MatchLevel
+ */
+export const MatchLevel = new MatchLevel$Type();
