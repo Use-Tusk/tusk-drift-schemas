@@ -231,36 +231,6 @@ message Deviation {
   // inbound response (e.g. "HTTP status code mismatch")
 }
 
-enum MatchScope {
-  MATCH_SCOPE_UNSPECIFIED = 0;
-  MATCH_SCOPE_TRACE = 1;
-  MATCH_SCOPE_GLOBAL = 2;
-}
-
-enum MatchType {
-  MATCH_TYPE_UNSPECIFIED = 0;
-  MATCH_TYPE_INPUT_VALUE_HASH = 1;
-  MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA = 2;
-  MATCH_TYPE_INPUT_SCHEMA_HASH = 3;
-  MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4;
-  MATCH_TYPE_FUZZY = 5;
-  MATCH_TYPE_FALLBACK = 6;
-}
-
-message MatchLevel {
-  MatchType match_type = 1; // How the match was found
-  MatchScope match_scope = 2; // Scope of where the match was found
-  string match_description = 3; // Natural language description for match
-  // Similarity scoring fields (populated when multiple matches exist)
-  optional float similarity_score = 4; // The similarity score of the selected match (0.0-1.0)
-  repeated SimilarityCandidate top_candidates = 5; // Top 5 alternative matches with scores
-}
-
-message SimilarityCandidate {
-  string span_id = 1;
-  float score = 2;
-}
-
 message TraceTestSpanResult {
   // Create a separate table in backend for span_result_recording, but very
   // similar schema to
@@ -269,7 +239,7 @@ message TraceTestSpanResult {
   // All nullable since we want to allow for no matching span_recordings
   // This should be the DB id of the matched span_recording
   optional string matched_span_recording_id = 2;
-  optional MatchLevel match_level = 3;
+  optional tusk.drift.core.v1.MatchLevel match_level = 3;
   optional string stack_trace = 4;
 
   repeated Deviation deviations = 5;

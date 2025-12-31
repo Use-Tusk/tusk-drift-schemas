@@ -52,6 +52,9 @@ message GetMockResponse {
   // Mock metadata
   string matched_span_id = 7; // Which span was matched
   google.protobuf.Timestamp matched_at = 8; // When the match occurred
+
+  // Match information (populated when found=true)
+  optional MatchLevel match_level = 9;
 }
 
 // Message types for the Unix socket protocol

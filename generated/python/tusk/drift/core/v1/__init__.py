@@ -122,6 +122,26 @@ class StatusCode(betterproto.Enum):
     ERROR = 2
 
 
+class MatchScope(betterproto.Enum):
+    """Match scope - where the match was found"""
+
+    UNSPECIFIED = 0
+    TRACE = 1
+    GLOBAL = 2
+
+
+class MatchType(betterproto.Enum):
+    """Match type - how the match was found"""
+
+    UNSPECIFIED = 0
+    INPUT_VALUE_HASH = 1
+    INPUT_VALUE_HASH_REDUCED_SCHEMA = 2
+    INPUT_SCHEMA_HASH = 3
+    INPUT_SCHEMA_HASH_REDUCED_SCHEMA = 4
+    FUZZY = 5
+    FALLBACK = 6
+
+
 class MessageType(betterproto.Enum):
     UNSPECIFIED = 0
     SDK_CONNECT = 1
@@ -257,6 +277,27 @@ class Trace(betterproto.Message):
 
 
 @dataclass(eq=False, repr=False)
+class SimilarityCandidate(betterproto.Message):
+    """Similarity candidate for ranking matches"""
+
+    span_id: str = betterproto.string_field(1)
+    score: float = betterproto.float_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class MatchLevel(betterproto.Message):
+    """Match level information"""
+
+    match_type: "MatchType" = betterproto.enum_field(1)
+    match_scope: "MatchScope" = betterproto.enum_field(2)
+    match_description: str = betterproto.string_field(3)
+    similarity_score: Optional[float] = betterproto.float_field(4, optional=True)
+    """Similarity scoring fields (populated when multiple matches exist)"""
+
+    top_candidates: List["SimilarityCandidate"] = betterproto.message_field(5)
+
+
+@dataclass(eq=False, repr=False)
 class ConnectRequest(betterproto.Message):
     """SDK connection handshake"""
 
@@ -303,6 +344,8 @@ class GetMockResponse(betterproto.Message):
     """Mock metadata"""
 
     matched_at: datetime = betterproto.message_field(8)
+    match_level: Optional["MatchLevel"] = betterproto.message_field(9, optional=True)
+    """Match information (populated when found=true)"""
 
 
 @dataclass(eq=False, repr=False)

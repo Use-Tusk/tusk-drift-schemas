@@ -11,6 +11,7 @@ import { UnknownFieldHandler } from "@protobuf-ts/runtime";
 import type { PartialMessage } from "@protobuf-ts/runtime";
 import { reflectionMergePartial } from "@protobuf-ts/runtime";
 import { MessageType as MessageType$ } from "@protobuf-ts/runtime";
+import { MatchLevel } from "./span";
 import { Timestamp } from "../google/protobuf/timestamp";
 import { Span } from "./span";
 import { Struct } from "../google/protobuf/struct";
@@ -127,6 +128,12 @@ export interface GetMockResponse {
      * @generated from protobuf field: google.protobuf.Timestamp matched_at = 8
      */
     matchedAt?: Timestamp; // When the match occurred
+    /**
+     * Match information (populated when found=true)
+     *
+     * @generated from protobuf field: optional tusk.drift.core.v1.MatchLevel match_level = 9
+     */
+    matchLevel?: MatchLevel;
 }
 /**
  * Message types for the Unix socket protocol
@@ -595,7 +602,8 @@ class GetMockResponse$Type extends MessageType$<GetMockResponse> {
             { no: 5, name: "error", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "error_code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 7, name: "matched_span_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 8, name: "matched_at", kind: "message", T: () => Timestamp }
+            { no: 8, name: "matched_at", kind: "message", T: () => Timestamp },
+            { no: 9, name: "match_level", kind: "message", T: () => MatchLevel }
         ]);
     }
     create(value?: PartialMessage<GetMockResponse>): GetMockResponse {
@@ -638,6 +646,9 @@ class GetMockResponse$Type extends MessageType$<GetMockResponse> {
                 case /* google.protobuf.Timestamp matched_at */ 8:
                     message.matchedAt = Timestamp.internalBinaryRead(reader, reader.uint32(), options, message.matchedAt);
                     break;
+                case /* optional tusk.drift.core.v1.MatchLevel match_level */ 9:
+                    message.matchLevel = MatchLevel.internalBinaryRead(reader, reader.uint32(), options, message.matchLevel);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -674,6 +685,9 @@ class GetMockResponse$Type extends MessageType$<GetMockResponse> {
         /* google.protobuf.Timestamp matched_at = 8; */
         if (message.matchedAt)
             Timestamp.internalBinaryWrite(message.matchedAt, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
+        /* optional tusk.drift.core.v1.MatchLevel match_level = 9; */
+        if (message.matchLevel)
+            MatchLevel.internalBinaryWrite(message.matchLevel, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

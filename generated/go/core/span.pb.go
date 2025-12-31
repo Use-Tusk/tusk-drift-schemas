@@ -210,6 +210,118 @@ func (StatusCode) EnumDescriptor() ([]byte, []int) {
 	return file_core_span_proto_rawDescGZIP(), []int{2}
 }
 
+// Match scope - where the match was found
+type MatchScope int32
+
+const (
+	MatchScope_MATCH_SCOPE_UNSPECIFIED MatchScope = 0
+	MatchScope_MATCH_SCOPE_TRACE       MatchScope = 1
+	MatchScope_MATCH_SCOPE_GLOBAL      MatchScope = 2
+)
+
+// Enum value maps for MatchScope.
+var (
+	MatchScope_name = map[int32]string{
+		0: "MATCH_SCOPE_UNSPECIFIED",
+		1: "MATCH_SCOPE_TRACE",
+		2: "MATCH_SCOPE_GLOBAL",
+	}
+	MatchScope_value = map[string]int32{
+		"MATCH_SCOPE_UNSPECIFIED": 0,
+		"MATCH_SCOPE_TRACE":       1,
+		"MATCH_SCOPE_GLOBAL":      2,
+	}
+)
+
+func (x MatchScope) Enum() *MatchScope {
+	p := new(MatchScope)
+	*p = x
+	return p
+}
+
+func (x MatchScope) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (MatchScope) Descriptor() protoreflect.EnumDescriptor {
+	return file_core_span_proto_enumTypes[3].Descriptor()
+}
+
+func (MatchScope) Type() protoreflect.EnumType {
+	return &file_core_span_proto_enumTypes[3]
+}
+
+func (x MatchScope) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use MatchScope.Descriptor instead.
+func (MatchScope) EnumDescriptor() ([]byte, []int) {
+	return file_core_span_proto_rawDescGZIP(), []int{3}
+}
+
+// Match type - how the match was found
+type MatchType int32
+
+const (
+	MatchType_MATCH_TYPE_UNSPECIFIED                      MatchType = 0
+	MatchType_MATCH_TYPE_INPUT_VALUE_HASH                 MatchType = 1
+	MatchType_MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA  MatchType = 2
+	MatchType_MATCH_TYPE_INPUT_SCHEMA_HASH                MatchType = 3
+	MatchType_MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA MatchType = 4
+	MatchType_MATCH_TYPE_FUZZY                            MatchType = 5
+	MatchType_MATCH_TYPE_FALLBACK                         MatchType = 6
+)
+
+// Enum value maps for MatchType.
+var (
+	MatchType_name = map[int32]string{
+		0: "MATCH_TYPE_UNSPECIFIED",
+		1: "MATCH_TYPE_INPUT_VALUE_HASH",
+		2: "MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA",
+		3: "MATCH_TYPE_INPUT_SCHEMA_HASH",
+		4: "MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA",
+		5: "MATCH_TYPE_FUZZY",
+		6: "MATCH_TYPE_FALLBACK",
+	}
+	MatchType_value = map[string]int32{
+		"MATCH_TYPE_UNSPECIFIED":                      0,
+		"MATCH_TYPE_INPUT_VALUE_HASH":                 1,
+		"MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA":  2,
+		"MATCH_TYPE_INPUT_SCHEMA_HASH":                3,
+		"MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA": 4,
+		"MATCH_TYPE_FUZZY":                            5,
+		"MATCH_TYPE_FALLBACK":                         6,
+	}
+)
+
+func (x MatchType) Enum() *MatchType {
+	p := new(MatchType)
+	*p = x
+	return p
+}
+
+func (x MatchType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (MatchType) Descriptor() protoreflect.EnumDescriptor {
+	return file_core_span_proto_enumTypes[4].Descriptor()
+}
+
+func (MatchType) Type() protoreflect.EnumType {
+	return &file_core_span_proto_enumTypes[4]
+}
+
+func (x MatchType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use MatchType.Descriptor instead.
+func (MatchType) EnumDescriptor() ([]byte, []int) {
+	return file_core_span_proto_rawDescGZIP(), []int{4}
+}
+
 // Universal span structure that works for all instrumentation types
 type Span struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -701,6 +813,137 @@ func (x *Trace) GetMetadata() map[string]string {
 	return nil
 }
 
+// Similarity candidate for ranking matches
+type SimilarityCandidate struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanId        string                 `protobuf:"bytes,1,opt,name=span_id,json=spanId,proto3" json:"span_id,omitempty"`
+	Score         float32                `protobuf:"fixed32,2,opt,name=score,proto3" json:"score,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SimilarityCandidate) Reset() {
+	*x = SimilarityCandidate{}
+	mi := &file_core_span_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SimilarityCandidate) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SimilarityCandidate) ProtoMessage() {}
+
+func (x *SimilarityCandidate) ProtoReflect() protoreflect.Message {
+	mi := &file_core_span_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SimilarityCandidate.ProtoReflect.Descriptor instead.
+func (*SimilarityCandidate) Descriptor() ([]byte, []int) {
+	return file_core_span_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *SimilarityCandidate) GetSpanId() string {
+	if x != nil {
+		return x.SpanId
+	}
+	return ""
+}
+
+func (x *SimilarityCandidate) GetScore() float32 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+// Match level information
+type MatchLevel struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	MatchType        MatchType              `protobuf:"varint,1,opt,name=match_type,json=matchType,proto3,enum=tusk.drift.core.v1.MatchType" json:"match_type,omitempty"`     // How the match was found
+	MatchScope       MatchScope             `protobuf:"varint,2,opt,name=match_scope,json=matchScope,proto3,enum=tusk.drift.core.v1.MatchScope" json:"match_scope,omitempty"` // Scope of where the match was found
+	MatchDescription string                 `protobuf:"bytes,3,opt,name=match_description,json=matchDescription,proto3" json:"match_description,omitempty"`                   // Natural language description for match
+	// Similarity scoring fields (populated when multiple matches exist)
+	SimilarityScore *float32               `protobuf:"fixed32,4,opt,name=similarity_score,json=similarityScore,proto3,oneof" json:"similarity_score,omitempty"` // The similarity score of the selected match (0.0-1.0)
+	TopCandidates   []*SimilarityCandidate `protobuf:"bytes,5,rep,name=top_candidates,json=topCandidates,proto3" json:"top_candidates,omitempty"`               // Top 5 alternative matches with scores
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *MatchLevel) Reset() {
+	*x = MatchLevel{}
+	mi := &file_core_span_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MatchLevel) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MatchLevel) ProtoMessage() {}
+
+func (x *MatchLevel) ProtoReflect() protoreflect.Message {
+	mi := &file_core_span_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MatchLevel.ProtoReflect.Descriptor instead.
+func (*MatchLevel) Descriptor() ([]byte, []int) {
+	return file_core_span_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *MatchLevel) GetMatchType() MatchType {
+	if x != nil {
+		return x.MatchType
+	}
+	return MatchType_MATCH_TYPE_UNSPECIFIED
+}
+
+func (x *MatchLevel) GetMatchScope() MatchScope {
+	if x != nil {
+		return x.MatchScope
+	}
+	return MatchScope_MATCH_SCOPE_UNSPECIFIED
+}
+
+func (x *MatchLevel) GetMatchDescription() string {
+	if x != nil {
+		return x.MatchDescription
+	}
+	return ""
+}
+
+func (x *MatchLevel) GetSimilarityScore() float32 {
+	if x != nil && x.SimilarityScore != nil {
+		return *x.SimilarityScore
+	}
+	return 0
+}
+
+func (x *MatchLevel) GetTopCandidates() []*SimilarityCandidate {
+	if x != nil {
+		return x.TopCandidates
+	}
+	return nil
+}
+
 var File_core_span_proto protoreflect.FileDescriptor
 
 const file_core_span_proto_rawDesc = "" +
@@ -766,7 +1009,20 @@ const file_core_span_proto_rawDesc = "" +
 	"\bmetadata\x18\x05 \x03(\v2'.tusk.drift.core.v1.Trace.MetadataEntryR\bmetadata\x1a;\n" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xba\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"D\n" +
+	"\x13SimilarityCandidate\x12\x17\n" +
+	"\aspan_id\x18\x01 \x01(\tR\x06spanId\x12\x14\n" +
+	"\x05score\x18\x02 \x01(\x02R\x05score\"\xcd\x02\n" +
+	"\n" +
+	"MatchLevel\x12<\n" +
+	"\n" +
+	"match_type\x18\x01 \x01(\x0e2\x1d.tusk.drift.core.v1.MatchTypeR\tmatchType\x12?\n" +
+	"\vmatch_scope\x18\x02 \x01(\x0e2\x1e.tusk.drift.core.v1.MatchScopeR\n" +
+	"matchScope\x12+\n" +
+	"\x11match_description\x18\x03 \x01(\tR\x10matchDescription\x12.\n" +
+	"\x10similarity_score\x18\x04 \x01(\x02H\x00R\x0fsimilarityScore\x88\x01\x01\x12N\n" +
+	"\x0etop_candidates\x18\x05 \x03(\v2'.tusk.drift.core.v1.SimilarityCandidateR\rtopCandidatesB\x13\n" +
+	"\x11_similarity_score*\xba\x02\n" +
 	"\vPackageType\x12\x1c\n" +
 	"\x18PACKAGE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
 	"\x11PACKAGE_TYPE_HTTP\x10\x01\x12\x18\n" +
@@ -792,7 +1048,20 @@ const file_core_span_proto_rawDesc = "" +
 	"StatusCode\x12\x1b\n" +
 	"\x17STATUS_CODE_UNSPECIFIED\x10\x00\x12\x12\n" +
 	"\x0eSTATUS_CODE_OK\x10\x01\x12\x15\n" +
-	"\x11STATUS_CODE_ERROR\x10\x02B\xcf\x01\n" +
+	"\x11STATUS_CODE_ERROR\x10\x02*X\n" +
+	"\n" +
+	"MatchScope\x12\x1b\n" +
+	"\x17MATCH_SCOPE_UNSPECIFIED\x10\x00\x12\x15\n" +
+	"\x11MATCH_SCOPE_TRACE\x10\x01\x12\x16\n" +
+	"\x12MATCH_SCOPE_GLOBAL\x10\x02*\xfa\x01\n" +
+	"\tMatchType\x12\x1a\n" +
+	"\x16MATCH_TYPE_UNSPECIFIED\x10\x00\x12\x1f\n" +
+	"\x1bMATCH_TYPE_INPUT_VALUE_HASH\x10\x01\x12.\n" +
+	"*MATCH_TYPE_INPUT_VALUE_HASH_REDUCED_SCHEMA\x10\x02\x12 \n" +
+	"\x1cMATCH_TYPE_INPUT_SCHEMA_HASH\x10\x03\x12/\n" +
+	"+MATCH_TYPE_INPUT_SCHEMA_HASH_REDUCED_SCHEMA\x10\x04\x12\x14\n" +
+	"\x10MATCH_TYPE_FUZZY\x10\x05\x12\x17\n" +
+	"\x13MATCH_TYPE_FALLBACK\x10\x06B\xcf\x01\n" +
 	"\x16com.tusk.drift.core.v1B\tSpanProtoP\x01Z?github.com/Use-Tusk/tusk-drift-schemas/generated/go/core;corev1\xa2\x02\x03TDC\xaa\x02\x12Tusk.Drift.Core.V1\xca\x02\x12Tusk\\Drift\\Core\\V1\xe2\x02\x1eTusk\\Drift\\Core\\V1\\GPBMetadata\xea\x02\x15Tusk::Drift::Core::V1b\x06proto3"
 
 var (
@@ -807,52 +1076,59 @@ func file_core_span_proto_rawDescGZIP() []byte {
 	return file_core_span_proto_rawDescData
 }
 
-var file_core_span_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_core_span_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_core_span_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_core_span_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_core_span_proto_goTypes = []any{
 	(PackageType)(0),              // 0: tusk.drift.core.v1.PackageType
 	(SpanKind)(0),                 // 1: tusk.drift.core.v1.SpanKind
 	(StatusCode)(0),               // 2: tusk.drift.core.v1.StatusCode
-	(*Span)(nil),                  // 3: tusk.drift.core.v1.Span
-	(*SpanStatus)(nil),            // 4: tusk.drift.core.v1.SpanStatus
-	(*SpanEvent)(nil),             // 5: tusk.drift.core.v1.SpanEvent
-	(*SpanLink)(nil),              // 6: tusk.drift.core.v1.SpanLink
-	(*Trace)(nil),                 // 7: tusk.drift.core.v1.Trace
-	nil,                           // 8: tusk.drift.core.v1.SpanEvent.AttributesEntry
-	nil,                           // 9: tusk.drift.core.v1.SpanLink.AttributesEntry
-	nil,                           // 10: tusk.drift.core.v1.Trace.MetadataEntry
-	(*structpb.Struct)(nil),       // 11: google.protobuf.Struct
-	(*JsonSchema)(nil),            // 12: tusk.drift.core.v1.JsonSchema
-	(*timestamppb.Timestamp)(nil), // 13: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),   // 14: google.protobuf.Duration
-	(*structpb.Value)(nil),        // 15: google.protobuf.Value
+	(MatchScope)(0),               // 3: tusk.drift.core.v1.MatchScope
+	(MatchType)(0),                // 4: tusk.drift.core.v1.MatchType
+	(*Span)(nil),                  // 5: tusk.drift.core.v1.Span
+	(*SpanStatus)(nil),            // 6: tusk.drift.core.v1.SpanStatus
+	(*SpanEvent)(nil),             // 7: tusk.drift.core.v1.SpanEvent
+	(*SpanLink)(nil),              // 8: tusk.drift.core.v1.SpanLink
+	(*Trace)(nil),                 // 9: tusk.drift.core.v1.Trace
+	(*SimilarityCandidate)(nil),   // 10: tusk.drift.core.v1.SimilarityCandidate
+	(*MatchLevel)(nil),            // 11: tusk.drift.core.v1.MatchLevel
+	nil,                           // 12: tusk.drift.core.v1.SpanEvent.AttributesEntry
+	nil,                           // 13: tusk.drift.core.v1.SpanLink.AttributesEntry
+	nil,                           // 14: tusk.drift.core.v1.Trace.MetadataEntry
+	(*structpb.Struct)(nil),       // 15: google.protobuf.Struct
+	(*JsonSchema)(nil),            // 16: tusk.drift.core.v1.JsonSchema
+	(*timestamppb.Timestamp)(nil), // 17: google.protobuf.Timestamp
+	(*durationpb.Duration)(nil),   // 18: google.protobuf.Duration
+	(*structpb.Value)(nil),        // 19: google.protobuf.Value
 }
 var file_core_span_proto_depIdxs = []int32{
 	0,  // 0: tusk.drift.core.v1.Span.package_type:type_name -> tusk.drift.core.v1.PackageType
-	11, // 1: tusk.drift.core.v1.Span.input_value:type_name -> google.protobuf.Struct
-	11, // 2: tusk.drift.core.v1.Span.output_value:type_name -> google.protobuf.Struct
-	12, // 3: tusk.drift.core.v1.Span.input_schema:type_name -> tusk.drift.core.v1.JsonSchema
-	12, // 4: tusk.drift.core.v1.Span.output_schema:type_name -> tusk.drift.core.v1.JsonSchema
+	15, // 1: tusk.drift.core.v1.Span.input_value:type_name -> google.protobuf.Struct
+	15, // 2: tusk.drift.core.v1.Span.output_value:type_name -> google.protobuf.Struct
+	16, // 3: tusk.drift.core.v1.Span.input_schema:type_name -> tusk.drift.core.v1.JsonSchema
+	16, // 4: tusk.drift.core.v1.Span.output_schema:type_name -> tusk.drift.core.v1.JsonSchema
 	1,  // 5: tusk.drift.core.v1.Span.kind:type_name -> tusk.drift.core.v1.SpanKind
-	4,  // 6: tusk.drift.core.v1.Span.status:type_name -> tusk.drift.core.v1.SpanStatus
-	13, // 7: tusk.drift.core.v1.Span.timestamp:type_name -> google.protobuf.Timestamp
-	14, // 8: tusk.drift.core.v1.Span.duration:type_name -> google.protobuf.Duration
-	11, // 9: tusk.drift.core.v1.Span.metadata:type_name -> google.protobuf.Struct
+	6,  // 6: tusk.drift.core.v1.Span.status:type_name -> tusk.drift.core.v1.SpanStatus
+	17, // 7: tusk.drift.core.v1.Span.timestamp:type_name -> google.protobuf.Timestamp
+	18, // 8: tusk.drift.core.v1.Span.duration:type_name -> google.protobuf.Duration
+	15, // 9: tusk.drift.core.v1.Span.metadata:type_name -> google.protobuf.Struct
 	2,  // 10: tusk.drift.core.v1.SpanStatus.code:type_name -> tusk.drift.core.v1.StatusCode
-	13, // 11: tusk.drift.core.v1.SpanEvent.timestamp:type_name -> google.protobuf.Timestamp
-	8,  // 12: tusk.drift.core.v1.SpanEvent.attributes:type_name -> tusk.drift.core.v1.SpanEvent.AttributesEntry
-	9,  // 13: tusk.drift.core.v1.SpanLink.attributes:type_name -> tusk.drift.core.v1.SpanLink.AttributesEntry
-	3,  // 14: tusk.drift.core.v1.Trace.spans:type_name -> tusk.drift.core.v1.Span
-	13, // 15: tusk.drift.core.v1.Trace.started_at:type_name -> google.protobuf.Timestamp
-	13, // 16: tusk.drift.core.v1.Trace.completed_at:type_name -> google.protobuf.Timestamp
-	10, // 17: tusk.drift.core.v1.Trace.metadata:type_name -> tusk.drift.core.v1.Trace.MetadataEntry
-	15, // 18: tusk.drift.core.v1.SpanEvent.AttributesEntry.value:type_name -> google.protobuf.Value
-	15, // 19: tusk.drift.core.v1.SpanLink.AttributesEntry.value:type_name -> google.protobuf.Value
-	20, // [20:20] is the sub-list for method output_type
-	20, // [20:20] is the sub-list for method input_type
-	20, // [20:20] is the sub-list for extension type_name
-	20, // [20:20] is the sub-list for extension extendee
-	0,  // [0:20] is the sub-list for field type_name
+	17, // 11: tusk.drift.core.v1.SpanEvent.timestamp:type_name -> google.protobuf.Timestamp
+	12, // 12: tusk.drift.core.v1.SpanEvent.attributes:type_name -> tusk.drift.core.v1.SpanEvent.AttributesEntry
+	13, // 13: tusk.drift.core.v1.SpanLink.attributes:type_name -> tusk.drift.core.v1.SpanLink.AttributesEntry
+	5,  // 14: tusk.drift.core.v1.Trace.spans:type_name -> tusk.drift.core.v1.Span
+	17, // 15: tusk.drift.core.v1.Trace.started_at:type_name -> google.protobuf.Timestamp
+	17, // 16: tusk.drift.core.v1.Trace.completed_at:type_name -> google.protobuf.Timestamp
+	14, // 17: tusk.drift.core.v1.Trace.metadata:type_name -> tusk.drift.core.v1.Trace.MetadataEntry
+	4,  // 18: tusk.drift.core.v1.MatchLevel.match_type:type_name -> tusk.drift.core.v1.MatchType
+	3,  // 19: tusk.drift.core.v1.MatchLevel.match_scope:type_name -> tusk.drift.core.v1.MatchScope
+	10, // 20: tusk.drift.core.v1.MatchLevel.top_candidates:type_name -> tusk.drift.core.v1.SimilarityCandidate
+	19, // 21: tusk.drift.core.v1.SpanEvent.AttributesEntry.value:type_name -> google.protobuf.Value
+	19, // 22: tusk.drift.core.v1.SpanLink.AttributesEntry.value:type_name -> google.protobuf.Value
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_core_span_proto_init() }
@@ -862,13 +1138,14 @@ func file_core_span_proto_init() {
 	}
 	file_core_json_schema_proto_init()
 	file_core_span_proto_msgTypes[0].OneofWrappers = []any{}
+	file_core_span_proto_msgTypes[6].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_core_span_proto_rawDesc), len(file_core_span_proto_rawDesc)),
-			NumEnums:      3,
-			NumMessages:   8,
+			NumEnums:      5,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
