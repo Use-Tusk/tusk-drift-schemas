@@ -39,6 +39,7 @@ class CodeHostingResourceType(betterproto.Enum):
 class ServiceType(betterproto.Enum):
     UNSPECIFIED = 0
     NODE = 1
+    PYTHON = 2
 
 
 class CreateObservableServiceResponseErrorCode(betterproto.Enum):

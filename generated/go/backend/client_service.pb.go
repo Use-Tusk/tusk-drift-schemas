@@ -124,6 +124,7 @@ type ServiceType int32
 const (
 	ServiceType_SERVICE_TYPE_UNSPECIFIED ServiceType = 0
 	ServiceType_SERVICE_TYPE_NODE        ServiceType = 1
+	ServiceType_SERVICE_TYPE_PYTHON      ServiceType = 2
 )
 
 // Enum value maps for ServiceType.
@@ -131,10 +132,12 @@ var (
 	ServiceType_name = map[int32]string{
 		0: "SERVICE_TYPE_UNSPECIFIED",
 		1: "SERVICE_TYPE_NODE",
+		2: "SERVICE_TYPE_PYTHON",
 	}
 	ServiceType_value = map[string]int32{
 		"SERVICE_TYPE_UNSPECIFIED": 0,
 		"SERVICE_TYPE_NODE":        1,
+		"SERVICE_TYPE_PYTHON":      2,
 	}
 )
 
@@ -1684,10 +1687,11 @@ const file_backend_client_service_proto_rawDesc = "" +
 	"\x17CodeHostingResourceType\x12*\n" +
 	"&CODE_HOSTING_RESOURCE_TYPE_UNSPECIFIED\x10\x00\x12%\n" +
 	"!CODE_HOSTING_RESOURCE_TYPE_GITHUB\x10\x01\x12%\n" +
-	"!CODE_HOSTING_RESOURCE_TYPE_GITLAB\x10\x02*B\n" +
+	"!CODE_HOSTING_RESOURCE_TYPE_GITLAB\x10\x02*[\n" +
 	"\vServiceType\x12\x1c\n" +
 	"\x18SERVICE_TYPE_UNSPECIFIED\x10\x00\x12\x15\n" +
-	"\x11SERVICE_TYPE_NODE\x10\x01*\xf4\x02\n" +
+	"\x11SERVICE_TYPE_NODE\x10\x01\x12\x17\n" +
+	"\x13SERVICE_TYPE_PYTHON\x10\x02*\xf4\x02\n" +
 	"(CreateObservableServiceResponseErrorCode\x12=\n" +
 	"9CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_UNSPECIFIED\x10\x00\x12:\n" +
 	"6CREATE_OBSERVABLE_SERVICE_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x12@\n" +
