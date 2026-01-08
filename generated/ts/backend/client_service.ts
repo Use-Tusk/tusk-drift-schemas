@@ -397,7 +397,11 @@ export enum ServiceType {
     /**
      * @generated from protobuf enum value: SERVICE_TYPE_NODE = 1;
      */
-    NODE = 1
+    NODE = 1,
+    /**
+     * @generated from protobuf enum value: SERVICE_TYPE_PYTHON = 2;
+     */
+    PYTHON = 2
 }
 /**
  * @generated from protobuf enum tusk.drift.backend.v1.CreateObservableServiceResponseErrorCode
