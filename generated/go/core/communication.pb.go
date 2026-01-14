@@ -23,6 +23,56 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// SDK runtime environment
+type Runtime int32
+
+const (
+	Runtime_RUNTIME_UNSPECIFIED Runtime = 0
+	Runtime_RUNTIME_NODE        Runtime = 1
+	Runtime_RUNTIME_PYTHON      Runtime = 2
+)
+
+// Enum value maps for Runtime.
+var (
+	Runtime_name = map[int32]string{
+		0: "RUNTIME_UNSPECIFIED",
+		1: "RUNTIME_NODE",
+		2: "RUNTIME_PYTHON",
+	}
+	Runtime_value = map[string]int32{
+		"RUNTIME_UNSPECIFIED": 0,
+		"RUNTIME_NODE":        1,
+		"RUNTIME_PYTHON":      2,
+	}
+)
+
+func (x Runtime) Enum() *Runtime {
+	p := new(Runtime)
+	*p = x
+	return p
+}
+
+func (x Runtime) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (Runtime) Descriptor() protoreflect.EnumDescriptor {
+	return file_core_communication_proto_enumTypes[0].Descriptor()
+}
+
+func (Runtime) Type() protoreflect.EnumType {
+	return &file_core_communication_proto_enumTypes[0]
+}
+
+func (x Runtime) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use Runtime.Descriptor instead.
+func (Runtime) EnumDescriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{0}
+}
+
 type MessageType int32
 
 const (
@@ -32,6 +82,7 @@ const (
 	MessageType_MESSAGE_TYPE_INBOUND_SPAN    MessageType = 3
 	MessageType_MESSAGE_TYPE_ALERT           MessageType = 4
 	MessageType_MESSAGE_TYPE_ENV_VAR_REQUEST MessageType = 5
+	MessageType_MESSAGE_TYPE_SET_TIME_TRAVEL MessageType = 6
 )
 
 // Enum value maps for MessageType.
@@ -43,6 +94,7 @@ var (
 		3: "MESSAGE_TYPE_INBOUND_SPAN",
 		4: "MESSAGE_TYPE_ALERT",
 		5: "MESSAGE_TYPE_ENV_VAR_REQUEST",
+		6: "MESSAGE_TYPE_SET_TIME_TRAVEL",
 	}
 	MessageType_value = map[string]int32{
 		"MESSAGE_TYPE_UNSPECIFIED":     0,
@@ -51,6 +103,7 @@ var (
 		"MESSAGE_TYPE_INBOUND_SPAN":    3,
 		"MESSAGE_TYPE_ALERT":           4,
 		"MESSAGE_TYPE_ENV_VAR_REQUEST": 5,
+		"MESSAGE_TYPE_SET_TIME_TRAVEL": 6,
 	}
 )
 
@@ -65,11 +118,11 @@ func (x MessageType) String() string {
 }
 
 func (MessageType) Descriptor() protoreflect.EnumDescriptor {
-	return file_core_communication_proto_enumTypes[0].Descriptor()
+	return file_core_communication_proto_enumTypes[1].Descriptor()
 }
 
 func (MessageType) Type() protoreflect.EnumType {
-	return &file_core_communication_proto_enumTypes[0]
+	return &file_core_communication_proto_enumTypes[1]
 }
 
 func (x MessageType) Number() protoreflect.EnumNumber {
@@ -78,7 +131,7 @@ func (x MessageType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MessageType.Descriptor instead.
 func (MessageType) EnumDescriptor() ([]byte, []int) {
-	return file_core_communication_proto_rawDescGZIP(), []int{0}
+	return file_core_communication_proto_rawDescGZIP(), []int{1}
 }
 
 // SDK connection handshake
@@ -87,7 +140,8 @@ type ConnectRequest struct {
 	ServiceId     string                 `protobuf:"bytes,1,opt,name=service_id,json=serviceId,proto3" json:"service_id,omitempty"`
 	SdkVersion    string                 `protobuf:"bytes,2,opt,name=sdk_version,json=sdkVersion,proto3" json:"sdk_version,omitempty"`
 	MinCliVersion string                 `protobuf:"bytes,3,opt,name=min_cli_version,json=minCliVersion,proto3" json:"min_cli_version,omitempty"`
-	Metadata      *structpb.Struct       `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata,omitempty"` // Additional metadata (JSON-serializable)
+	Metadata      *structpb.Struct       `protobuf:"bytes,4,opt,name=metadata,proto3" json:"metadata,omitempty"`                                // Additional metadata (JSON-serializable)
+	Runtime       Runtime                `protobuf:"varint,5,opt,name=runtime,proto3,enum=tusk.drift.core.v1.Runtime" json:"runtime,omitempty"` // SDK runtime (node, python)
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -148,6 +202,13 @@ func (x *ConnectRequest) GetMetadata() *structpb.Struct {
 		return x.Metadata
 	}
 	return nil
+}
+
+func (x *ConnectRequest) GetRuntime() Runtime {
+	if x != nil {
+		return x.Runtime
+	}
+	return Runtime_RUNTIME_UNSPECIFIED
 }
 
 type ConnectResponse struct {
@@ -418,6 +479,7 @@ type SDKMessage struct {
 	//	*SDKMessage_SendInboundSpanForReplayRequest
 	//	*SDKMessage_SendAlertRequest
 	//	*SDKMessage_EnvVarRequest
+	//	*SDKMessage_SetTimeTravelResponse
 	Payload       isSDKMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -519,6 +581,15 @@ func (x *SDKMessage) GetEnvVarRequest() *EnvVarRequest {
 	return nil
 }
 
+func (x *SDKMessage) GetSetTimeTravelResponse() *SetTimeTravelResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*SDKMessage_SetTimeTravelResponse); ok {
+			return x.SetTimeTravelResponse
+		}
+	}
+	return nil
+}
+
 type isSDKMessage_Payload interface {
 	isSDKMessage_Payload()
 }
@@ -543,6 +614,10 @@ type SDKMessage_EnvVarRequest struct {
 	EnvVarRequest *EnvVarRequest `protobuf:"bytes,7,opt,name=env_var_request,json=envVarRequest,proto3,oneof"`
 }
 
+type SDKMessage_SetTimeTravelResponse struct {
+	SetTimeTravelResponse *SetTimeTravelResponse `protobuf:"bytes,8,opt,name=set_time_travel_response,json=setTimeTravelResponse,proto3,oneof"`
+}
+
 func (*SDKMessage_ConnectRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_GetMockRequest) isSDKMessage_Payload() {}
@@ -552,6 +627,8 @@ func (*SDKMessage_SendInboundSpanForReplayRequest) isSDKMessage_Payload() {}
 func (*SDKMessage_SendAlertRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_EnvVarRequest) isSDKMessage_Payload() {}
+
+func (*SDKMessage_SetTimeTravelResponse) isSDKMessage_Payload() {}
 
 type CLIMessage struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
@@ -563,6 +640,7 @@ type CLIMessage struct {
 	//	*CLIMessage_GetMockResponse
 	//	*CLIMessage_SendInboundSpanForReplayResponse
 	//	*CLIMessage_EnvVarResponse
+	//	*CLIMessage_SetTimeTravelRequest
 	Payload       isCLIMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -655,6 +733,15 @@ func (x *CLIMessage) GetEnvVarResponse() *EnvVarResponse {
 	return nil
 }
 
+func (x *CLIMessage) GetSetTimeTravelRequest() *SetTimeTravelRequest {
+	if x != nil {
+		if x, ok := x.Payload.(*CLIMessage_SetTimeTravelRequest); ok {
+			return x.SetTimeTravelRequest
+		}
+	}
+	return nil
+}
+
 type isCLIMessage_Payload interface {
 	isCLIMessage_Payload()
 }
@@ -675,6 +762,10 @@ type CLIMessage_EnvVarResponse struct {
 	EnvVarResponse *EnvVarResponse `protobuf:"bytes,6,opt,name=env_var_response,json=envVarResponse,proto3,oneof"`
 }
 
+type CLIMessage_SetTimeTravelRequest struct {
+	SetTimeTravelRequest *SetTimeTravelRequest `protobuf:"bytes,7,opt,name=set_time_travel_request,json=setTimeTravelRequest,proto3,oneof"`
+}
+
 func (*CLIMessage_ConnectResponse) isCLIMessage_Payload() {}
 
 func (*CLIMessage_GetMockResponse) isCLIMessage_Payload() {}
@@ -682,6 +773,8 @@ func (*CLIMessage_GetMockResponse) isCLIMessage_Payload() {}
 func (*CLIMessage_SendInboundSpanForReplayResponse) isCLIMessage_Payload() {}
 
 func (*CLIMessage_EnvVarResponse) isCLIMessage_Payload() {}
+
+func (*CLIMessage_SetTimeTravelRequest) isCLIMessage_Payload() {}
 
 type SendInboundSpanForReplayRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1069,18 +1162,137 @@ func (x *EnvVarResponse) GetEnvVars() map[string]string {
 	return nil
 }
 
+// Request from CLI to SDK to start time travel before request replay
+// Currently only used for python SDK
+type SetTimeTravelRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Unix timestamp in seconds (can include fractional seconds)
+	TimestampSeconds float64 `protobuf:"fixed64,1,opt,name=timestamp_seconds,json=timestampSeconds,proto3" json:"timestamp_seconds,omitempty"`
+	// The trace ID this time travel is for (for debugging/logging)
+	TraceId string `protobuf:"bytes,2,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	// Description of why this timestamp was chosen: "first_span" or "server_span"
+	TimestampSource string `protobuf:"bytes,3,opt,name=timestamp_source,json=timestampSource,proto3" json:"timestamp_source,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SetTimeTravelRequest) Reset() {
+	*x = SetTimeTravelRequest{}
+	mi := &file_core_communication_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetTimeTravelRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetTimeTravelRequest) ProtoMessage() {}
+
+func (x *SetTimeTravelRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetTimeTravelRequest.ProtoReflect.Descriptor instead.
+func (*SetTimeTravelRequest) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *SetTimeTravelRequest) GetTimestampSeconds() float64 {
+	if x != nil {
+		return x.TimestampSeconds
+	}
+	return 0
+}
+
+func (x *SetTimeTravelRequest) GetTraceId() string {
+	if x != nil {
+		return x.TraceId
+	}
+	return ""
+}
+
+func (x *SetTimeTravelRequest) GetTimestampSource() string {
+	if x != nil {
+		return x.TimestampSource
+	}
+	return ""
+}
+
+// Response from SDK acknowledging time travel was set
+type SetTimeTravelResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error         string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SetTimeTravelResponse) Reset() {
+	*x = SetTimeTravelResponse{}
+	mi := &file_core_communication_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SetTimeTravelResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SetTimeTravelResponse) ProtoMessage() {}
+
+func (x *SetTimeTravelResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SetTimeTravelResponse.ProtoReflect.Descriptor instead.
+func (*SetTimeTravelResponse) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *SetTimeTravelResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SetTimeTravelResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 var File_core_communication_proto protoreflect.FileDescriptor
 
 const file_core_communication_proto_rawDesc = "" +
 	"\n" +
-	"\x18core/communication.proto\x12\x12tusk.drift.core.v1\x1a\x0fcore/span.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xad\x01\n" +
+	"\x18core/communication.proto\x12\x12tusk.drift.core.v1\x1a\x0fcore/span.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe4\x01\n" +
 	"\x0eConnectRequest\x12\x1d\n" +
 	"\n" +
 	"service_id\x18\x01 \x01(\tR\tserviceId\x12\x1f\n" +
 	"\vsdk_version\x18\x02 \x01(\tR\n" +
 	"sdkVersion\x12&\n" +
 	"\x0fmin_cli_version\x18\x03 \x01(\tR\rminCliVersion\x123\n" +
-	"\bmetadata\x18\x04 \x01(\v2\x17.google.protobuf.StructR\bmetadata\"A\n" +
+	"\bmetadata\x18\x04 \x01(\v2\x17.google.protobuf.StructR\bmetadata\x125\n" +
+	"\aruntime\x18\x05 \x01(\x0e2\x1b.tusk.drift.core.v1.RuntimeR\aruntime\"A\n" +
 	"\x0fConnectResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
 	"\x05error\x18\x02 \x01(\tR\x05error\"\x80\x03\n" +
@@ -1111,7 +1323,7 @@ const file_core_communication_proto_rawDesc = "" +
 	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\x12D\n" +
 	"\vmatch_level\x18\t \x01(\v2\x1e.tusk.drift.core.v1.MatchLevelH\x00R\n" +
 	"matchLevel\x88\x01\x01B\x0e\n" +
-	"\f_match_level\"\xb4\x04\n" +
+	"\f_match_level\"\x9a\x05\n" +
 	"\n" +
 	"SDKMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -1121,8 +1333,9 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x10get_mock_request\x18\x04 \x01(\v2\".tusk.drift.core.v1.GetMockRequestH\x00R\x0egetMockRequest\x12\x84\x01\n" +
 	"$send_inbound_span_for_replay_request\x18\x05 \x01(\v23.tusk.drift.core.v1.SendInboundSpanForReplayRequestH\x00R\x1fsendInboundSpanForReplayRequest\x12T\n" +
 	"\x12send_alert_request\x18\x06 \x01(\v2$.tusk.drift.core.v1.SendAlertRequestH\x00R\x10sendAlertRequest\x12K\n" +
-	"\x0fenv_var_request\x18\a \x01(\v2!.tusk.drift.core.v1.EnvVarRequestH\x00R\renvVarRequestB\t\n" +
-	"\apayload\"\xea\x03\n" +
+	"\x0fenv_var_request\x18\a \x01(\v2!.tusk.drift.core.v1.EnvVarRequestH\x00R\renvVarRequest\x12d\n" +
+	"\x18set_time_travel_response\x18\b \x01(\v2).tusk.drift.core.v1.SetTimeTravelResponseH\x00R\x15setTimeTravelResponseB\t\n" +
+	"\apayload\"\xcd\x04\n" +
 	"\n" +
 	"CLIMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -1131,7 +1344,8 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x10connect_response\x18\x03 \x01(\v2#.tusk.drift.core.v1.ConnectResponseH\x00R\x0fconnectResponse\x12Q\n" +
 	"\x11get_mock_response\x18\x04 \x01(\v2#.tusk.drift.core.v1.GetMockResponseH\x00R\x0fgetMockResponse\x12\x87\x01\n" +
 	"%send_inbound_span_for_replay_response\x18\x05 \x01(\v24.tusk.drift.core.v1.SendInboundSpanForReplayResponseH\x00R sendInboundSpanForReplayResponse\x12N\n" +
-	"\x10env_var_response\x18\x06 \x01(\v2\".tusk.drift.core.v1.EnvVarResponseH\x00R\x0eenvVarResponseB\t\n" +
+	"\x10env_var_response\x18\x06 \x01(\v2\".tusk.drift.core.v1.EnvVarResponseH\x00R\x0eenvVarResponse\x12a\n" +
+	"\x17set_time_travel_request\x18\a \x01(\v2(.tusk.drift.core.v1.SetTimeTravelRequestH\x00R\x14setTimeTravelRequestB\t\n" +
 	"\apayload\"O\n" +
 	"\x1fSendInboundSpanForReplayRequest\x12,\n" +
 	"\x04span\x18\x01 \x01(\v2\x18.tusk.drift.core.v1.SpanR\x04span\"<\n" +
@@ -1160,14 +1374,26 @@ const file_core_communication_proto_rawDesc = "" +
 	"\benv_vars\x18\x01 \x03(\v2/.tusk.drift.core.v1.EnvVarResponse.EnvVarsEntryR\aenvVars\x1a:\n" +
 	"\fEnvVarsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*\xc1\x01\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x89\x01\n" +
+	"\x14SetTimeTravelRequest\x12+\n" +
+	"\x11timestamp_seconds\x18\x01 \x01(\x01R\x10timestampSeconds\x12\x19\n" +
+	"\btrace_id\x18\x02 \x01(\tR\atraceId\x12)\n" +
+	"\x10timestamp_source\x18\x03 \x01(\tR\x0ftimestampSource\"G\n" +
+	"\x15SetTimeTravelResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error*H\n" +
+	"\aRuntime\x12\x17\n" +
+	"\x13RUNTIME_UNSPECIFIED\x10\x00\x12\x10\n" +
+	"\fRUNTIME_NODE\x10\x01\x12\x12\n" +
+	"\x0eRUNTIME_PYTHON\x10\x02*\xe3\x01\n" +
 	"\vMessageType\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_SDK_CONNECT\x10\x01\x12\x1d\n" +
 	"\x19MESSAGE_TYPE_MOCK_REQUEST\x10\x02\x12\x1d\n" +
 	"\x19MESSAGE_TYPE_INBOUND_SPAN\x10\x03\x12\x16\n" +
 	"\x12MESSAGE_TYPE_ALERT\x10\x04\x12 \n" +
-	"\x1cMESSAGE_TYPE_ENV_VAR_REQUEST\x10\x052\xbd\x02\n" +
+	"\x1cMESSAGE_TYPE_ENV_VAR_REQUEST\x10\x05\x12 \n" +
+	"\x1cMESSAGE_TYPE_SET_TIME_TRAVEL\x10\x062\xbd\x02\n" +
 	"\vMockService\x12R\n" +
 	"\aConnect\x12\".tusk.drift.core.v1.ConnectRequest\x1a#.tusk.drift.core.v1.ConnectResponse\x12R\n" +
 	"\aGetMock\x12\".tusk.drift.core.v1.GetMockRequest\x1a#.tusk.drift.core.v1.GetMockResponse\x12\x85\x01\n" +
@@ -1186,65 +1412,71 @@ func file_core_communication_proto_rawDescGZIP() []byte {
 	return file_core_communication_proto_rawDescData
 }
 
-var file_core_communication_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_core_communication_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
+var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
 var file_core_communication_proto_goTypes = []any{
-	(MessageType)(0),                            // 0: tusk.drift.core.v1.MessageType
-	(*ConnectRequest)(nil),                      // 1: tusk.drift.core.v1.ConnectRequest
-	(*ConnectResponse)(nil),                     // 2: tusk.drift.core.v1.ConnectResponse
-	(*GetMockRequest)(nil),                      // 3: tusk.drift.core.v1.GetMockRequest
-	(*GetMockResponse)(nil),                     // 4: tusk.drift.core.v1.GetMockResponse
-	(*SDKMessage)(nil),                          // 5: tusk.drift.core.v1.SDKMessage
-	(*CLIMessage)(nil),                          // 6: tusk.drift.core.v1.CLIMessage
-	(*SendInboundSpanForReplayRequest)(nil),     // 7: tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	(*SendInboundSpanForReplayResponse)(nil),    // 8: tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	(*SendAlertRequest)(nil),                    // 9: tusk.drift.core.v1.SendAlertRequest
-	(*InstrumentationVersionMismatchAlert)(nil), // 10: tusk.drift.core.v1.InstrumentationVersionMismatchAlert
-	(*UnpatchedDependencyAlert)(nil),            // 11: tusk.drift.core.v1.UnpatchedDependencyAlert
-	(*EnvVarRequest)(nil),                       // 12: tusk.drift.core.v1.EnvVarRequest
-	(*EnvVarResponse)(nil),                      // 13: tusk.drift.core.v1.EnvVarResponse
-	nil,                                         // 14: tusk.drift.core.v1.GetMockRequest.TagsEntry
-	nil,                                         // 15: tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
-	(*structpb.Struct)(nil),                     // 16: google.protobuf.Struct
-	(*Span)(nil),                                // 17: tusk.drift.core.v1.Span
-	(*timestamppb.Timestamp)(nil),               // 18: google.protobuf.Timestamp
-	(*MatchLevel)(nil),                          // 19: tusk.drift.core.v1.MatchLevel
+	(Runtime)(0),                                // 0: tusk.drift.core.v1.Runtime
+	(MessageType)(0),                            // 1: tusk.drift.core.v1.MessageType
+	(*ConnectRequest)(nil),                      // 2: tusk.drift.core.v1.ConnectRequest
+	(*ConnectResponse)(nil),                     // 3: tusk.drift.core.v1.ConnectResponse
+	(*GetMockRequest)(nil),                      // 4: tusk.drift.core.v1.GetMockRequest
+	(*GetMockResponse)(nil),                     // 5: tusk.drift.core.v1.GetMockResponse
+	(*SDKMessage)(nil),                          // 6: tusk.drift.core.v1.SDKMessage
+	(*CLIMessage)(nil),                          // 7: tusk.drift.core.v1.CLIMessage
+	(*SendInboundSpanForReplayRequest)(nil),     // 8: tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	(*SendInboundSpanForReplayResponse)(nil),    // 9: tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	(*SendAlertRequest)(nil),                    // 10: tusk.drift.core.v1.SendAlertRequest
+	(*InstrumentationVersionMismatchAlert)(nil), // 11: tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	(*UnpatchedDependencyAlert)(nil),            // 12: tusk.drift.core.v1.UnpatchedDependencyAlert
+	(*EnvVarRequest)(nil),                       // 13: tusk.drift.core.v1.EnvVarRequest
+	(*EnvVarResponse)(nil),                      // 14: tusk.drift.core.v1.EnvVarResponse
+	(*SetTimeTravelRequest)(nil),                // 15: tusk.drift.core.v1.SetTimeTravelRequest
+	(*SetTimeTravelResponse)(nil),               // 16: tusk.drift.core.v1.SetTimeTravelResponse
+	nil,                                         // 17: tusk.drift.core.v1.GetMockRequest.TagsEntry
+	nil,                                         // 18: tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
+	(*structpb.Struct)(nil),                     // 19: google.protobuf.Struct
+	(*Span)(nil),                                // 20: tusk.drift.core.v1.Span
+	(*timestamppb.Timestamp)(nil),               // 21: google.protobuf.Timestamp
+	(*MatchLevel)(nil),                          // 22: tusk.drift.core.v1.MatchLevel
 }
 var file_core_communication_proto_depIdxs = []int32{
-	16, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
-	17, // 1: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
-	14, // 2: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
-	18, // 3: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
-	16, // 4: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
-	16, // 5: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
-	18, // 6: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
-	19, // 7: tusk.drift.core.v1.GetMockResponse.match_level:type_name -> tusk.drift.core.v1.MatchLevel
-	0,  // 8: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	1,  // 9: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
-	3,  // 10: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
-	7,  // 11: tusk.drift.core.v1.SDKMessage.send_inbound_span_for_replay_request:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	9,  // 12: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
-	12, // 13: tusk.drift.core.v1.SDKMessage.env_var_request:type_name -> tusk.drift.core.v1.EnvVarRequest
-	0,  // 14: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	2,  // 15: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
-	4,  // 16: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
-	8,  // 17: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	13, // 18: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
-	17, // 19: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
-	10, // 20: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
-	11, // 21: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
-	15, // 22: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
-	1,  // 23: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
-	3,  // 24: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
-	7,  // 25: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	2,  // 26: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
-	4,  // 27: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
-	8,  // 28: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	26, // [26:29] is the sub-list for method output_type
-	23, // [23:26] is the sub-list for method input_type
-	23, // [23:23] is the sub-list for extension type_name
-	23, // [23:23] is the sub-list for extension extendee
-	0,  // [0:23] is the sub-list for field type_name
+	19, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
+	0,  // 1: tusk.drift.core.v1.ConnectRequest.runtime:type_name -> tusk.drift.core.v1.Runtime
+	20, // 2: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
+	17, // 3: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
+	21, // 4: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
+	19, // 5: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
+	19, // 6: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
+	21, // 7: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
+	22, // 8: tusk.drift.core.v1.GetMockResponse.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	1,  // 9: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	2,  // 10: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
+	4,  // 11: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
+	8,  // 12: tusk.drift.core.v1.SDKMessage.send_inbound_span_for_replay_request:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	10, // 13: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
+	13, // 14: tusk.drift.core.v1.SDKMessage.env_var_request:type_name -> tusk.drift.core.v1.EnvVarRequest
+	16, // 15: tusk.drift.core.v1.SDKMessage.set_time_travel_response:type_name -> tusk.drift.core.v1.SetTimeTravelResponse
+	1,  // 16: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	3,  // 17: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
+	5,  // 18: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
+	9,  // 19: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	14, // 20: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
+	15, // 21: tusk.drift.core.v1.CLIMessage.set_time_travel_request:type_name -> tusk.drift.core.v1.SetTimeTravelRequest
+	20, // 22: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
+	11, // 23: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	12, // 24: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
+	18, // 25: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
+	2,  // 26: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
+	4,  // 27: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
+	8,  // 28: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	3,  // 29: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
+	5,  // 30: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
+	9,  // 31: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	29, // [29:32] is the sub-list for method output_type
+	26, // [26:29] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_core_communication_proto_init() }
@@ -1260,12 +1492,14 @@ func file_core_communication_proto_init() {
 		(*SDKMessage_SendInboundSpanForReplayRequest)(nil),
 		(*SDKMessage_SendAlertRequest)(nil),
 		(*SDKMessage_EnvVarRequest)(nil),
+		(*SDKMessage_SetTimeTravelResponse)(nil),
 	}
 	file_core_communication_proto_msgTypes[5].OneofWrappers = []any{
 		(*CLIMessage_ConnectResponse)(nil),
 		(*CLIMessage_GetMockResponse)(nil),
 		(*CLIMessage_SendInboundSpanForReplayResponse)(nil),
 		(*CLIMessage_EnvVarResponse)(nil),
+		(*CLIMessage_SetTimeTravelRequest)(nil),
 	}
 	file_core_communication_proto_msgTypes[8].OneofWrappers = []any{
 		(*SendAlertRequest_VersionMismatch)(nil),
@@ -1276,8 +1510,8 @@ func file_core_communication_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_core_communication_proto_rawDesc), len(file_core_communication_proto_rawDesc)),
-			NumEnums:      1,
-			NumMessages:   15,
+			NumEnums:      2,
+			NumMessages:   17,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

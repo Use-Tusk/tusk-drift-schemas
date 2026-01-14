@@ -14,12 +14,20 @@ service MockService {
   rpc SendInboundSpanForReplay(SendInboundSpanForReplayRequest) returns (SendInboundSpanForReplayResponse);
 }
 
+// SDK runtime environment
+enum Runtime {
+  RUNTIME_UNSPECIFIED = 0;
+  RUNTIME_NODE = 1;
+  RUNTIME_PYTHON = 2;
+}
+
 // SDK connection handshake
 message ConnectRequest {
   string service_id = 1;
   string sdk_version = 2;
   string min_cli_version = 3;
   google.protobuf.Struct metadata = 4; // Additional metadata (JSON-serializable)
+  Runtime runtime = 5; // SDK runtime (node, python)
 }
 
 message ConnectResponse {
@@ -67,6 +75,7 @@ message SDKMessage {
     SendInboundSpanForReplayRequest send_inbound_span_for_replay_request = 5;
     SendAlertRequest send_alert_request = 6;
     EnvVarRequest env_var_request = 7;
+    SetTimeTravelResponse set_time_travel_response = 8;
   }
 }
 
@@ -78,6 +87,7 @@ message CLIMessage {
     GetMockResponse get_mock_response = 4;
     SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5;
     EnvVarResponse env_var_response = 6;
+    SetTimeTravelRequest set_time_travel_request = 7;
   }
 }
 
@@ -88,6 +98,7 @@ enum MessageType {
   MESSAGE_TYPE_INBOUND_SPAN = 3;
   MESSAGE_TYPE_ALERT = 4;
   MESSAGE_TYPE_ENV_VAR_REQUEST = 5;
+  MESSAGE_TYPE_SET_TIME_TRAVEL = 6;
 }
 
 message SendInboundSpanForReplayRequest {
@@ -124,4 +135,21 @@ message EnvVarRequest {
 
 message EnvVarResponse {
   map<string, string> env_vars = 1;
+}
+
+// Request from CLI to SDK to start time travel before request replay
+// Currently only used for python SDK
+message SetTimeTravelRequest {
+  // Unix timestamp in seconds (can include fractional seconds)
+  double timestamp_seconds = 1;
+  // The trace ID this time travel is for (for debugging/logging)
+  string trace_id = 2;
+  // Description of why this timestamp was chosen: "first_span" or "server_span"
+  string timestamp_source = 3;
+}
+
+// Response from SDK acknowledging time travel was set
+message SetTimeTravelResponse {
+  bool success = 1;
+  string error = 2;
 }

@@ -37,6 +37,10 @@ export interface ConnectRequest {
      * @generated from protobuf field: google.protobuf.Struct metadata = 4
      */
     metadata?: Struct; // Additional metadata (JSON-serializable)
+    /**
+     * @generated from protobuf field: tusk.drift.core.v1.Runtime runtime = 5
+     */
+    runtime: Runtime; // SDK runtime (node, python)
 }
 /**
  * @generated from protobuf message tusk.drift.core.v1.ConnectResponse
@@ -183,6 +187,12 @@ export interface SDKMessage {
          */
         envVarRequest: EnvVarRequest;
     } | {
+        oneofKind: "setTimeTravelResponse";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.SetTimeTravelResponse set_time_travel_response = 8
+         */
+        setTimeTravelResponse: SetTimeTravelResponse;
+    } | {
         oneofKind: undefined;
     };
 }
@@ -225,6 +235,12 @@ export interface CLIMessage {
          * @generated from protobuf field: tusk.drift.core.v1.EnvVarResponse env_var_response = 6
          */
         envVarResponse: EnvVarResponse;
+    } | {
+        oneofKind: "setTimeTravelRequest";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.SetTimeTravelRequest set_time_travel_request = 7
+         */
+        setTimeTravelRequest: SetTimeTravelRequest;
     } | {
         oneofKind: undefined;
     };
@@ -329,6 +345,66 @@ export interface EnvVarResponse {
     };
 }
 /**
+ * Request from CLI to SDK to start time travel before request replay
+ * Currently only used for python SDK
+ *
+ * @generated from protobuf message tusk.drift.core.v1.SetTimeTravelRequest
+ */
+export interface SetTimeTravelRequest {
+    /**
+     * Unix timestamp in seconds (can include fractional seconds)
+     *
+     * @generated from protobuf field: double timestamp_seconds = 1
+     */
+    timestampSeconds: number;
+    /**
+     * The trace ID this time travel is for (for debugging/logging)
+     *
+     * @generated from protobuf field: string trace_id = 2
+     */
+    traceId: string;
+    /**
+     * Description of why this timestamp was chosen: "first_span" or "server_span"
+     *
+     * @generated from protobuf field: string timestamp_source = 3
+     */
+    timestampSource: string;
+}
+/**
+ * Response from SDK acknowledging time travel was set
+ *
+ * @generated from protobuf message tusk.drift.core.v1.SetTimeTravelResponse
+ */
+export interface SetTimeTravelResponse {
+    /**
+     * @generated from protobuf field: bool success = 1
+     */
+    success: boolean;
+    /**
+     * @generated from protobuf field: string error = 2
+     */
+    error: string;
+}
+/**
+ * SDK runtime environment
+ *
+ * @generated from protobuf enum tusk.drift.core.v1.Runtime
+ */
+export enum Runtime {
+    /**
+     * @generated from protobuf enum value: RUNTIME_UNSPECIFIED = 0;
+     */
+    UNSPECIFIED = 0,
+    /**
+     * @generated from protobuf enum value: RUNTIME_NODE = 1;
+     */
+    NODE = 1,
+    /**
+     * @generated from protobuf enum value: RUNTIME_PYTHON = 2;
+     */
+    PYTHON = 2
+}
+/**
  * @generated from protobuf enum tusk.drift.core.v1.MessageType
  */
 export enum MessageType {
@@ -355,7 +431,11 @@ export enum MessageType {
     /**
      * @generated from protobuf enum value: MESSAGE_TYPE_ENV_VAR_REQUEST = 5;
      */
-    ENV_VAR_REQUEST = 5
+    ENV_VAR_REQUEST = 5,
+    /**
+     * @generated from protobuf enum value: MESSAGE_TYPE_SET_TIME_TRAVEL = 6;
+     */
+    SET_TIME_TRAVEL = 6
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class ConnectRequest$Type extends MessageType$<ConnectRequest> {
@@ -364,7 +444,8 @@ class ConnectRequest$Type extends MessageType$<ConnectRequest> {
             { no: 1, name: "service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "sdk_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "min_cli_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 4, name: "metadata", kind: "message", T: () => Struct }
+            { no: 4, name: "metadata", kind: "message", T: () => Struct },
+            { no: 5, name: "runtime", kind: "enum", T: () => ["tusk.drift.core.v1.Runtime", Runtime, "RUNTIME_"] }
         ]);
     }
     create(value?: PartialMessage<ConnectRequest>): ConnectRequest {
@@ -372,6 +453,7 @@ class ConnectRequest$Type extends MessageType$<ConnectRequest> {
         message.serviceId = "";
         message.sdkVersion = "";
         message.minCliVersion = "";
+        message.runtime = 0;
         if (value !== undefined)
             reflectionMergePartial<ConnectRequest>(this, message, value);
         return message;
@@ -392,6 +474,9 @@ class ConnectRequest$Type extends MessageType$<ConnectRequest> {
                     break;
                 case /* google.protobuf.Struct metadata */ 4:
                     message.metadata = Struct.internalBinaryRead(reader, reader.uint32(), options, message.metadata);
+                    break;
+                case /* tusk.drift.core.v1.Runtime runtime */ 5:
+                    message.runtime = reader.int32();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -417,6 +502,9 @@ class ConnectRequest$Type extends MessageType$<ConnectRequest> {
         /* google.protobuf.Struct metadata = 4; */
         if (message.metadata)
             Struct.internalBinaryWrite(message.metadata, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.Runtime runtime = 5; */
+        if (message.runtime !== 0)
+            writer.tag(5, WireType.Varint).int32(message.runtime);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -708,7 +796,8 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
             { no: 4, name: "get_mock_request", kind: "message", oneof: "payload", T: () => GetMockRequest },
             { no: 5, name: "send_inbound_span_for_replay_request", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayRequest },
             { no: 6, name: "send_alert_request", kind: "message", oneof: "payload", T: () => SendAlertRequest },
-            { no: 7, name: "env_var_request", kind: "message", oneof: "payload", T: () => EnvVarRequest }
+            { no: 7, name: "env_var_request", kind: "message", oneof: "payload", T: () => EnvVarRequest },
+            { no: 8, name: "set_time_travel_response", kind: "message", oneof: "payload", T: () => SetTimeTravelResponse }
         ]);
     }
     create(value?: PartialMessage<SDKMessage>): SDKMessage {
@@ -761,6 +850,12 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
                         envVarRequest: EnvVarRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).envVarRequest)
                     };
                     break;
+                case /* tusk.drift.core.v1.SetTimeTravelResponse set_time_travel_response */ 8:
+                    message.payload = {
+                        oneofKind: "setTimeTravelResponse",
+                        setTimeTravelResponse: SetTimeTravelResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).setTimeTravelResponse)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -794,6 +889,9 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
         /* tusk.drift.core.v1.EnvVarRequest env_var_request = 7; */
         if (message.payload.oneofKind === "envVarRequest")
             EnvVarRequest.internalBinaryWrite(message.payload.envVarRequest, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.SetTimeTravelResponse set_time_travel_response = 8; */
+        if (message.payload.oneofKind === "setTimeTravelResponse")
+            SetTimeTravelResponse.internalBinaryWrite(message.payload.setTimeTravelResponse, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -813,7 +911,8 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
             { no: 3, name: "connect_response", kind: "message", oneof: "payload", T: () => ConnectResponse },
             { no: 4, name: "get_mock_response", kind: "message", oneof: "payload", T: () => GetMockResponse },
             { no: 5, name: "send_inbound_span_for_replay_response", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayResponse },
-            { no: 6, name: "env_var_response", kind: "message", oneof: "payload", T: () => EnvVarResponse }
+            { no: 6, name: "env_var_response", kind: "message", oneof: "payload", T: () => EnvVarResponse },
+            { no: 7, name: "set_time_travel_request", kind: "message", oneof: "payload", T: () => SetTimeTravelRequest }
         ]);
     }
     create(value?: PartialMessage<CLIMessage>): CLIMessage {
@@ -860,6 +959,12 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
                         envVarResponse: EnvVarResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).envVarResponse)
                     };
                     break;
+                case /* tusk.drift.core.v1.SetTimeTravelRequest set_time_travel_request */ 7:
+                    message.payload = {
+                        oneofKind: "setTimeTravelRequest",
+                        setTimeTravelRequest: SetTimeTravelRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).setTimeTravelRequest)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -890,6 +995,9 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
         /* tusk.drift.core.v1.EnvVarResponse env_var_response = 6; */
         if (message.payload.oneofKind === "envVarResponse")
             EnvVarResponse.internalBinaryWrite(message.payload.envVarResponse, writer.tag(6, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.SetTimeTravelRequest set_time_travel_request = 7; */
+        if (message.payload.oneofKind === "setTimeTravelRequest")
+            SetTimeTravelRequest.internalBinaryWrite(message.payload.setTimeTravelRequest, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1297,6 +1405,124 @@ class EnvVarResponse$Type extends MessageType$<EnvVarResponse> {
  * @generated MessageType for protobuf message tusk.drift.core.v1.EnvVarResponse
  */
 export const EnvVarResponse = new EnvVarResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SetTimeTravelRequest$Type extends MessageType$<SetTimeTravelRequest> {
+    constructor() {
+        super("tusk.drift.core.v1.SetTimeTravelRequest", [
+            { no: 1, name: "timestamp_seconds", kind: "scalar", T: 1 /*ScalarType.DOUBLE*/ },
+            { no: 2, name: "trace_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "timestamp_source", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SetTimeTravelRequest>): SetTimeTravelRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.timestampSeconds = 0;
+        message.traceId = "";
+        message.timestampSource = "";
+        if (value !== undefined)
+            reflectionMergePartial<SetTimeTravelRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SetTimeTravelRequest): SetTimeTravelRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* double timestamp_seconds */ 1:
+                    message.timestampSeconds = reader.double();
+                    break;
+                case /* string trace_id */ 2:
+                    message.traceId = reader.string();
+                    break;
+                case /* string timestamp_source */ 3:
+                    message.timestampSource = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SetTimeTravelRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* double timestamp_seconds = 1; */
+        if (message.timestampSeconds !== 0)
+            writer.tag(1, WireType.Bit64).double(message.timestampSeconds);
+        /* string trace_id = 2; */
+        if (message.traceId !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.traceId);
+        /* string timestamp_source = 3; */
+        if (message.timestampSource !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.timestampSource);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.SetTimeTravelRequest
+ */
+export const SetTimeTravelRequest = new SetTimeTravelRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class SetTimeTravelResponse$Type extends MessageType$<SetTimeTravelResponse> {
+    constructor() {
+        super("tusk.drift.core.v1.SetTimeTravelResponse", [
+            { no: 1, name: "success", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "error", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<SetTimeTravelResponse>): SetTimeTravelResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.success = false;
+        message.error = "";
+        if (value !== undefined)
+            reflectionMergePartial<SetTimeTravelResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: SetTimeTravelResponse): SetTimeTravelResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool success */ 1:
+                    message.success = reader.bool();
+                    break;
+                case /* string error */ 2:
+                    message.error = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: SetTimeTravelResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool success = 1; */
+        if (message.success !== false)
+            writer.tag(1, WireType.Varint).bool(message.success);
+        /* string error = 2; */
+        if (message.error !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.error);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.SetTimeTravelResponse
+ */
+export const SetTimeTravelResponse = new SetTimeTravelResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.core.v1.MockService
  */
