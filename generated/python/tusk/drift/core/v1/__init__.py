@@ -142,6 +142,14 @@ class MatchType(betterproto.Enum):
     FALLBACK = 6
 
 
+class Runtime(betterproto.Enum):
+    """SDK runtime environment"""
+
+    UNSPECIFIED = 0
+    NODE = 1
+    PYTHON = 2
+
+
 class MessageType(betterproto.Enum):
     UNSPECIFIED = 0
     SDK_CONNECT = 1
@@ -149,6 +157,7 @@ class MessageType(betterproto.Enum):
     INBOUND_SPAN = 3
     ALERT = 4
     ENV_VAR_REQUEST = 5
+    SET_TIME_TRAVEL = 6
 
 
 @dataclass(eq=False, repr=False)
@@ -305,6 +314,7 @@ class ConnectRequest(betterproto.Message):
     sdk_version: str = betterproto.string_field(2)
     min_cli_version: str = betterproto.string_field(3)
     metadata: "betterproto_lib_google_protobuf.Struct" = betterproto.message_field(4)
+    runtime: "Runtime" = betterproto.enum_field(5)
 
 
 @dataclass(eq=False, repr=False)
@@ -363,6 +373,9 @@ class SdkMessage(betterproto.Message):
         6, group="payload"
     )
     env_var_request: "EnvVarRequest" = betterproto.message_field(7, group="payload")
+    set_time_travel_response: "SetTimeTravelResponse" = betterproto.message_field(
+        8, group="payload"
+    )
 
 
 @dataclass(eq=False, repr=False)
@@ -375,6 +388,9 @@ class CliMessage(betterproto.Message):
         betterproto.message_field(5, group="payload")
     )
     env_var_response: "EnvVarResponse" = betterproto.message_field(6, group="payload")
+    set_time_travel_request: "SetTimeTravelRequest" = betterproto.message_field(
+        7, group="payload"
+    )
 
 
 @dataclass(eq=False, repr=False)
@@ -422,6 +438,33 @@ class EnvVarResponse(betterproto.Message):
     env_vars: Dict[str, str] = betterproto.map_field(
         1, betterproto.TYPE_STRING, betterproto.TYPE_STRING
     )
+
+
+@dataclass(eq=False, repr=False)
+class SetTimeTravelRequest(betterproto.Message):
+    """
+    Request from CLI to SDK to start time travel before request replay
+     Currently only used for python SDK
+    """
+
+    timestamp_seconds: float = betterproto.double_field(1)
+    """Unix timestamp in seconds (can include fractional seconds)"""
+
+    trace_id: str = betterproto.string_field(2)
+    """The trace ID this time travel is for (for debugging/logging)"""
+
+    timestamp_source: str = betterproto.string_field(3)
+    """
+    Description of why this timestamp was chosen: "first_span" or "server_span"
+    """
+
+
+@dataclass(eq=False, repr=False)
+class SetTimeTravelResponse(betterproto.Message):
+    """Response from SDK acknowledging time travel was set"""
+
+    success: bool = betterproto.bool_field(1)
+    error: str = betterproto.string_field(2)
 
 
 class MockServiceStub(betterproto.ServiceStub):
