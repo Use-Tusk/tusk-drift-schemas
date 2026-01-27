@@ -42,6 +42,14 @@ service TestRunService {
 
   // Get all traces for validation (both DRAFT and IN_SUITE)
   rpc GetValidationTraceTests(GetValidationTraceTestsRequest) returns (GetValidationTraceTestsResponse);
+
+  // Cache-friendly APIs for efficient trace syncing
+
+  // Get all trace test IDs for a service (lightweight, no pagination needed)
+  rpc GetAllTraceTestIds(GetAllTraceTestIdsRequest) returns (GetAllTraceTestIdsResponse);
+
+  // Get trace tests by their IDs (batch fetch)
+  rpc GetTraceTestsByIds(GetTraceTestsByIdsRequest) returns (GetTraceTestsByIdsResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -344,5 +352,52 @@ message GetValidationTraceTestsResponse {
   oneof response {
     GetValidationTraceTestsResponseSuccess success = 1;
     GetValidationTraceTestsResponseError error = 2;
+  }
+}
+
+// =============================================================================
+// Cache-friendly APIs for efficient trace syncing
+// =============================================================================
+
+// GetAllTraceTestIds - Get all trace test IDs (lightweight, for cache diffing)
+message GetAllTraceTestIdsRequest {
+  string observable_service_id = 1;
+}
+
+message GetAllTraceTestIdsResponseSuccess {
+  repeated string trace_test_ids = 1;
+}
+
+message GetAllTraceTestIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetAllTraceTestIdsResponse {
+  oneof response {
+    GetAllTraceTestIdsResponseSuccess success = 1;
+    GetAllTraceTestIdsResponseError error = 2;
+  }
+}
+
+// GetTraceTestsByIds - Batch fetch trace tests by IDs
+message GetTraceTestsByIdsRequest {
+  string observable_service_id = 1;
+  repeated string trace_test_ids = 2;
+}
+
+message GetTraceTestsByIdsResponseSuccess {
+  repeated TraceTest trace_tests = 1;
+}
+
+message GetTraceTestsByIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetTraceTestsByIdsResponse {
+  oneof response {
+    GetTraceTestsByIdsResponseSuccess success = 1;
+    GetTraceTestsByIdsResponseError error = 2;
   }
 }

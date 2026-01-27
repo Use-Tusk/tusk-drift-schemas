@@ -581,6 +581,65 @@ class GetValidationTraceTestsResponse(betterproto.Message):
     )
 
 
+@dataclass(eq=False, repr=False)
+class GetAllTraceTestIdsRequest(betterproto.Message):
+    """
+    GetAllTraceTestIds - Get all trace test IDs (lightweight, for cache diffing)
+    """
+
+    observable_service_id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllTraceTestIdsResponseSuccess(betterproto.Message):
+    trace_test_ids: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllTraceTestIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllTraceTestIdsResponse(betterproto.Message):
+    success: "GetAllTraceTestIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetAllTraceTestIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class GetTraceTestsByIdsRequest(betterproto.Message):
+    """GetTraceTestsByIds - Batch fetch trace tests by IDs"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    trace_test_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetTraceTestsByIdsResponseSuccess(betterproto.Message):
+    trace_tests: List["TraceTest"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetTraceTestsByIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetTraceTestsByIdsResponse(betterproto.Message):
+    success: "GetTraceTestsByIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetTraceTestsByIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
 class ClientServiceStub(betterproto.ServiceStub):
     async def get_auth_info(
         self,
@@ -841,6 +900,40 @@ class TestRunServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def get_all_trace_test_ids(
+        self,
+        get_all_trace_test_ids_request: "GetAllTraceTestIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetAllTraceTestIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetAllTraceTestIds",
+            get_all_trace_test_ids_request,
+            GetAllTraceTestIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_trace_tests_by_ids(
+        self,
+        get_trace_tests_by_ids_request: "GetTraceTestsByIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetTraceTestsByIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetTraceTestsByIds",
+            get_trace_tests_by_ids_request,
+            GetTraceTestsByIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
 
 class ClientServiceBase(ServiceBase):
 
@@ -1014,6 +1107,16 @@ class TestRunServiceBase(ServiceBase):
     ) -> "GetValidationTraceTestsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def get_all_trace_test_ids(
+        self, get_all_trace_test_ids_request: "GetAllTraceTestIdsRequest"
+    ) -> "GetAllTraceTestIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_trace_tests_by_ids(
+        self, get_trace_tests_by_ids_request: "GetTraceTestsByIdsRequest"
+    ) -> "GetTraceTestsByIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
     async def __rpc_get_global_spans(
         self,
         stream: "grpclib.server.Stream[GetGlobalSpansRequest, GetGlobalSpansResponse]",
@@ -1085,6 +1188,22 @@ class TestRunServiceBase(ServiceBase):
         response = await self.get_validation_trace_tests(request)
         await stream.send_message(response)
 
+    async def __rpc_get_all_trace_test_ids(
+        self,
+        stream: "grpclib.server.Stream[GetAllTraceTestIdsRequest, GetAllTraceTestIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_all_trace_test_ids(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_trace_tests_by_ids(
+        self,
+        stream: "grpclib.server.Stream[GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_trace_tests_by_ids(request)
+        await stream.send_message(response)
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/tusk.drift.backend.v1.TestRunService/GetGlobalSpans": grpclib.const.Handler(
@@ -1140,5 +1259,17 @@ class TestRunServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 GetValidationTraceTestsRequest,
                 GetValidationTraceTestsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetAllTraceTestIds": grpclib.const.Handler(
+                self.__rpc_get_all_trace_test_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetAllTraceTestIdsRequest,
+                GetAllTraceTestIdsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetTraceTestsByIds": grpclib.const.Handler(
+                self.__rpc_get_trace_tests_by_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetTraceTestsByIdsRequest,
+                GetTraceTestsByIdsResponse,
             ),
         }
