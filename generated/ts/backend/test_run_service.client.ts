@@ -4,6 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { GetTraceTestsByIdsResponse } from "./test_run_service";
+import type { GetTraceTestsByIdsRequest } from "./test_run_service";
+import type { GetAllTraceTestIdsResponse } from "./test_run_service";
+import type { GetAllTraceTestIdsRequest } from "./test_run_service";
 import type { GetValidationTraceTestsResponse } from "./test_run_service";
 import type { GetValidationTraceTestsRequest } from "./test_run_service";
 import type { UpdateDriftRunCIStatusResponse } from "./test_run_service";
@@ -93,6 +97,20 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: GetValidationTraceTests
      */
     getValidationTraceTests(input: GetValidationTraceTestsRequest, options?: RpcOptions): UnaryCall<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse>;
+    // Cache-friendly APIs for efficient trace syncing
+
+    /**
+     * Get all trace test IDs for a service (lightweight, no pagination needed)
+     *
+     * @generated from protobuf rpc: GetAllTraceTestIds
+     */
+    getAllTraceTestIds(input: GetAllTraceTestIdsRequest, options?: RpcOptions): UnaryCall<GetAllTraceTestIdsRequest, GetAllTraceTestIdsResponse>;
+    /**
+     * Get trace tests by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetTraceTestsByIds
+     */
+    getTraceTestsByIds(input: GetTraceTestsByIdsRequest, options?: RpcOptions): UnaryCall<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -193,5 +211,25 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     getValidationTraceTests(input: GetValidationTraceTestsRequest, options?: RpcOptions): UnaryCall<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse> {
         const method = this.methods[8], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetValidationTraceTestsRequest, GetValidationTraceTestsResponse>("unary", this._transport, method, opt, input);
+    }
+    // Cache-friendly APIs for efficient trace syncing
+
+    /**
+     * Get all trace test IDs for a service (lightweight, no pagination needed)
+     *
+     * @generated from protobuf rpc: GetAllTraceTestIds
+     */
+    getAllTraceTestIds(input: GetAllTraceTestIdsRequest, options?: RpcOptions): UnaryCall<GetAllTraceTestIdsRequest, GetAllTraceTestIdsResponse> {
+        const method = this.methods[9], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAllTraceTestIdsRequest, GetAllTraceTestIdsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get trace tests by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetTraceTestsByIds
+     */
+    getTraceTestsByIds(input: GetTraceTestsByIdsRequest, options?: RpcOptions): UnaryCall<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse> {
+        const method = this.methods[10], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse>("unary", this._transport, method, opt, input);
     }
 }
