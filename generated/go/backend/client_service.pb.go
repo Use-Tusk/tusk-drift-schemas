@@ -641,6 +641,7 @@ type CreateObservableServiceRequest struct {
 	RepoName      string                 `protobuf:"bytes,2,opt,name=repo_name,json=repoName,proto3" json:"repo_name,omitempty"`
 	ServiceType   ServiceType            `protobuf:"varint,3,opt,name=service_type,json=serviceType,proto3,enum=tusk.drift.backend.v1.ServiceType" json:"service_type,omitempty"`
 	AppDir        *string                `protobuf:"bytes,4,opt,name=app_dir,json=appDir,proto3,oneof" json:"app_dir,omitempty"`
+	Name          *string                `protobuf:"bytes,5,opt,name=name,proto3,oneof" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -699,6 +700,13 @@ func (x *CreateObservableServiceRequest) GetServiceType() ServiceType {
 func (x *CreateObservableServiceRequest) GetAppDir() string {
 	if x != nil && x.AppDir != nil {
 		return *x.AppDir
+	}
+	return ""
+}
+
+func (x *CreateObservableServiceRequest) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
 	}
 	return ""
 }
@@ -1619,14 +1627,16 @@ const file_backend_client_service_proto_rawDesc = "" +
 	"externalId\"\x8f\x01\n" +
 	"\x13GetAuthInfoResponse\x127\n" +
 	"\x04user\x18\x01 \x01(\v2#.tusk.drift.backend.v1.UserAuthInfoR\x04user\x12?\n" +
-	"\aclients\x18\x02 \x03(\v2%.tusk.drift.backend.v1.AuthInfoClientR\aclients\"\xd6\x01\n" +
+	"\aclients\x18\x02 \x03(\v2%.tusk.drift.backend.v1.AuthInfoClientR\aclients\"\xf8\x01\n" +
 	"\x1eCreateObservableServiceRequest\x12&\n" +
 	"\x0frepo_owner_name\x18\x01 \x01(\tR\rrepoOwnerName\x12\x1b\n" +
 	"\trepo_name\x18\x02 \x01(\tR\brepoName\x12E\n" +
 	"\fservice_type\x18\x03 \x01(\x0e2\".tusk.drift.backend.v1.ServiceTypeR\vserviceType\x12\x1c\n" +
-	"\aapp_dir\x18\x04 \x01(\tH\x00R\x06appDir\x88\x01\x01B\n" +
+	"\aapp_dir\x18\x04 \x01(\tH\x00R\x06appDir\x88\x01\x01\x12\x17\n" +
+	"\x04name\x18\x05 \x01(\tH\x01R\x04name\x88\x01\x01B\n" +
 	"\n" +
-	"\b_app_dir\"\\\n" +
+	"\b_app_dirB\a\n" +
+	"\x05_name\"\\\n" +
 	"&CreateObservableServiceResponseSuccess\x122\n" +
 	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\"\x95\x01\n" +
 	"$CreateObservableServiceResponseError\x12S\n" +

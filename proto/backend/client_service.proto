@@ -61,6 +61,7 @@ message CreateObservableServiceRequest {
   string repo_name = 2;
   ServiceType service_type = 3;
   optional string app_dir = 4;
+  optional string name = 5;
 }
 
 enum ServiceType {
