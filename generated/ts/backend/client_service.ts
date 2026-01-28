@@ -120,6 +120,10 @@ export interface CreateObservableServiceRequest {
      * @generated from protobuf field: optional string app_dir = 4
      */
     appDir?: string;
+    /**
+     * @generated from protobuf field: optional string name = 5
+     */
+    name?: string;
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.CreateObservableServiceResponseSuccess
@@ -794,7 +798,8 @@ class CreateObservableServiceRequest$Type extends MessageType<CreateObservableSe
             { no: 1, name: "repo_owner_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "repo_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 3, name: "service_type", kind: "enum", T: () => ["tusk.drift.backend.v1.ServiceType", ServiceType, "SERVICE_TYPE_"] },
-            { no: 4, name: "app_dir", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 4, name: "app_dir", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 5, name: "name", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CreateObservableServiceRequest>): CreateObservableServiceRequest {
@@ -823,6 +828,9 @@ class CreateObservableServiceRequest$Type extends MessageType<CreateObservableSe
                 case /* optional string app_dir */ 4:
                     message.appDir = reader.string();
                     break;
+                case /* optional string name */ 5:
+                    message.name = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -847,6 +855,9 @@ class CreateObservableServiceRequest$Type extends MessageType<CreateObservableSe
         /* optional string app_dir = 4; */
         if (message.appDir !== undefined)
             writer.tag(4, WireType.LengthDelimited).string(message.appDir);
+        /* optional string name = 5; */
+        if (message.name !== undefined)
+            writer.tag(5, WireType.LengthDelimited).string(message.name);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

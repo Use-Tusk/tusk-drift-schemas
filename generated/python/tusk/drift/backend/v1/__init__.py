@@ -127,6 +127,7 @@ class CreateObservableServiceRequest(betterproto.Message):
     repo_name: str = betterproto.string_field(2)
     service_type: "ServiceType" = betterproto.enum_field(3)
     app_dir: Optional[str] = betterproto.string_field(4, optional=True)
+    name: Optional[str] = betterproto.string_field(5, optional=True)
 
 
 @dataclass(eq=False, repr=False)
