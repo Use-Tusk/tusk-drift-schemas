@@ -50,6 +50,12 @@ service TestRunService {
 
   // Get trace tests by their IDs (batch fetch)
   rpc GetTraceTestsByIds(GetTraceTestsByIdsRequest) returns (GetTraceTestsByIdsResponse);
+
+  // Get all pre-app-start span IDs for a service (lightweight, for cache diffing)
+  rpc GetAllPreAppStartSpanIds(GetAllPreAppStartSpanIdsRequest) returns (GetAllPreAppStartSpanIdsResponse);
+
+  // Get pre-app-start spans by their IDs (batch fetch)
+  rpc GetPreAppStartSpansByIds(GetPreAppStartSpansByIdsRequest) returns (GetPreAppStartSpansByIdsResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -399,5 +405,48 @@ message GetTraceTestsByIdsResponse {
   oneof response {
     GetTraceTestsByIdsResponseSuccess success = 1;
     GetTraceTestsByIdsResponseError error = 2;
+  }
+}
+
+// GetAllPreAppStartSpanIds - Get all pre-app-start span IDs (lightweight, for cache diffing)
+message GetAllPreAppStartSpanIdsRequest {
+  string observable_service_id = 1;
+}
+
+message GetAllPreAppStartSpanIdsResponseSuccess {
+  repeated string span_ids = 1;
+}
+
+message GetAllPreAppStartSpanIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetAllPreAppStartSpanIdsResponse {
+  oneof response {
+    GetAllPreAppStartSpanIdsResponseSuccess success = 1;
+    GetAllPreAppStartSpanIdsResponseError error = 2;
+  }
+}
+
+// GetPreAppStartSpansByIds - Batch fetch pre-app-start spans by IDs
+message GetPreAppStartSpansByIdsRequest {
+  string observable_service_id = 1;
+  repeated string span_ids = 2;
+}
+
+message GetPreAppStartSpansByIdsResponseSuccess {
+  repeated tusk.drift.core.v1.Span spans = 1;
+}
+
+message GetPreAppStartSpansByIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetPreAppStartSpansByIdsResponse {
+  oneof response {
+    GetPreAppStartSpansByIdsResponseSuccess success = 1;
+    GetPreAppStartSpansByIdsResponseError error = 2;
   }
 }
