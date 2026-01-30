@@ -56,6 +56,12 @@ service TestRunService {
 
   // Get pre-app-start spans by their IDs (batch fetch)
   rpc GetPreAppStartSpansByIds(GetPreAppStartSpansByIdsRequest) returns (GetPreAppStartSpansByIdsResponse);
+
+  // Get all global span IDs for a service (lightweight, for cache diffing)
+  rpc GetAllGlobalSpanIds(GetAllGlobalSpanIdsRequest) returns (GetAllGlobalSpanIdsResponse);
+
+  // Get global spans by their IDs (batch fetch)
+  rpc GetGlobalSpansByIds(GetGlobalSpansByIdsRequest) returns (GetGlobalSpansByIdsResponse);
 }
 
 message GetGlobalSpansRequest {
@@ -448,5 +454,48 @@ message GetPreAppStartSpansByIdsResponse {
   oneof response {
     GetPreAppStartSpansByIdsResponseSuccess success = 1;
     GetPreAppStartSpansByIdsResponseError error = 2;
+  }
+}
+
+// GetAllGlobalSpanIds - Get all global span IDs (lightweight, for cache diffing)
+message GetAllGlobalSpanIdsRequest {
+  string observable_service_id = 1;
+}
+
+message GetAllGlobalSpanIdsResponseSuccess {
+  repeated string span_ids = 1;
+}
+
+message GetAllGlobalSpanIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetAllGlobalSpanIdsResponse {
+  oneof response {
+    GetAllGlobalSpanIdsResponseSuccess success = 1;
+    GetAllGlobalSpanIdsResponseError error = 2;
+  }
+}
+
+// GetGlobalSpansByIds - Batch fetch global spans by IDs
+message GetGlobalSpansByIdsRequest {
+  string observable_service_id = 1;
+  repeated string span_ids = 2;
+}
+
+message GetGlobalSpansByIdsResponseSuccess {
+  repeated tusk.drift.core.v1.Span spans = 1;
+}
+
+message GetGlobalSpansByIdsResponseError {
+  string code = 1;
+  string message = 2;
+}
+
+message GetGlobalSpansByIdsResponse {
+  oneof response {
+    GetGlobalSpansByIdsResponseSuccess success = 1;
+    GetGlobalSpansByIdsResponseError error = 2;
   }
 }

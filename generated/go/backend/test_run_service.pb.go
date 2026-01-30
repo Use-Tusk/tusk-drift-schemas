@@ -3652,6 +3652,460 @@ func (*GetPreAppStartSpansByIdsResponse_Success) isGetPreAppStartSpansByIdsRespo
 
 func (*GetPreAppStartSpansByIdsResponse_Error) isGetPreAppStartSpansByIdsResponse_Response() {}
 
+// GetAllGlobalSpanIds - Get all global span IDs (lightweight, for cache diffing)
+type GetAllGlobalSpanIdsRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *GetAllGlobalSpanIdsRequest) Reset() {
+	*x = GetAllGlobalSpanIdsRequest{}
+	mi := &file_backend_test_run_service_proto_msgTypes[56]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllGlobalSpanIdsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllGlobalSpanIdsRequest) ProtoMessage() {}
+
+func (x *GetAllGlobalSpanIdsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[56]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllGlobalSpanIdsRequest.ProtoReflect.Descriptor instead.
+func (*GetAllGlobalSpanIdsRequest) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{56}
+}
+
+func (x *GetAllGlobalSpanIdsRequest) GetObservableServiceId() string {
+	if x != nil {
+		return x.ObservableServiceId
+	}
+	return ""
+}
+
+type GetAllGlobalSpanIdsResponseSuccess struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanIds       []string               `protobuf:"bytes,1,rep,name=span_ids,json=spanIds,proto3" json:"span_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAllGlobalSpanIdsResponseSuccess) Reset() {
+	*x = GetAllGlobalSpanIdsResponseSuccess{}
+	mi := &file_backend_test_run_service_proto_msgTypes[57]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllGlobalSpanIdsResponseSuccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllGlobalSpanIdsResponseSuccess) ProtoMessage() {}
+
+func (x *GetAllGlobalSpanIdsResponseSuccess) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[57]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllGlobalSpanIdsResponseSuccess.ProtoReflect.Descriptor instead.
+func (*GetAllGlobalSpanIdsResponseSuccess) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{57}
+}
+
+func (x *GetAllGlobalSpanIdsResponseSuccess) GetSpanIds() []string {
+	if x != nil {
+		return x.SpanIds
+	}
+	return nil
+}
+
+type GetAllGlobalSpanIdsResponseError struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAllGlobalSpanIdsResponseError) Reset() {
+	*x = GetAllGlobalSpanIdsResponseError{}
+	mi := &file_backend_test_run_service_proto_msgTypes[58]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllGlobalSpanIdsResponseError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllGlobalSpanIdsResponseError) ProtoMessage() {}
+
+func (x *GetAllGlobalSpanIdsResponseError) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[58]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllGlobalSpanIdsResponseError.ProtoReflect.Descriptor instead.
+func (*GetAllGlobalSpanIdsResponseError) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{58}
+}
+
+func (x *GetAllGlobalSpanIdsResponseError) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *GetAllGlobalSpanIdsResponseError) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type GetAllGlobalSpanIdsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Response:
+	//
+	//	*GetAllGlobalSpanIdsResponse_Success
+	//	*GetAllGlobalSpanIdsResponse_Error
+	Response      isGetAllGlobalSpanIdsResponse_Response `protobuf_oneof:"response"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAllGlobalSpanIdsResponse) Reset() {
+	*x = GetAllGlobalSpanIdsResponse{}
+	mi := &file_backend_test_run_service_proto_msgTypes[59]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAllGlobalSpanIdsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAllGlobalSpanIdsResponse) ProtoMessage() {}
+
+func (x *GetAllGlobalSpanIdsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[59]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAllGlobalSpanIdsResponse.ProtoReflect.Descriptor instead.
+func (*GetAllGlobalSpanIdsResponse) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{59}
+}
+
+func (x *GetAllGlobalSpanIdsResponse) GetResponse() isGetAllGlobalSpanIdsResponse_Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
+func (x *GetAllGlobalSpanIdsResponse) GetSuccess() *GetAllGlobalSpanIdsResponseSuccess {
+	if x != nil {
+		if x, ok := x.Response.(*GetAllGlobalSpanIdsResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *GetAllGlobalSpanIdsResponse) GetError() *GetAllGlobalSpanIdsResponseError {
+	if x != nil {
+		if x, ok := x.Response.(*GetAllGlobalSpanIdsResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isGetAllGlobalSpanIdsResponse_Response interface {
+	isGetAllGlobalSpanIdsResponse_Response()
+}
+
+type GetAllGlobalSpanIdsResponse_Success struct {
+	Success *GetAllGlobalSpanIdsResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type GetAllGlobalSpanIdsResponse_Error struct {
+	Error *GetAllGlobalSpanIdsResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*GetAllGlobalSpanIdsResponse_Success) isGetAllGlobalSpanIdsResponse_Response() {}
+
+func (*GetAllGlobalSpanIdsResponse_Error) isGetAllGlobalSpanIdsResponse_Response() {}
+
+// GetGlobalSpansByIds - Batch fetch global spans by IDs
+type GetGlobalSpansByIdsRequest struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
+	SpanIds             []string               `protobuf:"bytes,2,rep,name=span_ids,json=spanIds,proto3" json:"span_ids,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
+}
+
+func (x *GetGlobalSpansByIdsRequest) Reset() {
+	*x = GetGlobalSpansByIdsRequest{}
+	mi := &file_backend_test_run_service_proto_msgTypes[60]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGlobalSpansByIdsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGlobalSpansByIdsRequest) ProtoMessage() {}
+
+func (x *GetGlobalSpansByIdsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[60]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGlobalSpansByIdsRequest.ProtoReflect.Descriptor instead.
+func (*GetGlobalSpansByIdsRequest) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{60}
+}
+
+func (x *GetGlobalSpansByIdsRequest) GetObservableServiceId() string {
+	if x != nil {
+		return x.ObservableServiceId
+	}
+	return ""
+}
+
+func (x *GetGlobalSpansByIdsRequest) GetSpanIds() []string {
+	if x != nil {
+		return x.SpanIds
+	}
+	return nil
+}
+
+type GetGlobalSpansByIdsResponseSuccess struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Spans         []*core.Span           `protobuf:"bytes,1,rep,name=spans,proto3" json:"spans,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGlobalSpansByIdsResponseSuccess) Reset() {
+	*x = GetGlobalSpansByIdsResponseSuccess{}
+	mi := &file_backend_test_run_service_proto_msgTypes[61]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGlobalSpansByIdsResponseSuccess) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGlobalSpansByIdsResponseSuccess) ProtoMessage() {}
+
+func (x *GetGlobalSpansByIdsResponseSuccess) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[61]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGlobalSpansByIdsResponseSuccess.ProtoReflect.Descriptor instead.
+func (*GetGlobalSpansByIdsResponseSuccess) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{61}
+}
+
+func (x *GetGlobalSpansByIdsResponseSuccess) GetSpans() []*core.Span {
+	if x != nil {
+		return x.Spans
+	}
+	return nil
+}
+
+type GetGlobalSpansByIdsResponseError struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGlobalSpansByIdsResponseError) Reset() {
+	*x = GetGlobalSpansByIdsResponseError{}
+	mi := &file_backend_test_run_service_proto_msgTypes[62]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGlobalSpansByIdsResponseError) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGlobalSpansByIdsResponseError) ProtoMessage() {}
+
+func (x *GetGlobalSpansByIdsResponseError) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[62]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGlobalSpansByIdsResponseError.ProtoReflect.Descriptor instead.
+func (*GetGlobalSpansByIdsResponseError) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{62}
+}
+
+func (x *GetGlobalSpansByIdsResponseError) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *GetGlobalSpansByIdsResponseError) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type GetGlobalSpansByIdsResponse struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Types that are valid to be assigned to Response:
+	//
+	//	*GetGlobalSpansByIdsResponse_Success
+	//	*GetGlobalSpansByIdsResponse_Error
+	Response      isGetGlobalSpansByIdsResponse_Response `protobuf_oneof:"response"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGlobalSpansByIdsResponse) Reset() {
+	*x = GetGlobalSpansByIdsResponse{}
+	mi := &file_backend_test_run_service_proto_msgTypes[63]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGlobalSpansByIdsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGlobalSpansByIdsResponse) ProtoMessage() {}
+
+func (x *GetGlobalSpansByIdsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[63]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGlobalSpansByIdsResponse.ProtoReflect.Descriptor instead.
+func (*GetGlobalSpansByIdsResponse) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{63}
+}
+
+func (x *GetGlobalSpansByIdsResponse) GetResponse() isGetGlobalSpansByIdsResponse_Response {
+	if x != nil {
+		return x.Response
+	}
+	return nil
+}
+
+func (x *GetGlobalSpansByIdsResponse) GetSuccess() *GetGlobalSpansByIdsResponseSuccess {
+	if x != nil {
+		if x, ok := x.Response.(*GetGlobalSpansByIdsResponse_Success); ok {
+			return x.Success
+		}
+	}
+	return nil
+}
+
+func (x *GetGlobalSpansByIdsResponse) GetError() *GetGlobalSpansByIdsResponseError {
+	if x != nil {
+		if x, ok := x.Response.(*GetGlobalSpansByIdsResponse_Error); ok {
+			return x.Error
+		}
+	}
+	return nil
+}
+
+type isGetGlobalSpansByIdsResponse_Response interface {
+	isGetGlobalSpansByIdsResponse_Response()
+}
+
+type GetGlobalSpansByIdsResponse_Success struct {
+	Success *GetGlobalSpansByIdsResponseSuccess `protobuf:"bytes,1,opt,name=success,proto3,oneof"`
+}
+
+type GetGlobalSpansByIdsResponse_Error struct {
+	Error *GetGlobalSpansByIdsResponseError `protobuf:"bytes,2,opt,name=error,proto3,oneof"`
+}
+
+func (*GetGlobalSpansByIdsResponse_Success) isGetGlobalSpansByIdsResponse_Response() {}
+
+func (*GetGlobalSpansByIdsResponse_Error) isGetGlobalSpansByIdsResponse_Response() {}
+
 var File_backend_test_run_service_proto protoreflect.FileDescriptor
 
 const file_backend_test_run_service_proto_rawDesc = "" +
@@ -3921,6 +4375,31 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\v2>.tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccessH\x00R\asuccess\x12T\n" +
 	"\x05error\x18\x02 \x01(\v2<.tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
+	"\bresponse\"P\n" +
+	"\x1aGetAllGlobalSpanIdsRequest\x122\n" +
+	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\"?\n" +
+	"\"GetAllGlobalSpanIdsResponseSuccess\x12\x19\n" +
+	"\bspan_ids\x18\x01 \x03(\tR\aspanIds\"P\n" +
+	" GetAllGlobalSpanIdsResponseError\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xd1\x01\n" +
+	"\x1bGetAllGlobalSpanIdsResponse\x12U\n" +
+	"\asuccess\x18\x01 \x01(\v29.tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccessH\x00R\asuccess\x12O\n" +
+	"\x05error\x18\x02 \x01(\v27.tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseErrorH\x00R\x05errorB\n" +
+	"\n" +
+	"\bresponse\"k\n" +
+	"\x1aGetGlobalSpansByIdsRequest\x122\n" +
+	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x12\x19\n" +
+	"\bspan_ids\x18\x02 \x03(\tR\aspanIds\"T\n" +
+	"\"GetGlobalSpansByIdsResponseSuccess\x12.\n" +
+	"\x05spans\x18\x01 \x03(\v2\x18.tusk.drift.core.v1.SpanR\x05spans\"P\n" +
+	" GetGlobalSpansByIdsResponseError\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\xd1\x01\n" +
+	"\x1bGetGlobalSpansByIdsResponse\x12U\n" +
+	"\asuccess\x18\x01 \x01(\v29.tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccessH\x00R\asuccess\x12O\n" +
+	"\x05error\x18\x02 \x01(\v27.tusk.drift.backend.v1.GetGlobalSpansByIdsResponseErrorH\x00R\x05errorB\n" +
+	"\n" +
 	"\bresponse*\x90\x01\n" +
 	"\x0fTraceTestStatus\x12!\n" +
 	"\x1dTRACE_TEST_STATUS_UNSPECIFIED\x10\x00\x12\x1b\n" +
@@ -3936,7 +4415,7 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\x1fDRIFT_RUN_CI_STATUS_UNSPECIFIED\x10\x00\x12\x1f\n" +
 	"\x1bDRIFT_RUN_CI_STATUS_RUNNING\x10\x01\x12\x1f\n" +
 	"\x1bDRIFT_RUN_CI_STATUS_SUCCESS\x10\x02\x12\x1f\n" +
-	"\x1bDRIFT_RUN_CI_STATUS_FAILURE\x10\x032\xfc\f\n" +
+	"\x1bDRIFT_RUN_CI_STATUS_FAILURE\x10\x032\xf8\x0e\n" +
 	"\x0eTestRunService\x12m\n" +
 	"\x0eGetGlobalSpans\x12,.tusk.drift.backend.v1.GetGlobalSpansRequest\x1a-.tusk.drift.backend.v1.GetGlobalSpansResponse\x12|\n" +
 	"\x13GetPreAppStartSpans\x121.tusk.drift.backend.v1.GetPreAppStartSpansRequest\x1a2.tusk.drift.backend.v1.GetPreAppStartSpansResponse\x12m\n" +
@@ -3950,7 +4429,9 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\x12GetAllTraceTestIds\x120.tusk.drift.backend.v1.GetAllTraceTestIdsRequest\x1a1.tusk.drift.backend.v1.GetAllTraceTestIdsResponse\x12y\n" +
 	"\x12GetTraceTestsByIds\x120.tusk.drift.backend.v1.GetTraceTestsByIdsRequest\x1a1.tusk.drift.backend.v1.GetTraceTestsByIdsResponse\x12\x8b\x01\n" +
 	"\x18GetAllPreAppStartSpanIds\x126.tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest\x1a7.tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse\x12\x8b\x01\n" +
-	"\x18GetPreAppStartSpansByIds\x126.tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest\x1a7.tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseB\xee\x01\n" +
+	"\x18GetPreAppStartSpansByIds\x126.tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest\x1a7.tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse\x12|\n" +
+	"\x13GetAllGlobalSpanIds\x121.tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest\x1a2.tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse\x12|\n" +
+	"\x13GetGlobalSpansByIds\x121.tusk.drift.backend.v1.GetGlobalSpansByIdsRequest\x1a2.tusk.drift.backend.v1.GetGlobalSpansByIdsResponseB\xee\x01\n" +
 	"\x19com.tusk.drift.backend.v1B\x13TestRunServiceProtoP\x01ZEgithub.com/Use-Tusk/tusk-drift-schemas/generated/go/backend;backendv1\xa2\x02\x03TDB\xaa\x02\x15Tusk.Drift.Backend.V1\xca\x02\x15Tusk\\Drift\\Backend\\V1\xe2\x02!Tusk\\Drift\\Backend\\V1\\GPBMetadata\xea\x02\x18Tusk::Drift::Backend::V1b\x06proto3"
 
 var (
@@ -3966,7 +4447,7 @@ func file_backend_test_run_service_proto_rawDescGZIP() []byte {
 }
 
 var file_backend_test_run_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 56)
+var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
 var file_backend_test_run_service_proto_goTypes = []any{
 	(TraceTestStatus)(0),                            // 0: tusk.drift.backend.v1.TraceTestStatus
 	(TraceTestFailureReason)(0),                     // 1: tusk.drift.backend.v1.TraceTestFailureReason
@@ -4027,19 +4508,27 @@ var file_backend_test_run_service_proto_goTypes = []any{
 	(*GetPreAppStartSpansByIdsResponseSuccess)(nil), // 56: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
 	(*GetPreAppStartSpansByIdsResponseError)(nil),   // 57: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
 	(*GetPreAppStartSpansByIdsResponse)(nil),        // 58: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
-	(*core.Span)(nil),                               // 59: tusk.drift.core.v1.Span
-	(*core.MatchLevel)(nil),                         // 60: tusk.drift.core.v1.MatchLevel
+	(*GetAllGlobalSpanIdsRequest)(nil),              // 59: tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+	(*GetAllGlobalSpanIdsResponseSuccess)(nil),      // 60: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+	(*GetAllGlobalSpanIdsResponseError)(nil),        // 61: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+	(*GetAllGlobalSpanIdsResponse)(nil),             // 62: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+	(*GetGlobalSpansByIdsRequest)(nil),              // 63: tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+	(*GetGlobalSpansByIdsResponseSuccess)(nil),      // 64: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+	(*GetGlobalSpansByIdsResponseError)(nil),        // 65: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+	(*GetGlobalSpansByIdsResponse)(nil),             // 66: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+	(*core.Span)(nil),                               // 67: tusk.drift.core.v1.Span
+	(*core.MatchLevel)(nil),                         // 68: tusk.drift.core.v1.MatchLevel
 }
 var file_backend_test_run_service_proto_depIdxs = []int32{
-	59, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	67, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	4,  // 1: tusk.drift.backend.v1.GetGlobalSpansResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
 	5,  // 2: tusk.drift.backend.v1.GetGlobalSpansResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseError
-	59, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	67, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	8,  // 4: tusk.drift.backend.v1.GetPreAppStartSpansResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
 	9,  // 5: tusk.drift.backend.v1.GetPreAppStartSpansResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseError
 	12, // 6: tusk.drift.backend.v1.CreateDriftRunResponse.success:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseSuccess
 	13, // 7: tusk.drift.backend.v1.CreateDriftRunResponse.error:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseError
-	59, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
+	67, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
 	0,  // 9: tusk.drift.backend.v1.TraceTest.status:type_name -> tusk.drift.backend.v1.TraceTestStatus
 	16, // 10: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
 	17, // 11: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
@@ -4050,8 +4539,8 @@ var file_backend_test_run_service_proto_depIdxs = []int32{
 	16, // 16: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
 	25, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
 	26, // 18: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
-	59, // 19: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
-	60, // 20: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	67, // 19: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
+	68, // 20: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
 	28, // 21: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
 	1,  // 22: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
 	29, // 23: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
@@ -4071,40 +4560,49 @@ var file_backend_test_run_service_proto_depIdxs = []int32{
 	49, // 37: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
 	52, // 38: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
 	53, // 39: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
-	59, // 40: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	67, // 40: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	56, // 41: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
 	57, // 42: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
-	3,  // 43: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
-	7,  // 44: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	11, // 45: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
-	15, // 46: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	24, // 47: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
-	20, // 48: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
-	31, // 49: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	35, // 50: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	39, // 51: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
-	43, // 52: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
-	47, // 53: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
-	51, // 54: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
-	55, // 55: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
-	6,  // 56: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
-	10, // 57: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	14, // 58: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
-	19, // 59: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	27, // 60: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
-	21, // 61: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
-	34, // 62: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	38, // 63: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	42, // 64: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
-	46, // 65: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
-	50, // 66: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
-	54, // 67: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
-	58, // 68: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
-	56, // [56:69] is the sub-list for method output_type
-	43, // [43:56] is the sub-list for method input_type
-	43, // [43:43] is the sub-list for extension type_name
-	43, // [43:43] is the sub-list for extension extendee
-	0,  // [0:43] is the sub-list for field type_name
+	60, // 43: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+	61, // 44: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+	67, // 45: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	64, // 46: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+	65, // 47: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+	3,  // 48: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
+	7,  // 49: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	11, // 50: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
+	15, // 51: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	24, // 52: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
+	20, // 53: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
+	31, // 54: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	35, // 55: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	39, // 56: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	43, // 57: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
+	47, // 58: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
+	51, // 59: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+	55, // 60: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+	59, // 61: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:input_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+	63, // 62: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:input_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+	6,  // 63: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
+	10, // 64: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	14, // 65: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
+	19, // 66: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	27, // 67: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
+	21, // 68: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
+	34, // 69: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	38, // 70: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	42, // 71: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	46, // 72: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
+	50, // 73: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
+	54, // 74: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+	58, // 75: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+	62, // 76: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:output_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+	66, // 77: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:output_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+	63, // [63:78] is the sub-list for method output_type
+	48, // [48:63] is the sub-list for method input_type
+	48, // [48:48] is the sub-list for extension type_name
+	48, // [48:48] is the sub-list for extension extendee
+	0,  // [0:48] is the sub-list for field type_name
 }
 
 func init() { file_backend_test_run_service_proto_init() }
@@ -4178,13 +4676,21 @@ func file_backend_test_run_service_proto_init() {
 		(*GetPreAppStartSpansByIdsResponse_Success)(nil),
 		(*GetPreAppStartSpansByIdsResponse_Error)(nil),
 	}
+	file_backend_test_run_service_proto_msgTypes[59].OneofWrappers = []any{
+		(*GetAllGlobalSpanIdsResponse_Success)(nil),
+		(*GetAllGlobalSpanIdsResponse_Error)(nil),
+	}
+	file_backend_test_run_service_proto_msgTypes[63].OneofWrappers = []any{
+		(*GetGlobalSpansByIdsResponse_Success)(nil),
+		(*GetGlobalSpansByIdsResponse_Error)(nil),
+	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_test_run_service_proto_rawDesc), len(file_backend_test_run_service_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   56,
+			NumMessages:   64,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
