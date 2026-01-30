@@ -878,6 +878,122 @@ export interface GetTraceTestsByIdsResponse {
     };
 }
 /**
+ * GetAllPreAppStartSpanIds - Get all pre-app-start span IDs (lightweight, for cache diffing)
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+ */
+export interface GetAllPreAppStartSpanIdsRequest {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
+ */
+export interface GetAllPreAppStartSpanIdsResponseSuccess {
+    /**
+     * @generated from protobuf field: repeated string span_ids = 1
+     */
+    spanIds: string[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
+ */
+export interface GetAllPreAppStartSpanIdsResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+ */
+export interface GetAllPreAppStartSpanIdsResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess success = 1
+         */
+        success: GetAllPreAppStartSpanIdsResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError error = 2
+         */
+        error: GetAllPreAppStartSpanIdsResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * GetPreAppStartSpansByIds - Batch fetch pre-app-start spans by IDs
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+ */
+export interface GetPreAppStartSpansByIdsRequest {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+    /**
+     * @generated from protobuf field: repeated string span_ids = 2
+     */
+    spanIds: string[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
+ */
+export interface GetPreAppStartSpansByIdsResponseSuccess {
+    /**
+     * @generated from protobuf field: repeated tusk.drift.core.v1.Span spans = 1
+     */
+    spans: Span[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
+ */
+export interface GetPreAppStartSpansByIdsResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+ */
+export interface GetPreAppStartSpansByIdsResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess success = 1
+         */
+        success: GetPreAppStartSpansByIdsResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError error = 2
+         */
+        error: GetPreAppStartSpansByIdsResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
  * @generated from protobuf enum tusk.drift.backend.v1.TraceTestStatus
  */
 export enum TraceTestStatus {
@@ -3787,6 +3903,432 @@ class GetTraceTestsByIdsResponse$Type extends MessageType<GetTraceTestsByIdsResp
  * @generated MessageType for protobuf message tusk.drift.backend.v1.GetTraceTestsByIdsResponse
  */
 export const GetTraceTestsByIdsResponse = new GetTraceTestsByIdsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllPreAppStartSpanIdsRequest$Type extends MessageType<GetAllPreAppStartSpanIdsRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllPreAppStartSpanIdsRequest>): GetAllPreAppStartSpanIdsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllPreAppStartSpanIdsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllPreAppStartSpanIdsRequest): GetAllPreAppStartSpanIdsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllPreAppStartSpanIdsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+ */
+export const GetAllPreAppStartSpanIdsRequest = new GetAllPreAppStartSpanIdsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllPreAppStartSpanIdsResponseSuccess$Type extends MessageType<GetAllPreAppStartSpanIdsResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess", [
+            { no: 1, name: "span_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllPreAppStartSpanIdsResponseSuccess>): GetAllPreAppStartSpanIdsResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.spanIds = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAllPreAppStartSpanIdsResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllPreAppStartSpanIdsResponseSuccess): GetAllPreAppStartSpanIdsResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string span_ids */ 1:
+                    message.spanIds.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllPreAppStartSpanIdsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string span_ids = 1; */
+        for (let i = 0; i < message.spanIds.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.spanIds[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
+ */
+export const GetAllPreAppStartSpanIdsResponseSuccess = new GetAllPreAppStartSpanIdsResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllPreAppStartSpanIdsResponseError$Type extends MessageType<GetAllPreAppStartSpanIdsResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllPreAppStartSpanIdsResponseError>): GetAllPreAppStartSpanIdsResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllPreAppStartSpanIdsResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllPreAppStartSpanIdsResponseError): GetAllPreAppStartSpanIdsResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllPreAppStartSpanIdsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
+ */
+export const GetAllPreAppStartSpanIdsResponseError = new GetAllPreAppStartSpanIdsResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllPreAppStartSpanIdsResponse$Type extends MessageType<GetAllPreAppStartSpanIdsResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetAllPreAppStartSpanIdsResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetAllPreAppStartSpanIdsResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllPreAppStartSpanIdsResponse>): GetAllPreAppStartSpanIdsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<GetAllPreAppStartSpanIdsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllPreAppStartSpanIdsResponse): GetAllPreAppStartSpanIdsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: GetAllPreAppStartSpanIdsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: GetAllPreAppStartSpanIdsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllPreAppStartSpanIdsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            GetAllPreAppStartSpanIdsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            GetAllPreAppStartSpanIdsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+ */
+export const GetAllPreAppStartSpanIdsResponse = new GetAllPreAppStartSpanIdsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetPreAppStartSpansByIdsRequest$Type extends MessageType<GetPreAppStartSpansByIdsRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "span_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetPreAppStartSpansByIdsRequest>): GetPreAppStartSpansByIdsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        message.spanIds = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetPreAppStartSpansByIdsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetPreAppStartSpansByIdsRequest): GetPreAppStartSpansByIdsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                case /* repeated string span_ids */ 2:
+                    message.spanIds.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetPreAppStartSpansByIdsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        /* repeated string span_ids = 2; */
+        for (let i = 0; i < message.spanIds.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.spanIds[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+ */
+export const GetPreAppStartSpansByIdsRequest = new GetPreAppStartSpansByIdsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetPreAppStartSpansByIdsResponseSuccess$Type extends MessageType<GetPreAppStartSpansByIdsResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess", [
+            { no: 1, name: "spans", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Span }
+        ]);
+    }
+    create(value?: PartialMessage<GetPreAppStartSpansByIdsResponseSuccess>): GetPreAppStartSpansByIdsResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.spans = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetPreAppStartSpansByIdsResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetPreAppStartSpansByIdsResponseSuccess): GetPreAppStartSpansByIdsResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated tusk.drift.core.v1.Span spans */ 1:
+                    message.spans.push(Span.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetPreAppStartSpansByIdsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated tusk.drift.core.v1.Span spans = 1; */
+        for (let i = 0; i < message.spans.length; i++)
+            Span.internalBinaryWrite(message.spans[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
+ */
+export const GetPreAppStartSpansByIdsResponseSuccess = new GetPreAppStartSpansByIdsResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetPreAppStartSpansByIdsResponseError$Type extends MessageType<GetPreAppStartSpansByIdsResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetPreAppStartSpansByIdsResponseError>): GetPreAppStartSpansByIdsResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetPreAppStartSpansByIdsResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetPreAppStartSpansByIdsResponseError): GetPreAppStartSpansByIdsResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetPreAppStartSpansByIdsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
+ */
+export const GetPreAppStartSpansByIdsResponseError = new GetPreAppStartSpansByIdsResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetPreAppStartSpansByIdsResponse$Type extends MessageType<GetPreAppStartSpansByIdsResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetPreAppStartSpansByIdsResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetPreAppStartSpansByIdsResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<GetPreAppStartSpansByIdsResponse>): GetPreAppStartSpansByIdsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<GetPreAppStartSpansByIdsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetPreAppStartSpansByIdsResponse): GetPreAppStartSpansByIdsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: GetPreAppStartSpansByIdsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: GetPreAppStartSpansByIdsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetPreAppStartSpansByIdsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            GetPreAppStartSpansByIdsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            GetPreAppStartSpansByIdsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+ */
+export const GetPreAppStartSpansByIdsResponse = new GetPreAppStartSpansByIdsResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.TestRunService
  */
@@ -3801,5 +4343,7 @@ export const TestRunService = new ServiceType("tusk.drift.backend.v1.TestRunServ
     { name: "UpdateDriftRunCIStatus", options: {}, I: UpdateDriftRunCIStatusRequest, O: UpdateDriftRunCIStatusResponse },
     { name: "GetValidationTraceTests", options: {}, I: GetValidationTraceTestsRequest, O: GetValidationTraceTestsResponse },
     { name: "GetAllTraceTestIds", options: {}, I: GetAllTraceTestIdsRequest, O: GetAllTraceTestIdsResponse },
-    { name: "GetTraceTestsByIds", options: {}, I: GetTraceTestsByIdsRequest, O: GetTraceTestsByIdsResponse }
+    { name: "GetTraceTestsByIds", options: {}, I: GetTraceTestsByIdsRequest, O: GetTraceTestsByIdsResponse },
+    { name: "GetAllPreAppStartSpanIds", options: {}, I: GetAllPreAppStartSpanIdsRequest, O: GetAllPreAppStartSpanIdsResponse },
+    { name: "GetPreAppStartSpansByIds", options: {}, I: GetPreAppStartSpansByIdsRequest, O: GetPreAppStartSpansByIdsResponse }
 ]);

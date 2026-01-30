@@ -4,6 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { GetPreAppStartSpansByIdsResponse } from "./test_run_service";
+import type { GetPreAppStartSpansByIdsRequest } from "./test_run_service";
+import type { GetAllPreAppStartSpanIdsResponse } from "./test_run_service";
+import type { GetAllPreAppStartSpanIdsRequest } from "./test_run_service";
 import type { GetTraceTestsByIdsResponse } from "./test_run_service";
 import type { GetTraceTestsByIdsRequest } from "./test_run_service";
 import type { GetAllTraceTestIdsResponse } from "./test_run_service";
@@ -111,6 +115,18 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: GetTraceTestsByIds
      */
     getTraceTestsByIds(input: GetTraceTestsByIdsRequest, options?: RpcOptions): UnaryCall<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse>;
+    /**
+     * Get all pre-app-start span IDs for a service (lightweight, for cache diffing)
+     *
+     * @generated from protobuf rpc: GetAllPreAppStartSpanIds
+     */
+    getAllPreAppStartSpanIds(input: GetAllPreAppStartSpanIdsRequest, options?: RpcOptions): UnaryCall<GetAllPreAppStartSpanIdsRequest, GetAllPreAppStartSpanIdsResponse>;
+    /**
+     * Get pre-app-start spans by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetPreAppStartSpansByIds
+     */
+    getPreAppStartSpansByIds(input: GetPreAppStartSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -231,5 +247,23 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     getTraceTestsByIds(input: GetTraceTestsByIdsRequest, options?: RpcOptions): UnaryCall<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse> {
         const method = this.methods[10], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetTraceTestsByIdsRequest, GetTraceTestsByIdsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get all pre-app-start span IDs for a service (lightweight, for cache diffing)
+     *
+     * @generated from protobuf rpc: GetAllPreAppStartSpanIds
+     */
+    getAllPreAppStartSpanIds(input: GetAllPreAppStartSpanIdsRequest, options?: RpcOptions): UnaryCall<GetAllPreAppStartSpanIdsRequest, GetAllPreAppStartSpanIdsResponse> {
+        const method = this.methods[11], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAllPreAppStartSpanIdsRequest, GetAllPreAppStartSpanIdsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get pre-app-start spans by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetPreAppStartSpansByIds
+     */
+    getPreAppStartSpansByIds(input: GetPreAppStartSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse> {
+        const method = this.methods[12], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse>("unary", this._transport, method, opt, input);
     }
 }
