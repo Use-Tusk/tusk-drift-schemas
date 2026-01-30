@@ -137,6 +137,12 @@ export interface Span {
      * @generated from protobuf field: optional string environment = 24
      */
     environment?: string; // Environment name (e.g., "production", "staging", "development")
+    /**
+     * Database record ID (used for caching and batch fetching)
+     *
+     * @generated from protobuf field: optional string id = 25
+     */
+    id?: string;
 }
 /**
  * Span completion status
@@ -491,7 +497,8 @@ class Span$Type extends MessageType<Span> {
             { no: 21, name: "duration", kind: "message", T: () => Duration },
             { no: 22, name: "is_root_span", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
             { no: 23, name: "metadata", kind: "message", T: () => Struct },
-            { no: 24, name: "environment", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 24, name: "environment", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 25, name: "id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<Span>): Span {
@@ -592,6 +599,9 @@ class Span$Type extends MessageType<Span> {
                 case /* optional string environment */ 24:
                     message.environment = reader.string();
                     break;
+                case /* optional string id */ 25:
+                    message.id = reader.string();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -676,6 +686,9 @@ class Span$Type extends MessageType<Span> {
         /* optional string environment = 24; */
         if (message.environment !== undefined)
             writer.tag(24, WireType.LengthDelimited).string(message.environment);
+        /* optional string id = 25; */
+        if (message.id !== undefined)
+            writer.tag(25, WireType.LengthDelimited).string(message.id);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

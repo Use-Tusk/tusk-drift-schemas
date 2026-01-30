@@ -241,6 +241,9 @@ class Span(betterproto.Message):
     environment: Optional[str] = betterproto.string_field(24, optional=True)
     """Environment information"""
 
+    id: Optional[str] = betterproto.string_field(25, optional=True)
+    """Database record ID (used for caching and batch fetching)"""
+
 
 @dataclass(eq=False, repr=False)
 class SpanStatus(betterproto.Message):

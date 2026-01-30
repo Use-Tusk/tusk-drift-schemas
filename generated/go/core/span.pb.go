@@ -358,7 +358,9 @@ type Span struct {
 	IsRootSpan bool             `protobuf:"varint,22,opt,name=is_root_span,json=isRootSpan,proto3" json:"is_root_span,omitempty"`
 	Metadata   *structpb.Struct `protobuf:"bytes,23,opt,name=metadata,proto3" json:"metadata,omitempty"` // Additional metadata
 	// Environment information
-	Environment   *string `protobuf:"bytes,24,opt,name=environment,proto3,oneof" json:"environment,omitempty"` // Environment name (e.g., "production", "staging", "development")
+	Environment *string `protobuf:"bytes,24,opt,name=environment,proto3,oneof" json:"environment,omitempty"` // Environment name (e.g., "production", "staging", "development")
+	// Database record ID (used for caching and batch fetching)
+	Id            *string `protobuf:"bytes,25,opt,name=id,proto3,oneof" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -557,6 +559,13 @@ func (x *Span) GetMetadata() *structpb.Struct {
 func (x *Span) GetEnvironment() string {
 	if x != nil && x.Environment != nil {
 		return *x.Environment
+	}
+	return ""
+}
+
+func (x *Span) GetId() string {
+	if x != nil && x.Id != nil {
+		return *x.Id
 	}
 	return ""
 }
@@ -948,7 +957,7 @@ var File_core_span_proto protoreflect.FileDescriptor
 
 const file_core_span_proto_rawDesc = "" +
 	"\n" +
-	"\x0fcore/span.proto\x12\x12tusk.drift.core.v1\x1a\x16core/json_schema.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf5\b\n" +
+	"\x0fcore/span.proto\x12\x12tusk.drift.core.v1\x1a\x16core/json_schema.proto\x1a\x1egoogle/protobuf/duration.proto\x1a\x1cgoogle/protobuf/struct.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x91\t\n" +
 	"\x04Span\x12\x19\n" +
 	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x17\n" +
 	"\aspan_id\x18\x02 \x01(\tR\x06spanId\x12$\n" +
@@ -976,8 +985,10 @@ const file_core_span_proto_rawDesc = "" +
 	"\fis_root_span\x18\x16 \x01(\bR\n" +
 	"isRootSpan\x123\n" +
 	"\bmetadata\x18\x17 \x01(\v2\x17.google.protobuf.StructR\bmetadata\x12%\n" +
-	"\venvironment\x18\x18 \x01(\tH\x00R\venvironment\x88\x01\x01B\x0e\n" +
-	"\f_environment\"Z\n" +
+	"\venvironment\x18\x18 \x01(\tH\x00R\venvironment\x88\x01\x01\x12\x13\n" +
+	"\x02id\x18\x19 \x01(\tH\x01R\x02id\x88\x01\x01B\x0e\n" +
+	"\f_environmentB\x05\n" +
+	"\x03_id\"Z\n" +
 	"\n" +
 	"SpanStatus\x122\n" +
 	"\x04code\x18\x01 \x01(\x0e2\x1e.tusk.drift.core.v1.StatusCodeR\x04code\x12\x18\n" +
