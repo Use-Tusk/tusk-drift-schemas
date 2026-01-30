@@ -52,6 +52,9 @@ message Span {
 
   // Environment information
   optional string environment = 24; // Environment name (e.g., "production", "staging", "development")
+
+  // Database record ID (used for caching and batch fetching)
+  optional string id = 25;
 }
 
 // Package type classification enum

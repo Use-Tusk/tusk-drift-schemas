@@ -641,6 +641,65 @@ class GetTraceTestsByIdsResponse(betterproto.Message):
     )
 
 
+@dataclass(eq=False, repr=False)
+class GetAllPreAppStartSpanIdsRequest(betterproto.Message):
+    """
+    GetAllPreAppStartSpanIds - Get all pre-app-start span IDs (lightweight, for cache diffing)
+    """
+
+    observable_service_id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllPreAppStartSpanIdsResponseSuccess(betterproto.Message):
+    span_ids: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllPreAppStartSpanIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllPreAppStartSpanIdsResponse(betterproto.Message):
+    success: "GetAllPreAppStartSpanIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetAllPreAppStartSpanIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class GetPreAppStartSpansByIdsRequest(betterproto.Message):
+    """GetPreAppStartSpansByIds - Batch fetch pre-app-start spans by IDs"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    span_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetPreAppStartSpansByIdsResponseSuccess(betterproto.Message):
+    spans: List["__core_v1__.Span"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetPreAppStartSpansByIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetPreAppStartSpansByIdsResponse(betterproto.Message):
+    success: "GetPreAppStartSpansByIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetPreAppStartSpansByIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
 class ClientServiceStub(betterproto.ServiceStub):
     async def get_auth_info(
         self,
@@ -935,6 +994,40 @@ class TestRunServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def get_all_pre_app_start_span_ids(
+        self,
+        get_all_pre_app_start_span_ids_request: "GetAllPreAppStartSpanIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetAllPreAppStartSpanIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetAllPreAppStartSpanIds",
+            get_all_pre_app_start_span_ids_request,
+            GetAllPreAppStartSpanIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_pre_app_start_spans_by_ids(
+        self,
+        get_pre_app_start_spans_by_ids_request: "GetPreAppStartSpansByIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetPreAppStartSpansByIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetPreAppStartSpansByIds",
+            get_pre_app_start_spans_by_ids_request,
+            GetPreAppStartSpansByIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
 
 class ClientServiceBase(ServiceBase):
 
@@ -1118,6 +1211,16 @@ class TestRunServiceBase(ServiceBase):
     ) -> "GetTraceTestsByIdsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def get_all_pre_app_start_span_ids(
+        self, get_all_pre_app_start_span_ids_request: "GetAllPreAppStartSpanIdsRequest"
+    ) -> "GetAllPreAppStartSpanIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_pre_app_start_spans_by_ids(
+        self, get_pre_app_start_spans_by_ids_request: "GetPreAppStartSpansByIdsRequest"
+    ) -> "GetPreAppStartSpansByIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
     async def __rpc_get_global_spans(
         self,
         stream: "grpclib.server.Stream[GetGlobalSpansRequest, GetGlobalSpansResponse]",
@@ -1205,6 +1308,22 @@ class TestRunServiceBase(ServiceBase):
         response = await self.get_trace_tests_by_ids(request)
         await stream.send_message(response)
 
+    async def __rpc_get_all_pre_app_start_span_ids(
+        self,
+        stream: "grpclib.server.Stream[GetAllPreAppStartSpanIdsRequest, GetAllPreAppStartSpanIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_all_pre_app_start_span_ids(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_pre_app_start_spans_by_ids(
+        self,
+        stream: "grpclib.server.Stream[GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_pre_app_start_spans_by_ids(request)
+        await stream.send_message(response)
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/tusk.drift.backend.v1.TestRunService/GetGlobalSpans": grpclib.const.Handler(
@@ -1272,5 +1391,17 @@ class TestRunServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 GetTraceTestsByIdsRequest,
                 GetTraceTestsByIdsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetAllPreAppStartSpanIds": grpclib.const.Handler(
+                self.__rpc_get_all_pre_app_start_span_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetAllPreAppStartSpanIdsRequest,
+                GetAllPreAppStartSpanIdsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetPreAppStartSpansByIds": grpclib.const.Handler(
+                self.__rpc_get_pre_app_start_spans_by_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetPreAppStartSpansByIdsRequest,
+                GetPreAppStartSpansByIdsResponse,
             ),
         }
