@@ -994,6 +994,122 @@ export interface GetPreAppStartSpansByIdsResponse {
     };
 }
 /**
+ * GetAllGlobalSpanIds - Get all global span IDs (lightweight, for cache diffing)
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+ */
+export interface GetAllGlobalSpanIdsRequest {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+ */
+export interface GetAllGlobalSpanIdsResponseSuccess {
+    /**
+     * @generated from protobuf field: repeated string span_ids = 1
+     */
+    spanIds: string[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+ */
+export interface GetAllGlobalSpanIdsResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+ */
+export interface GetAllGlobalSpanIdsResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess success = 1
+         */
+        success: GetAllGlobalSpanIdsResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError error = 2
+         */
+        error: GetAllGlobalSpanIdsResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
+ * GetGlobalSpansByIds - Batch fetch global spans by IDs
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+ */
+export interface GetGlobalSpansByIdsRequest {
+    /**
+     * @generated from protobuf field: string observable_service_id = 1
+     */
+    observableServiceId: string;
+    /**
+     * @generated from protobuf field: repeated string span_ids = 2
+     */
+    spanIds: string[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+ */
+export interface GetGlobalSpansByIdsResponseSuccess {
+    /**
+     * @generated from protobuf field: repeated tusk.drift.core.v1.Span spans = 1
+     */
+    spans: Span[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+ */
+export interface GetGlobalSpansByIdsResponseError {
+    /**
+     * @generated from protobuf field: string code = 1
+     */
+    code: string;
+    /**
+     * @generated from protobuf field: string message = 2
+     */
+    message: string;
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+ */
+export interface GetGlobalSpansByIdsResponse {
+    /**
+     * @generated from protobuf oneof: response
+     */
+    response: {
+        oneofKind: "success";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess success = 1
+         */
+        success: GetGlobalSpansByIdsResponseSuccess;
+    } | {
+        oneofKind: "error";
+        /**
+         * @generated from protobuf field: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError error = 2
+         */
+        error: GetGlobalSpansByIdsResponseError;
+    } | {
+        oneofKind: undefined;
+    };
+}
+/**
  * @generated from protobuf enum tusk.drift.backend.v1.TraceTestStatus
  */
 export enum TraceTestStatus {
@@ -4329,6 +4445,432 @@ class GetPreAppStartSpansByIdsResponse$Type extends MessageType<GetPreAppStartSp
  * @generated MessageType for protobuf message tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
  */
 export const GetPreAppStartSpansByIdsResponse = new GetPreAppStartSpansByIdsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllGlobalSpanIdsRequest$Type extends MessageType<GetAllGlobalSpanIdsRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllGlobalSpanIdsRequest>): GetAllGlobalSpanIdsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllGlobalSpanIdsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllGlobalSpanIdsRequest): GetAllGlobalSpanIdsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllGlobalSpanIdsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+ */
+export const GetAllGlobalSpanIdsRequest = new GetAllGlobalSpanIdsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllGlobalSpanIdsResponseSuccess$Type extends MessageType<GetAllGlobalSpanIdsResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess", [
+            { no: 1, name: "span_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllGlobalSpanIdsResponseSuccess>): GetAllGlobalSpanIdsResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.spanIds = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetAllGlobalSpanIdsResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllGlobalSpanIdsResponseSuccess): GetAllGlobalSpanIdsResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated string span_ids */ 1:
+                    message.spanIds.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllGlobalSpanIdsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated string span_ids = 1; */
+        for (let i = 0; i < message.spanIds.length; i++)
+            writer.tag(1, WireType.LengthDelimited).string(message.spanIds[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+ */
+export const GetAllGlobalSpanIdsResponseSuccess = new GetAllGlobalSpanIdsResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllGlobalSpanIdsResponseError$Type extends MessageType<GetAllGlobalSpanIdsResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllGlobalSpanIdsResponseError>): GetAllGlobalSpanIdsResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetAllGlobalSpanIdsResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllGlobalSpanIdsResponseError): GetAllGlobalSpanIdsResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllGlobalSpanIdsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+ */
+export const GetAllGlobalSpanIdsResponseError = new GetAllGlobalSpanIdsResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetAllGlobalSpanIdsResponse$Type extends MessageType<GetAllGlobalSpanIdsResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetAllGlobalSpanIdsResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetAllGlobalSpanIdsResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<GetAllGlobalSpanIdsResponse>): GetAllGlobalSpanIdsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<GetAllGlobalSpanIdsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetAllGlobalSpanIdsResponse): GetAllGlobalSpanIdsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: GetAllGlobalSpanIdsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: GetAllGlobalSpanIdsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetAllGlobalSpanIdsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            GetAllGlobalSpanIdsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            GetAllGlobalSpanIdsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+ */
+export const GetAllGlobalSpanIdsResponse = new GetAllGlobalSpanIdsResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetGlobalSpansByIdsRequest$Type extends MessageType<GetGlobalSpansByIdsRequest> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetGlobalSpansByIdsRequest", [
+            { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "span_ids", kind: "scalar", repeat: 2 /*RepeatType.UNPACKED*/, T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetGlobalSpansByIdsRequest>): GetGlobalSpansByIdsRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.observableServiceId = "";
+        message.spanIds = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetGlobalSpansByIdsRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetGlobalSpansByIdsRequest): GetGlobalSpansByIdsRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string observable_service_id */ 1:
+                    message.observableServiceId = reader.string();
+                    break;
+                case /* repeated string span_ids */ 2:
+                    message.spanIds.push(reader.string());
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetGlobalSpansByIdsRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string observable_service_id = 1; */
+        if (message.observableServiceId !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.observableServiceId);
+        /* repeated string span_ids = 2; */
+        for (let i = 0; i < message.spanIds.length; i++)
+            writer.tag(2, WireType.LengthDelimited).string(message.spanIds[i]);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+ */
+export const GetGlobalSpansByIdsRequest = new GetGlobalSpansByIdsRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetGlobalSpansByIdsResponseSuccess$Type extends MessageType<GetGlobalSpansByIdsResponseSuccess> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess", [
+            { no: 1, name: "spans", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => Span }
+        ]);
+    }
+    create(value?: PartialMessage<GetGlobalSpansByIdsResponseSuccess>): GetGlobalSpansByIdsResponseSuccess {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.spans = [];
+        if (value !== undefined)
+            reflectionMergePartial<GetGlobalSpansByIdsResponseSuccess>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetGlobalSpansByIdsResponseSuccess): GetGlobalSpansByIdsResponseSuccess {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated tusk.drift.core.v1.Span spans */ 1:
+                    message.spans.push(Span.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetGlobalSpansByIdsResponseSuccess, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated tusk.drift.core.v1.Span spans = 1; */
+        for (let i = 0; i < message.spans.length; i++)
+            Span.internalBinaryWrite(message.spans[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+ */
+export const GetGlobalSpansByIdsResponseSuccess = new GetGlobalSpansByIdsResponseSuccess$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetGlobalSpansByIdsResponseError$Type extends MessageType<GetGlobalSpansByIdsResponseError> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError", [
+            { no: 1, name: "code", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "message", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+        ]);
+    }
+    create(value?: PartialMessage<GetGlobalSpansByIdsResponseError>): GetGlobalSpansByIdsResponseError {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.code = "";
+        message.message = "";
+        if (value !== undefined)
+            reflectionMergePartial<GetGlobalSpansByIdsResponseError>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetGlobalSpansByIdsResponseError): GetGlobalSpansByIdsResponseError {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string code */ 1:
+                    message.code = reader.string();
+                    break;
+                case /* string message */ 2:
+                    message.message = reader.string();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetGlobalSpansByIdsResponseError, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string code = 1; */
+        if (message.code !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.code);
+        /* string message = 2; */
+        if (message.message !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.message);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+ */
+export const GetGlobalSpansByIdsResponseError = new GetGlobalSpansByIdsResponseError$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class GetGlobalSpansByIdsResponse$Type extends MessageType<GetGlobalSpansByIdsResponse> {
+    constructor() {
+        super("tusk.drift.backend.v1.GetGlobalSpansByIdsResponse", [
+            { no: 1, name: "success", kind: "message", oneof: "response", T: () => GetGlobalSpansByIdsResponseSuccess },
+            { no: 2, name: "error", kind: "message", oneof: "response", T: () => GetGlobalSpansByIdsResponseError }
+        ]);
+    }
+    create(value?: PartialMessage<GetGlobalSpansByIdsResponse>): GetGlobalSpansByIdsResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.response = { oneofKind: undefined };
+        if (value !== undefined)
+            reflectionMergePartial<GetGlobalSpansByIdsResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: GetGlobalSpansByIdsResponse): GetGlobalSpansByIdsResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess success */ 1:
+                    message.response = {
+                        oneofKind: "success",
+                        success: GetGlobalSpansByIdsResponseSuccess.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).success)
+                    };
+                    break;
+                case /* tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError error */ 2:
+                    message.response = {
+                        oneofKind: "error",
+                        error: GetGlobalSpansByIdsResponseError.internalBinaryRead(reader, reader.uint32(), options, (message.response as any).error)
+                    };
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: GetGlobalSpansByIdsResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess success = 1; */
+        if (message.response.oneofKind === "success")
+            GetGlobalSpansByIdsResponseSuccess.internalBinaryWrite(message.response.success, writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError error = 2; */
+        if (message.response.oneofKind === "error")
+            GetGlobalSpansByIdsResponseError.internalBinaryWrite(message.response.error, writer.tag(2, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+ */
+export const GetGlobalSpansByIdsResponse = new GetGlobalSpansByIdsResponse$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.backend.v1.TestRunService
  */
@@ -4345,5 +4887,7 @@ export const TestRunService = new ServiceType("tusk.drift.backend.v1.TestRunServ
     { name: "GetAllTraceTestIds", options: {}, I: GetAllTraceTestIdsRequest, O: GetAllTraceTestIdsResponse },
     { name: "GetTraceTestsByIds", options: {}, I: GetTraceTestsByIdsRequest, O: GetTraceTestsByIdsResponse },
     { name: "GetAllPreAppStartSpanIds", options: {}, I: GetAllPreAppStartSpanIdsRequest, O: GetAllPreAppStartSpanIdsResponse },
-    { name: "GetPreAppStartSpansByIds", options: {}, I: GetPreAppStartSpansByIdsRequest, O: GetPreAppStartSpansByIdsResponse }
+    { name: "GetPreAppStartSpansByIds", options: {}, I: GetPreAppStartSpansByIdsRequest, O: GetPreAppStartSpansByIdsResponse },
+    { name: "GetAllGlobalSpanIds", options: {}, I: GetAllGlobalSpanIdsRequest, O: GetAllGlobalSpanIdsResponse },
+    { name: "GetGlobalSpansByIds", options: {}, I: GetGlobalSpansByIdsRequest, O: GetGlobalSpansByIdsResponse }
 ]);

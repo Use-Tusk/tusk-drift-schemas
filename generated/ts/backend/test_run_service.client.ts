@@ -4,6 +4,10 @@
 import type { RpcTransport } from "@protobuf-ts/runtime-rpc";
 import type { ServiceInfo } from "@protobuf-ts/runtime-rpc";
 import { TestRunService } from "./test_run_service";
+import type { GetGlobalSpansByIdsResponse } from "./test_run_service";
+import type { GetGlobalSpansByIdsRequest } from "./test_run_service";
+import type { GetAllGlobalSpanIdsResponse } from "./test_run_service";
+import type { GetAllGlobalSpanIdsRequest } from "./test_run_service";
 import type { GetPreAppStartSpansByIdsResponse } from "./test_run_service";
 import type { GetPreAppStartSpansByIdsRequest } from "./test_run_service";
 import type { GetAllPreAppStartSpanIdsResponse } from "./test_run_service";
@@ -127,6 +131,18 @@ export interface ITestRunServiceClient {
      * @generated from protobuf rpc: GetPreAppStartSpansByIds
      */
     getPreAppStartSpansByIds(input: GetPreAppStartSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse>;
+    /**
+     * Get all global span IDs for a service (lightweight, for cache diffing)
+     *
+     * @generated from protobuf rpc: GetAllGlobalSpanIds
+     */
+    getAllGlobalSpanIds(input: GetAllGlobalSpanIdsRequest, options?: RpcOptions): UnaryCall<GetAllGlobalSpanIdsRequest, GetAllGlobalSpanIdsResponse>;
+    /**
+     * Get global spans by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetGlobalSpansByIds
+     */
+    getGlobalSpansByIds(input: GetGlobalSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetGlobalSpansByIdsRequest, GetGlobalSpansByIdsResponse>;
 }
 /**
  * @generated from protobuf service tusk.drift.backend.v1.TestRunService
@@ -265,5 +281,23 @@ export class TestRunServiceClient implements ITestRunServiceClient, ServiceInfo 
     getPreAppStartSpansByIds(input: GetPreAppStartSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse> {
         const method = this.methods[12], opt = this._transport.mergeOptions(options);
         return stackIntercept<GetPreAppStartSpansByIdsRequest, GetPreAppStartSpansByIdsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get all global span IDs for a service (lightweight, for cache diffing)
+     *
+     * @generated from protobuf rpc: GetAllGlobalSpanIds
+     */
+    getAllGlobalSpanIds(input: GetAllGlobalSpanIdsRequest, options?: RpcOptions): UnaryCall<GetAllGlobalSpanIdsRequest, GetAllGlobalSpanIdsResponse> {
+        const method = this.methods[13], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetAllGlobalSpanIdsRequest, GetAllGlobalSpanIdsResponse>("unary", this._transport, method, opt, input);
+    }
+    /**
+     * Get global spans by their IDs (batch fetch)
+     *
+     * @generated from protobuf rpc: GetGlobalSpansByIds
+     */
+    getGlobalSpansByIds(input: GetGlobalSpansByIdsRequest, options?: RpcOptions): UnaryCall<GetGlobalSpansByIdsRequest, GetGlobalSpansByIdsResponse> {
+        const method = this.methods[14], opt = this._transport.mergeOptions(options);
+        return stackIntercept<GetGlobalSpansByIdsRequest, GetGlobalSpansByIdsResponse>("unary", this._transport, method, opt, input);
     }
 }

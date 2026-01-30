@@ -700,6 +700,65 @@ class GetPreAppStartSpansByIdsResponse(betterproto.Message):
     )
 
 
+@dataclass(eq=False, repr=False)
+class GetAllGlobalSpanIdsRequest(betterproto.Message):
+    """
+    GetAllGlobalSpanIds - Get all global span IDs (lightweight, for cache diffing)
+    """
+
+    observable_service_id: str = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllGlobalSpanIdsResponseSuccess(betterproto.Message):
+    span_ids: List[str] = betterproto.string_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllGlobalSpanIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetAllGlobalSpanIdsResponse(betterproto.Message):
+    success: "GetAllGlobalSpanIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetAllGlobalSpanIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
+@dataclass(eq=False, repr=False)
+class GetGlobalSpansByIdsRequest(betterproto.Message):
+    """GetGlobalSpansByIds - Batch fetch global spans by IDs"""
+
+    observable_service_id: str = betterproto.string_field(1)
+    span_ids: List[str] = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetGlobalSpansByIdsResponseSuccess(betterproto.Message):
+    spans: List["__core_v1__.Span"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class GetGlobalSpansByIdsResponseError(betterproto.Message):
+    code: str = betterproto.string_field(1)
+    message: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class GetGlobalSpansByIdsResponse(betterproto.Message):
+    success: "GetGlobalSpansByIdsResponseSuccess" = betterproto.message_field(
+        1, group="response"
+    )
+    error: "GetGlobalSpansByIdsResponseError" = betterproto.message_field(
+        2, group="response"
+    )
+
+
 class ClientServiceStub(betterproto.ServiceStub):
     async def get_auth_info(
         self,
@@ -1028,6 +1087,40 @@ class TestRunServiceStub(betterproto.ServiceStub):
             metadata=metadata,
         )
 
+    async def get_all_global_span_ids(
+        self,
+        get_all_global_span_ids_request: "GetAllGlobalSpanIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetAllGlobalSpanIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetAllGlobalSpanIds",
+            get_all_global_span_ids_request,
+            GetAllGlobalSpanIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
+    async def get_global_spans_by_ids(
+        self,
+        get_global_spans_by_ids_request: "GetGlobalSpansByIdsRequest",
+        *,
+        timeout: Optional[float] = None,
+        deadline: Optional["Deadline"] = None,
+        metadata: Optional["MetadataLike"] = None
+    ) -> "GetGlobalSpansByIdsResponse":
+        return await self._unary_unary(
+            "/tusk.drift.backend.v1.TestRunService/GetGlobalSpansByIds",
+            get_global_spans_by_ids_request,
+            GetGlobalSpansByIdsResponse,
+            timeout=timeout,
+            deadline=deadline,
+            metadata=metadata,
+        )
+
 
 class ClientServiceBase(ServiceBase):
 
@@ -1221,6 +1314,16 @@ class TestRunServiceBase(ServiceBase):
     ) -> "GetPreAppStartSpansByIdsResponse":
         raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
 
+    async def get_all_global_span_ids(
+        self, get_all_global_span_ids_request: "GetAllGlobalSpanIdsRequest"
+    ) -> "GetAllGlobalSpanIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
+    async def get_global_spans_by_ids(
+        self, get_global_spans_by_ids_request: "GetGlobalSpansByIdsRequest"
+    ) -> "GetGlobalSpansByIdsResponse":
+        raise grpclib.GRPCError(grpclib.const.Status.UNIMPLEMENTED)
+
     async def __rpc_get_global_spans(
         self,
         stream: "grpclib.server.Stream[GetGlobalSpansRequest, GetGlobalSpansResponse]",
@@ -1324,6 +1427,22 @@ class TestRunServiceBase(ServiceBase):
         response = await self.get_pre_app_start_spans_by_ids(request)
         await stream.send_message(response)
 
+    async def __rpc_get_all_global_span_ids(
+        self,
+        stream: "grpclib.server.Stream[GetAllGlobalSpanIdsRequest, GetAllGlobalSpanIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_all_global_span_ids(request)
+        await stream.send_message(response)
+
+    async def __rpc_get_global_spans_by_ids(
+        self,
+        stream: "grpclib.server.Stream[GetGlobalSpansByIdsRequest, GetGlobalSpansByIdsResponse]",
+    ) -> None:
+        request = await stream.recv_message()
+        response = await self.get_global_spans_by_ids(request)
+        await stream.send_message(response)
+
     def __mapping__(self) -> Dict[str, grpclib.const.Handler]:
         return {
             "/tusk.drift.backend.v1.TestRunService/GetGlobalSpans": grpclib.const.Handler(
@@ -1403,5 +1522,17 @@ class TestRunServiceBase(ServiceBase):
                 grpclib.const.Cardinality.UNARY_UNARY,
                 GetPreAppStartSpansByIdsRequest,
                 GetPreAppStartSpansByIdsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetAllGlobalSpanIds": grpclib.const.Handler(
+                self.__rpc_get_all_global_span_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetAllGlobalSpanIdsRequest,
+                GetAllGlobalSpanIdsResponse,
+            ),
+            "/tusk.drift.backend.v1.TestRunService/GetGlobalSpansByIds": grpclib.const.Handler(
+                self.__rpc_get_global_spans_by_ids,
+                grpclib.const.Cardinality.UNARY_UNARY,
+                GetGlobalSpansByIdsRequest,
+                GetGlobalSpansByIdsResponse,
             ),
         }
