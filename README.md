@@ -42,7 +42,7 @@ Generated package directories:
 
 > [!NOTE]
 > Rust generated files live under `rust/src/generated` so the published crate is self-contained (crates.io packages only include files within the crate directory).
->
+
 > [!NOTE]
 > You may see "duplicate generated file name" warnings from betterproto. These are harmless and can be ignored — they occur because multiple proto packages share the same Python namespace (`tusk.drift`).
 
