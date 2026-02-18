@@ -1,0 +1,3 @@
+[workspace]
+members = ["rust", "rust-codegen"]
+resolver = "2"

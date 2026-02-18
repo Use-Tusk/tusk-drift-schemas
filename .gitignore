@@ -49,6 +49,7 @@ Thumbs.db
 
 dist/
 python-dist/
+target/
 
 # Python packaging artifacts
 python/.venv/

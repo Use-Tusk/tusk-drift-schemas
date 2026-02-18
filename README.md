@@ -1,6 +1,6 @@
 # Tusk Drift Schemas
 
-This repo holds schemas defined as protobuf files used by Tusk Drift. We use Buf to generate code for each language we support (currently TypeScript, Golang, and Python).
+This repo holds schemas defined as protobuf files used by Tusk Drift. We use Buf to generate code for each language we support (currently TypeScript, Golang, and Python), and `prost-build` to generate Rust types.
 
 ## Prerequisites
 
@@ -15,6 +15,14 @@ Before generating schemas, install the following:
    pip install -r requirements.txt
    ```
 
+3. Rust toolchain (for Rust schema crate code generation / checks):
+
+   ```bash
+   rustup toolchain install 1.93.1
+   ```
+
+   This repo also pins Rust in `rust-toolchain.toml`.
+
 ## Generating Schemas
 
 After modifying `.proto` files, regenerate the code:
@@ -23,6 +31,18 @@ After modifying `.proto` files, regenerate the code:
 npm run generate
 ```
 
+Generated package directories:
+
+| Language | Directory |
+| --- | --- |
+| TypeScript | [`generated/ts`](generated/ts) |
+| Go | [`generated/go`](generated/go) |
+| Python | [`generated/python`](generated/python) |
+| Rust | [`rust/src/generated`](rust/src/generated) |
+
+> [!NOTE]
+> Rust generated files live under `rust/src/generated` so the published crate is self-contained (crates.io packages only include files within the crate directory).
+>
 > [!NOTE]
 > You may see "duplicate generated file name" warnings from betterproto. These are harmless and can be ignored — they occur because multiple proto packages share the same Python namespace (`tusk.drift`).
 
@@ -30,6 +50,12 @@ Then build the TypeScript package:
 
 ```bash
 npm run build
+```
+
+Generate/check Rust schema types:
+
+```bash
+cargo check -p tusk-drift-schemas
 ```
 
 ## Usage
@@ -78,9 +104,24 @@ from tusk.drift.core.v1 import *
 from tusk.drift.backend.v1 import *
 ```
 
----
+### Installing schemas in Rust projects
+
+```toml
+[dependencies]
+tusk-drift-schemas = "0.1.24"
+```
+
+Then import generated protobuf types:
+
+```rust
+use tusk_drift_schemas::tusk::drift::backend::v1::ExportSpansRequest;
+use tusk_drift_schemas::tusk::drift::core::v1::Span;
+```
 
 ## Releasing
+
+Versioning policy: this repo currently uses lockstep versions across NPM (`package.json`), PyPI (`pyproject.toml`),
+and crates.io packages (`rust/Cargo.toml`).
 
 Use the release script to create a new release:
 
@@ -96,9 +137,19 @@ The script will:
 
 1. Run preflight checks (on main, up to date, no uncommitted changes)
 2. Run `generate` and `build` to verify everything works
-3. Update version in both `package.json` and `pyproject.toml`
+3. Update version in `package.json`, `pyproject.toml`, and `rust/Cargo.toml`
 4. Commit, tag, and push to GitHub
 5. Create a GitHub Release (which triggers the NPM & PyPI publish workflows)
 
-> [!NOTE]
+> [!TIP]
 > If a broken release occurs, or you just want to test some stuff, you can supply an optional version override to the GH actions manually, like `0.1.23.dev1`.
+
+<details>
+<summary>Manually publishing from crate directory</summary>
+
+```bash
+cd rust
+cargo publish
+```
+
+</details>
