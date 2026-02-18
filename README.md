@@ -108,7 +108,7 @@ from tusk.drift.backend.v1 import *
 
 ```toml
 [dependencies]
-tusk-drift-schemas = "0.1.24"
+tusk-drift-schemas = "0.1.30"
 ```
 
 Then import generated protobuf types:

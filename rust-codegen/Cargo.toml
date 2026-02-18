@@ -1,6 +1,6 @@
 [package]
 name = "tusk-drift-schemas-rust-codegen"
-version = "0.1.24"
+version.workspace = true
 edition = "2024"
 publish = false
 

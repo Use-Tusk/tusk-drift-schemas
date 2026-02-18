@@ -155,7 +155,7 @@ echo ""
 echo "This will:"
 echo "  1. Update version in package.json to $NEW_VERSION"
 echo "  2. Update version in pyproject.toml to $NEW_VERSION"
-echo "  3. Update version in rust/Cargo.toml to $NEW_VERSION"
+echo "  3. Update version in Cargo.toml ([workspace.package]) to $NEW_VERSION"
 echo "  4. Commit the version bump"
 echo "  5. Create and push tag $NEW_TAG"
 echo "  6. Create a GitHub Release (triggers NPM, PyPI, and crates.io publish)"
@@ -183,20 +183,20 @@ else
     sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" pyproject.toml
 fi
 
-# Update version in rust/Cargo.toml
-info "Updating rust/Cargo.toml..."
+# Update version in workspace Cargo.toml
+info "Updating Cargo.toml workspace version..."
 if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS
-    sed -i '' "s/^version = \".*\"/version = \"$NEW_VERSION\"/" rust/Cargo.toml
+    sed -i '' "s/^version = \".*\"/version = \"$NEW_VERSION\"/" Cargo.toml
 else
     # Linux
-    sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" rust/Cargo.toml
+    sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" Cargo.toml
 fi
 
 # Verify the changes
 UPDATED_NPM_VERSION=$(node -p "require('./package.json').version")
 UPDATED_PY_VERSION=$(grep -E '^version = "' pyproject.toml | sed -E 's/version = "(.*)"/\1/')
-UPDATED_RUST_VERSION=$(grep -E '^version = "' rust/Cargo.toml | sed -E 's/version = "(.*)"/\1/' | head -1)
+UPDATED_RUST_WORKSPACE_VERSION=$(grep -E '^version = "' Cargo.toml | sed -E 's/version = "(.*)"/\1/' | head -1)
 
 if [[ "$UPDATED_NPM_VERSION" != "$NEW_VERSION" ]]; then
     error "Failed to update version in package.json"
@@ -204,13 +204,13 @@ fi
 if [[ "$UPDATED_PY_VERSION" != "$NEW_VERSION" ]]; then
     error "Failed to update version in pyproject.toml"
 fi
-if [[ "$UPDATED_RUST_VERSION" != "$NEW_VERSION" ]]; then
-    error "Failed to update version in rust/Cargo.toml"
+if [[ "$UPDATED_RUST_WORKSPACE_VERSION" != "$NEW_VERSION" ]]; then
+    error "Failed to update version in Cargo.toml"
 fi
 
 # Commit version bump
 info "Committing version bump..."
-git add package.json package-lock.json pyproject.toml rust/Cargo.toml
+git add package.json package-lock.json pyproject.toml Cargo.toml
 git commit -m "chore: bump version to $NEW_VERSION"
 
 # Create annotated tag
