@@ -1,0 +1,15 @@
+[package]
+name = "tusk-drift-schemas"
+version.workspace = true
+edition = "2024"
+license = "Apache-2.0"
+description = "Generated Rust protobuf types for Tusk Drift schemas"
+repository = "https://github.com/Use-Tusk/tusk-drift-schemas"
+homepage = "https://github.com/Use-Tusk/tusk-drift-schemas"
+readme = "../README.md"
+keywords = ["protobuf", "schemas", "drift", "tusk"]
+categories = ["encoding", "api-bindings"]
+
+[dependencies]
+prost = "0.14"
+prost-types = "0.14"

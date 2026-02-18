@@ -95,6 +95,11 @@ if ! npm run build; then
     error "Build failed. Fix issues before releasing."
 fi
 
+info "Running Rust schema crate check..."
+if ! cargo check -p tusk-drift-schemas; then
+    error "Rust crate check failed. Fix issues before releasing."
+fi
+
 info "✓ All preflight checks passed"
 
 # =============================================================================
@@ -150,9 +155,10 @@ echo ""
 echo "This will:"
 echo "  1. Update version in package.json to $NEW_VERSION"
 echo "  2. Update version in pyproject.toml to $NEW_VERSION"
-echo "  3. Commit the version bump"
-echo "  4. Create and push tag $NEW_TAG"
-echo "  5. Create a GitHub Release (triggers NPM & PyPI publish)"
+echo "  3. Update version in Cargo.toml ([workspace.package]) to $NEW_VERSION"
+echo "  4. Commit the version bump"
+echo "  5. Create and push tag $NEW_TAG"
+echo "  6. Create a GitHub Release (triggers NPM, PyPI, and crates.io publish)"
 echo ""
 
 read -p "Proceed? [y/N] " -n 1 -r
@@ -177,9 +183,20 @@ else
     sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" pyproject.toml
 fi
 
+# Update version in workspace Cargo.toml
+info "Updating Cargo.toml workspace version..."
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS
+    sed -i '' "s/^version = \".*\"/version = \"$NEW_VERSION\"/" Cargo.toml
+else
+    # Linux
+    sed -i "s/^version = \".*\"/version = \"$NEW_VERSION\"/" Cargo.toml
+fi
+
 # Verify the changes
 UPDATED_NPM_VERSION=$(node -p "require('./package.json').version")
 UPDATED_PY_VERSION=$(grep -E '^version = "' pyproject.toml | sed -E 's/version = "(.*)"/\1/')
+UPDATED_RUST_WORKSPACE_VERSION=$(grep -E '^version = "' Cargo.toml | sed -E 's/version = "(.*)"/\1/' | head -1)
 
 if [[ "$UPDATED_NPM_VERSION" != "$NEW_VERSION" ]]; then
     error "Failed to update version in package.json"
@@ -187,10 +204,13 @@ fi
 if [[ "$UPDATED_PY_VERSION" != "$NEW_VERSION" ]]; then
     error "Failed to update version in pyproject.toml"
 fi
+if [[ "$UPDATED_RUST_WORKSPACE_VERSION" != "$NEW_VERSION" ]]; then
+    error "Failed to update version in Cargo.toml"
+fi
 
 # Commit version bump
 info "Committing version bump..."
-git add package.json package-lock.json pyproject.toml
+git add package.json package-lock.json pyproject.toml Cargo.toml
 git commit -m "chore: bump version to $NEW_VERSION"
 
 # Create annotated tag
@@ -202,13 +222,13 @@ info "Pushing to origin..."
 git push origin "$DEFAULT_BRANCH"
 git push origin "$NEW_TAG"
 
-# Create GitHub Release (triggers the publish workflow)
+# Create GitHub Release (triggers the publish workflows)
 if [[ "$GH_AVAILABLE" == "true" ]]; then
     info "Creating GitHub Release..."
     if gh release create "$NEW_TAG" --generate-notes --title "$NEW_TAG"; then
         echo ""
         info "✓ Released $NEW_VERSION"
-        info "GitHub Actions will now build and publish to NPM and PyPI."
+        info "GitHub Actions will now build and publish to NPM, PyPI, and crates.io."
         info "Watch progress at: https://github.com/Use-Tusk/tusk-drift-schemas/actions"
     else
         echo ""
@@ -225,7 +245,7 @@ if [[ "$GH_AVAILABLE" == "true" ]]; then
 else
     echo ""
     info "✓ Tag $NEW_TAG pushed successfully."
-    info "To publish to NPM and PyPI, create a GitHub Release:"
+    info "To publish to NPM, PyPI, and crates.io, create a GitHub Release:"
     echo ""
     echo "  1. Go to: https://github.com/Use-Tusk/tusk-drift-schemas/releases/new"
     echo "  2. Select the tag: $NEW_TAG"

@@ -91,7 +91,8 @@
     }
   },
   "scripts": {
-    "generate": "buf generate",
+    "generate:rust": "cargo run -p tusk-drift-schemas-rust-codegen",
+    "generate": "buf generate && cargo run -p tusk-drift-schemas-rust-codegen",
     "build": "tsdown",
     "prepare": "npm run build",
     "prepublishOnly": "npm run generate && npm run build"
