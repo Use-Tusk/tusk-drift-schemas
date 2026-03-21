@@ -1,6 +1,6 @@
 # System Dependency & Versioning
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                            TUSK DRIFT ECOSYSTEM                              │
 └──────────────────────────────────────────────────────────────────────────────┘
@@ -48,7 +48,7 @@
 │                                                                              │
 │  ┌─────────────────────────┐              ┌─────────────────────────────────┐│
 │  │         CLI             │              │           SDK ECOSYSTEM         ││
-│  │   (tusk-drift-cli)      │              │                                 ││
+│  │     (tusk-cli)          │              │                                 ││
 │  │                         │              │  ┌─────────────────────────────┐││
 │  │ Dependencies:           │              │  │        SDK Core             │││
 │  │ • go/base               │◄─────────────┤  │  (@tusk/drift-sdk-base)     │││
@@ -101,7 +101,7 @@
 
 ### Scenario 1: Communication schema change (wide impact)
 
-```
+```text
 Step 1: Schema Update
 ├─ Developer updates base/communication.proto (v1.0.0 → v1.1.0)
 ├─ Breaking change: adds required field to MockRequest
@@ -134,7 +134,7 @@ Step 5: User Impact
 
 ### Scenario 2: Instrumentation schema change (narrow impact)
 
-```
+```text
 Step 1: Schema Update
 ├─ Developer updates postgresql/postgresql.proto (v1.0.0 → v1.1.0)
 ├─ Adds new optional fields for query performance metrics
@@ -162,7 +162,7 @@ Step 4: User Impact
 
 ### Scenario 3: New instrumentation type addition
 
-```
+```text
 Step 1: Schema Creation
 ├─ Developer creates redis/redis.proto v1.0.0
 ├─ CI/CD generates and publishes @tusk/schemas-redis v1.0.0
