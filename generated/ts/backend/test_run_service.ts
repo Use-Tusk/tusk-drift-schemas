@@ -422,6 +422,13 @@ export interface GetAllTraceTestsRequest {
      * @generated from protobuf field: int32 page_size = 3
      */
     pageSize: number;
+    /**
+     * Optional filter by trace test status (e.g., DRAFT, IN_SUITE).
+     * If not set, the server defaults to IN_SUITE.
+     *
+     * @generated from protobuf field: optional tusk.drift.backend.v1.TraceTestStatus status_filter = 4
+     */
+    statusFilter?: TraceTestStatus;
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
@@ -2443,7 +2450,8 @@ class GetAllTraceTestsRequest$Type extends MessageType<GetAllTraceTestsRequest> 
         super("tusk.drift.backend.v1.GetAllTraceTestsRequest", [
             { no: 1, name: "observable_service_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "pagination_cursor", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+            { no: 3, name: "page_size", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "status_filter", kind: "enum", opt: true, T: () => ["tusk.drift.backend.v1.TraceTestStatus", TraceTestStatus, "TRACE_TEST_STATUS_"] }
         ]);
     }
     create(value?: PartialMessage<GetAllTraceTestsRequest>): GetAllTraceTestsRequest {
@@ -2468,6 +2476,9 @@ class GetAllTraceTestsRequest$Type extends MessageType<GetAllTraceTestsRequest> 
                 case /* int32 page_size */ 3:
                     message.pageSize = reader.int32();
                     break;
+                case /* optional tusk.drift.backend.v1.TraceTestStatus status_filter */ 4:
+                    message.statusFilter = reader.int32();
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -2489,6 +2500,9 @@ class GetAllTraceTestsRequest$Type extends MessageType<GetAllTraceTestsRequest> 
         /* int32 page_size = 3; */
         if (message.pageSize !== 0)
             writer.tag(3, WireType.Varint).int32(message.pageSize);
+        /* optional tusk.drift.backend.v1.TraceTestStatus status_filter = 4; */
+        if (message.statusFilter !== undefined)
+            writer.tag(4, WireType.Varint).int32(message.statusFilter);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);

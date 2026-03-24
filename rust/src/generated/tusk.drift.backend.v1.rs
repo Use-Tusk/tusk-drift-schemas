@@ -662,6 +662,10 @@ pub struct GetAllTraceTestsRequest {
     /// Server should provide next cursor based on this page size
     #[prost(int32, tag = "3")]
     pub page_size: i32,
+    /// Optional filter by trace test status (e.g., DRAFT, IN_SUITE).
+    /// If not set, the server defaults to IN_SUITE.
+    #[prost(enumeration = "TraceTestStatus", optional, tag = "4")]
+    pub status_filter: ::core::option::Option<i32>,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct GetAllTraceTestsResponseSuccess {

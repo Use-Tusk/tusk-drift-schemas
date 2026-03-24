@@ -1531,7 +1531,10 @@ type GetAllTraceTestsRequest struct {
 	ObservableServiceId string                 `protobuf:"bytes,1,opt,name=observable_service_id,json=observableServiceId,proto3" json:"observable_service_id,omitempty"`
 	PaginationCursor    *string                `protobuf:"bytes,2,opt,name=pagination_cursor,json=paginationCursor,proto3,oneof" json:"pagination_cursor,omitempty"`
 	// Server should provide next cursor based on this page size
-	PageSize      int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageSize int32 `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	// Optional filter by trace test status (e.g., DRAFT, IN_SUITE).
+	// If not set, the server defaults to IN_SUITE.
+	StatusFilter  *TraceTestStatus `protobuf:"varint,4,opt,name=status_filter,json=statusFilter,proto3,enum=tusk.drift.backend.v1.TraceTestStatus,oneof" json:"status_filter,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1585,6 +1588,13 @@ func (x *GetAllTraceTestsRequest) GetPageSize() int32 {
 		return x.PageSize
 	}
 	return 0
+}
+
+func (x *GetAllTraceTestsRequest) GetStatusFilter() TraceTestStatus {
+	if x != nil && x.StatusFilter != nil {
+		return *x.StatusFilter
+	}
+	return TraceTestStatus_TRACE_TEST_STATUS_UNSPECIFIED
 }
 
 type GetAllTraceTestsResponseSuccess struct {
@@ -4219,12 +4229,14 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"trace_test\x18\x01 \x01(\v2 .tusk.drift.backend.v1.TraceTestR\ttraceTest\"I\n" +
 	"\x19GetTraceTestResponseError\x12\x12\n" +
 	"\x04code\x18\x01 \x01(\tR\x04code\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xb2\x01\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x96\x02\n" +
 	"\x17GetAllTraceTestsRequest\x122\n" +
 	"\x15observable_service_id\x18\x01 \x01(\tR\x13observableServiceId\x120\n" +
 	"\x11pagination_cursor\x18\x02 \x01(\tH\x00R\x10paginationCursor\x88\x01\x01\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSizeB\x14\n" +
-	"\x12_pagination_cursor\"\xbb\x01\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12P\n" +
+	"\rstatus_filter\x18\x04 \x01(\x0e2&.tusk.drift.backend.v1.TraceTestStatusH\x01R\fstatusFilter\x88\x01\x01B\x14\n" +
+	"\x12_pagination_cursorB\x10\n" +
+	"\x0e_status_filter\"\xbb\x01\n" +
 	"\x1fGetAllTraceTestsResponseSuccess\x12A\n" +
 	"\vtrace_tests\x18\x01 \x03(\v2 .tusk.drift.backend.v1.TraceTestR\n" +
 	"traceTests\x12$\n" +
@@ -4536,73 +4548,74 @@ var file_backend_test_run_service_proto_depIdxs = []int32{
 	22, // 13: tusk.drift.backend.v1.GetTraceTestResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestResponseSuccess
 	23, // 14: tusk.drift.backend.v1.GetTraceTestResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestResponseError
 	16, // 15: tusk.drift.backend.v1.GetTraceTestResponseSuccess.trace_test:type_name -> tusk.drift.backend.v1.TraceTest
-	16, // 16: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	25, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
-	26, // 18: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
-	67, // 19: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
-	68, // 20: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
-	28, // 21: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
-	1,  // 22: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
-	29, // 23: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
-	30, // 24: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
-	32, // 25: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	33, // 26: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	2,  // 27: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
-	36, // 28: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	37, // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	16, // 30: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	40, // 31: tusk.drift.backend.v1.GetValidationTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
-	41, // 32: tusk.drift.backend.v1.GetValidationTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseError
-	44, // 33: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
-	45, // 34: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
-	16, // 35: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	48, // 36: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
-	49, // 37: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
-	52, // 38: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
-	53, // 39: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
-	67, // 40: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	56, // 41: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
-	57, // 42: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
-	60, // 43: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
-	61, // 44: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
-	67, // 45: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	64, // 46: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
-	65, // 47: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
-	3,  // 48: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
-	7,  // 49: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	11, // 50: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
-	15, // 51: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	24, // 52: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
-	20, // 53: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
-	31, // 54: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	35, // 55: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	39, // 56: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
-	43, // 57: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
-	47, // 58: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
-	51, // 59: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
-	55, // 60: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
-	59, // 61: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:input_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
-	63, // 62: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:input_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
-	6,  // 63: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
-	10, // 64: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	14, // 65: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
-	19, // 66: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	27, // 67: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
-	21, // 68: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
-	34, // 69: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	38, // 70: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	42, // 71: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
-	46, // 72: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
-	50, // 73: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
-	54, // 74: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
-	58, // 75: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
-	62, // 76: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:output_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
-	66, // 77: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:output_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
-	63, // [63:78] is the sub-list for method output_type
-	48, // [48:63] is the sub-list for method input_type
-	48, // [48:48] is the sub-list for extension type_name
-	48, // [48:48] is the sub-list for extension extendee
-	0,  // [0:48] is the sub-list for field type_name
+	0,  // 16: tusk.drift.backend.v1.GetAllTraceTestsRequest.status_filter:type_name -> tusk.drift.backend.v1.TraceTestStatus
+	16, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	25, // 18: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
+	26, // 19: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
+	67, // 20: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
+	68, // 21: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	28, // 22: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
+	1,  // 23: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
+	29, // 24: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
+	30, // 25: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
+	32, // 26: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	33, // 27: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	2,  // 28: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
+	36, // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	37, // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	16, // 31: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	40, // 32: tusk.drift.backend.v1.GetValidationTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
+	41, // 33: tusk.drift.backend.v1.GetValidationTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseError
+	44, // 34: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
+	45, // 35: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
+	16, // 36: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	48, // 37: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
+	49, // 38: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
+	52, // 39: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
+	53, // 40: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
+	67, // 41: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	56, // 42: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
+	57, // 43: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
+	60, // 44: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+	61, // 45: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+	67, // 46: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	64, // 47: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+	65, // 48: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+	3,  // 49: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
+	7,  // 50: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	11, // 51: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
+	15, // 52: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	24, // 53: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
+	20, // 54: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
+	31, // 55: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	35, // 56: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	39, // 57: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	43, // 58: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
+	47, // 59: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
+	51, // 60: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+	55, // 61: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+	59, // 62: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:input_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+	63, // 63: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:input_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+	6,  // 64: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
+	10, // 65: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	14, // 66: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
+	19, // 67: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	27, // 68: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
+	21, // 69: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
+	34, // 70: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	38, // 71: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	42, // 72: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	46, // 73: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
+	50, // 74: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
+	54, // 75: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+	58, // 76: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+	62, // 77: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:output_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+	66, // 78: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:output_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+	64, // [64:79] is the sub-list for method output_type
+	49, // [49:64] is the sub-list for method input_type
+	49, // [49:49] is the sub-list for extension type_name
+	49, // [49:49] is the sub-list for extension extendee
+	0,  // [0:49] is the sub-list for field type_name
 }
 
 func init() { file_backend_test_run_service_proto_init() }
