@@ -17,7 +17,6 @@ from betterproto.grpc.grpclib_server import ServiceBase
 
 from ...core import v1 as __core_v1__
 
-
 if TYPE_CHECKING:
     import grpclib.server
     from betterproto.grpc.grpclib_client import MetadataLike
@@ -424,6 +423,14 @@ class GetAllTraceTestsRequest(betterproto.Message):
     pagination_cursor: Optional[str] = betterproto.string_field(2, optional=True)
     page_size: int = betterproto.int32_field(3)
     """Server should provide next cursor based on this page size"""
+
+    status_filter: Optional["TraceTestStatus"] = betterproto.enum_field(
+        4, optional=True
+    )
+    """
+    Optional filter by trace test status (e.g., DRAFT, IN_SUITE).
+     If not set, the server defaults to IN_SUITE.
+    """
 
 
 @dataclass(eq=False, repr=False)

@@ -224,6 +224,10 @@ message GetAllTraceTestsRequest {
   optional string pagination_cursor = 2;
   // Server should provide next cursor based on this page size
   int32 page_size = 3;
+
+  // Optional filter by trace test status (e.g., DRAFT, IN_SUITE).
+  // If not set, the server defaults to IN_SUITE.
+  optional TraceTestStatus status_filter = 4;
 }
 
 message GetAllTraceTestsResponseSuccess {
