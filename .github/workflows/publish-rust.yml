@@ -23,6 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install protoc
+        uses: arduino/setup-protoc@v3
+
       - name: Setup Buf
         uses: bufbuild/buf-setup-action@v1
 
