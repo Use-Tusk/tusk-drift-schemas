@@ -157,6 +157,7 @@ class MessageType(betterproto.Enum):
     ALERT = 4
     ENV_VAR_REQUEST = 5
     SET_TIME_TRAVEL = 6
+    COVERAGE_SNAPSHOT = 7
 
 
 @dataclass(eq=False, repr=False)
@@ -378,6 +379,9 @@ class SdkMessage(betterproto.Message):
     set_time_travel_response: "SetTimeTravelResponse" = betterproto.message_field(
         8, group="payload"
     )
+    coverage_snapshot_response: "CoverageSnapshotResponse" = betterproto.message_field(
+        9, group="payload"
+    )
 
 
 @dataclass(eq=False, repr=False)
@@ -392,6 +396,9 @@ class CliMessage(betterproto.Message):
     env_var_response: "EnvVarResponse" = betterproto.message_field(6, group="payload")
     set_time_travel_request: "SetTimeTravelRequest" = betterproto.message_field(
         7, group="payload"
+    )
+    coverage_snapshot_request: "CoverageSnapshotRequest" = betterproto.message_field(
+        8, group="payload"
     )
 
 
@@ -467,6 +474,65 @@ class SetTimeTravelResponse(betterproto.Message):
 
     success: bool = betterproto.bool_field(1)
     error: str = betterproto.string_field(2)
+
+
+@dataclass(eq=False, repr=False)
+class CoverageSnapshotRequest(betterproto.Message):
+    """
+    Request from CLI to SDK to take a coverage snapshot.
+     CLI sends this between tests to collect per-test coverage data.
+    """
+
+    baseline: bool = betterproto.bool_field(1)
+    """
+    If true, returns ALL coverable lines (including uncovered at count=0)
+     for computing the total coverage denominator.
+     If false, returns only lines executed since the last snapshot (per-test data).
+    """
+
+
+@dataclass(eq=False, repr=False)
+class CoverageSnapshotResponse(betterproto.Message):
+    """Response from SDK with coverage data."""
+
+    success: bool = betterproto.bool_field(1)
+    error: str = betterproto.string_field(2)
+    coverage: Dict[str, "FileCoverageData"] = betterproto.map_field(
+        3, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+    """
+    Per-file coverage data. File paths are absolute (CLI normalizes to repo-relative).
+    """
+
+
+@dataclass(eq=False, repr=False)
+class FileCoverageData(betterproto.Message):
+    """Coverage data for a single file."""
+
+    lines: Dict[str, int] = betterproto.map_field(
+        1, betterproto.TYPE_STRING, betterproto.TYPE_INT32
+    )
+    """
+    Line-level coverage: lineNumber (as string) -> execution count.
+     count > 0 = covered, count = 0 = coverable but uncovered (baseline only).
+    """
+
+    total_branches: int = betterproto.int32_field(2)
+    """Branch coverage aggregate for this file."""
+
+    covered_branches: int = betterproto.int32_field(3)
+    branches: Dict[str, "BranchInfo"] = betterproto.map_field(
+        4, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+    """Per-line branch detail (e.g., "line 5: 1/2 branches taken")."""
+
+
+@dataclass(eq=False, repr=False)
+class BranchInfo(betterproto.Message):
+    """Branch coverage at a specific line."""
+
+    total: int = betterproto.int32_field(1)
+    covered: int = betterproto.int32_field(2)
 
 
 class MockServiceStub(betterproto.ServiceStub):

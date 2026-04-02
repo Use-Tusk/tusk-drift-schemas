@@ -76,6 +76,7 @@ message SDKMessage {
     SendAlertRequest send_alert_request = 6;
     EnvVarRequest env_var_request = 7;
     SetTimeTravelResponse set_time_travel_response = 8;
+    CoverageSnapshotResponse coverage_snapshot_response = 9;
   }
 }
 
@@ -88,6 +89,7 @@ message CLIMessage {
     SendInboundSpanForReplayResponse send_inbound_span_for_replay_response = 5;
     EnvVarResponse env_var_response = 6;
     SetTimeTravelRequest set_time_travel_request = 7;
+    CoverageSnapshotRequest coverage_snapshot_request = 8;
   }
 }
 
@@ -99,6 +101,7 @@ enum MessageType {
   MESSAGE_TYPE_ALERT = 4;
   MESSAGE_TYPE_ENV_VAR_REQUEST = 5;
   MESSAGE_TYPE_SET_TIME_TRAVEL = 6;
+  MESSAGE_TYPE_COVERAGE_SNAPSHOT = 7;
 }
 
 message SendInboundSpanForReplayRequest {
@@ -152,4 +155,39 @@ message SetTimeTravelRequest {
 message SetTimeTravelResponse {
   bool success = 1;
   string error = 2;
+}
+
+// Request from CLI to SDK to take a coverage snapshot.
+// CLI sends this between tests to collect per-test coverage data.
+message CoverageSnapshotRequest {
+  // If true, returns ALL coverable lines (including uncovered at count=0)
+  // for computing the total coverage denominator.
+  // If false, returns only lines executed since the last snapshot (per-test data).
+  bool baseline = 1;
+}
+
+// Response from SDK with coverage data.
+message CoverageSnapshotResponse {
+  bool success = 1;
+  string error = 2;
+  // Per-file coverage data. File paths are absolute (CLI normalizes to repo-relative).
+  map<string, FileCoverageData> coverage = 3;
+}
+
+// Coverage data for a single file.
+message FileCoverageData {
+  // Line-level coverage: lineNumber (as string) -> execution count.
+  // count > 0 = covered, count = 0 = coverable but uncovered (baseline only).
+  map<string, int32> lines = 1;
+  // Branch coverage aggregate for this file.
+  int32 total_branches = 2;
+  int32 covered_branches = 3;
+  // Per-line branch detail (e.g., "line 5: 1/2 branches taken").
+  map<string, BranchInfo> branches = 4;
+}
+
+// Branch coverage at a specific line.
+message BranchInfo {
+  int32 total = 1;    // total branches at this line (usually 2 for if/else)
+  int32 covered = 2;  // branches with count > 0
 }
