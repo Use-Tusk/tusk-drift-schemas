@@ -4,6 +4,7 @@ export default defineConfig({
   entry: [
     "generated/ts/core/*.ts",
     "generated/ts/backend/*.ts",
+    "generated/ts/query/*.ts",
     "generated/ts/google/protobuf/*.ts",
     "generated/ts/postgresql/*.ts",
   ],

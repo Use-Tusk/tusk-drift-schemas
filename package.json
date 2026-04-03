@@ -72,6 +72,10 @@
       "import": "./dist/postgresql/postgresql.js",
       "require": "./dist/postgresql/postgresql.cjs"
     },
+    "./query/span_query": {
+      "import": "./dist/query/span_query.js",
+      "require": "./dist/query/span_query.cjs"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -81,6 +85,9 @@
       ],
       "backend/*": [
         "dist/backend/*"
+      ],
+      "query/*": [
+        "dist/query/*"
       ],
       "google/protobuf/*": [
         "dist/google/protobuf/*"
