@@ -72,6 +72,14 @@
       "import": "./dist/postgresql/postgresql.js",
       "require": "./dist/postgresql/postgresql.cjs"
     },
+    "./query/span_query": {
+      "import": "./dist/query/span_query.js",
+      "require": "./dist/query/span_query.cjs"
+    },
+    "./query/span_query_helpers": {
+      "import": "./dist/query/span_query_helpers.js",
+      "require": "./dist/query/span_query_helpers.cjs"
+    },
     "./package.json": "./package.json"
   },
   "typesVersions": {
@@ -82,6 +90,9 @@
       "backend/*": [
         "dist/backend/*"
       ],
+      "query/*": [
+        "dist/query/*"
+      ],
       "google/protobuf/*": [
         "dist/google/protobuf/*"
       ],
@@ -91,11 +102,13 @@
     }
   },
   "scripts": {
+    "sync:exports": "node scripts/sync-exports.mjs",
+    "smoke:pack": "node scripts/smoke-pack.mjs",
     "generate:rust": "cargo run -p tusk-drift-schemas-rust-codegen",
     "generate": "buf generate && cargo run -p tusk-drift-schemas-rust-codegen",
-    "build": "tsdown",
+    "build": "npm run sync:exports && tsdown",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run generate && npm run build"
+    "prepublishOnly": "npm run generate && npm run build && npm run smoke:pack"
   },
   "dependencies": {
     "@protobuf-ts/runtime": "^2.11.0",
