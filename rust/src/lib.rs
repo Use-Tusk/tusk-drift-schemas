@@ -8,6 +8,14 @@ pub mod tusk {
                 ));
             }
         }
+        pub mod query {
+            pub mod v1 {
+                include!(concat!(
+                    env!("CARGO_MANIFEST_DIR"),
+                    "/src/generated/tusk.drift.query.v1.rs"
+                ));
+            }
+        }
         pub mod backend {
             pub mod v1 {
                 include!(concat!(

@@ -52,6 +52,9 @@ Then build the TypeScript package:
 npm run build
 ```
 
+> [!NOTE]
+> `npm run build` runs `npm run sync:exports` before bundling. You do not need to manually edit `package.json` exports when adding or removing files within the existing TypeScript export roots (`generated/ts/*`, and `src/*`). Only update `scripts/sync-exports.mjs` `ENTRY_GROUPS` when introducing a brand-new export root directory.
+
 Generate/check Rust schema types:
 
 ```bash

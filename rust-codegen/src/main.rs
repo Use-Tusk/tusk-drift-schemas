@@ -15,6 +15,7 @@ fn main() {
         proto_root.join("core/communication.proto"),
         proto_root.join("core/json_schema.proto"),
         proto_root.join("core/span.proto"),
+        proto_root.join("query/span_query.proto"),
         proto_root.join("backend/common.proto"),
         proto_root.join("backend/client_service.proto"),
         proto_root.join("backend/span_export_service.proto"),
@@ -40,6 +41,7 @@ fn compile_to(out_dir: &Path, input_refs: &[&Path], proto_root: &Path) {
     // Keep this conservative to avoid deleting unrelated checked-in files.
     let expected = [
         "tusk.drift.core.v1.rs",
+        "tusk.drift.query.v1.rs",
         "tusk.drift.backend.v1.rs",
         "tusk.drift.instrumentation.postgresql.v1.rs",
     ];

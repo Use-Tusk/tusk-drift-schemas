@@ -1,0 +1,240 @@
+syntax = "proto3";
+package tusk.drift.query.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "./query";
+
+// Canonical shared query schema for filtering and analyzing recorded spans.
+//
+// This package intentionally models the user-facing query shape shared by the
+// backend, MCP tools, and CLI instead of a lower-level AST that each client
+// would need to translate. Implementations are responsible for runtime
+// validation of field keys, operator compatibility, and JSON access rules.
+
+// Selectable fields when fetching spans by ID.
+enum SelectableSpanField {
+  SELECTABLE_SPAN_FIELD_UNSPECIFIED = 0;
+  SELECTABLE_SPAN_FIELD_ID = 1;
+  SELECTABLE_SPAN_FIELD_SPAN_ID = 2;
+  SELECTABLE_SPAN_FIELD_TRACE_ID = 3;
+  SELECTABLE_SPAN_FIELD_PARENT_SPAN_ID = 4;
+  SELECTABLE_SPAN_FIELD_NAME = 5;
+  SELECTABLE_SPAN_FIELD_KIND = 6;
+  SELECTABLE_SPAN_FIELD_STATUS = 7;
+  SELECTABLE_SPAN_FIELD_TIMESTAMP = 8;
+  SELECTABLE_SPAN_FIELD_DURATION = 9;
+  SELECTABLE_SPAN_FIELD_IS_ROOT_SPAN = 10;
+  SELECTABLE_SPAN_FIELD_METADATA = 11;
+  SELECTABLE_SPAN_FIELD_PACKAGE_NAME = 12;
+  SELECTABLE_SPAN_FIELD_INSTRUMENTATION_NAME = 13;
+  SELECTABLE_SPAN_FIELD_INPUT_VALUE = 14;
+  SELECTABLE_SPAN_FIELD_OUTPUT_VALUE = 15;
+  SELECTABLE_SPAN_FIELD_INPUT_SCHEMA = 16;
+  SELECTABLE_SPAN_FIELD_OUTPUT_SCHEMA = 17;
+  SELECTABLE_SPAN_FIELD_ENVIRONMENT = 18;
+  SELECTABLE_SPAN_FIELD_CREATED_AT = 19;
+  SELECTABLE_SPAN_FIELD_UPDATED_AT = 20;
+}
+
+// JSON-backed columns that support JSONPath extraction.
+enum JsonColumn {
+  JSON_COLUMN_UNSPECIFIED = 0;
+  JSON_COLUMN_INPUT_VALUE = 1;
+  JSON_COLUMN_OUTPUT_VALUE = 2;
+  JSON_COLUMN_METADATA = 3;
+  JSON_COLUMN_STATUS = 4;
+}
+
+// Optional cast applied before comparisons.
+enum CastType {
+  CAST_TYPE_UNSPECIFIED = 0;
+  CAST_TYPE_TEXT = 1;
+  CAST_TYPE_INT = 2;
+  CAST_TYPE_FLOAT = 3;
+  CAST_TYPE_BOOLEAN = 4;
+}
+
+// Optional decoding applied before an additional JSONPath extraction.
+enum DecodeStrategy {
+  DECODE_STRATEGY_UNSPECIFIED = 0;
+  DECODE_STRATEGY_BASE64 = 1;
+}
+
+enum SortDirection {
+  SORT_DIRECTION_UNSPECIFIED = 0;
+  SORT_DIRECTION_ASC = 1;
+  SORT_DIRECTION_DESC = 2;
+}
+
+enum SpanSortField {
+  SPAN_SORT_FIELD_UNSPECIFIED = 0;
+  SPAN_SORT_FIELD_TIMESTAMP = 1;
+  SPAN_SORT_FIELD_CREATED_AT = 2;
+  SPAN_SORT_FIELD_UPDATED_AT = 3;
+  SPAN_SORT_FIELD_DURATION = 4;
+  SPAN_SORT_FIELD_NAME = 5;
+  SPAN_SORT_FIELD_TRACE_ID = 6;
+}
+
+enum AggregateMetric {
+  AGGREGATE_METRIC_UNSPECIFIED = 0;
+  AGGREGATE_METRIC_COUNT = 1;
+  AGGREGATE_METRIC_ERROR_COUNT = 2;
+  AGGREGATE_METRIC_ERROR_RATE = 3;
+  AGGREGATE_METRIC_AVG_DURATION = 4;
+  AGGREGATE_METRIC_MIN_DURATION = 5;
+  AGGREGATE_METRIC_MAX_DURATION = 6;
+  AGGREGATE_METRIC_P50_DURATION = 7;
+  AGGREGATE_METRIC_P95_DURATION = 8;
+  AGGREGATE_METRIC_P99_DURATION = 9;
+}
+
+enum AggregateGroupField {
+  AGGREGATE_GROUP_FIELD_UNSPECIFIED = 0;
+  AGGREGATE_GROUP_FIELD_NAME = 1;
+  AGGREGATE_GROUP_FIELD_KIND = 2;
+  AGGREGATE_GROUP_FIELD_PACKAGE_NAME = 3;
+  AGGREGATE_GROUP_FIELD_INSTRUMENTATION_NAME = 4;
+  AGGREGATE_GROUP_FIELD_ENVIRONMENT = 5;
+  AGGREGATE_GROUP_FIELD_STATUS_CODE = 6;
+}
+
+enum TimeBucket {
+  TIME_BUCKET_UNSPECIFIED = 0;
+  TIME_BUCKET_HOUR = 1;
+  TIME_BUCKET_DAY = 2;
+  TIME_BUCKET_WEEK = 3;
+}
+
+message TimestampRange {
+  google.protobuf.Timestamp start = 1;
+  google.protobuf.Timestamp end = 2;
+}
+
+// Optional extraction steps applied to a JSON-backed field predicate before
+// comparisons are evaluated.
+message FieldAccess {
+  CastType cast_as = 1;
+  DecodeStrategy decode = 2;
+  optional string then_path = 3;
+}
+
+// Comparison operators applied to a single field path.
+//
+// Value-typed operators intentionally use google.protobuf.Value so the JSON
+// mapping stays ergonomic for humans and AI agents. Implementations should
+// validate which operators are valid for each field and how temporal values are
+// represented.
+message FieldPredicate {
+  google.protobuf.Value eq = 1;
+  google.protobuf.Value neq = 2;
+  repeated google.protobuf.Value in_values = 3;
+  repeated google.protobuf.Value not_in_values = 4;
+  google.protobuf.Value gt = 5;
+  google.protobuf.Value gte = 6;
+  google.protobuf.Value lt = 7;
+  google.protobuf.Value lte = 8;
+  optional string contains = 9;
+  optional string starts_with = 10;
+  optional string ends_with = 11;
+  optional bool is_null = 12;
+  TimestampRange between_timestamps = 13;
+  FieldAccess access = 14;
+}
+
+// Recursive query clause.
+//
+// `fields` is keyed by canonical field path, for example:
+// - "name"
+// - "packageName"
+// - "statusCode"
+// - "outputValue.statusCode"
+// - "inputValue.body"
+message WhereClause {
+  map<string, FieldPredicate> fields = 1;
+  repeated WhereClause and = 2;
+  repeated WhereClause or = 3;
+  WhereClause not = 4;
+}
+
+message SpanOrderBy {
+  SpanSortField field = 1;
+  SortDirection direction = 2;
+}
+
+message MetricOrderBy {
+  AggregateMetric metric = 1;
+  SortDirection direction = 2;
+}
+
+message SchemaComparisonPeriod {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+}
+
+message QuerySpansRequest {
+  string observable_service_id = 1;
+  optional string client_id = 2;
+  WhereClause where = 3;
+  repeated SpanOrderBy order_by = 4;
+  optional int32 limit = 5;
+  optional int32 offset = 6;
+  optional bool include_payloads = 7;
+  optional int32 max_payload_length = 8;
+}
+
+message GetSchemaRequest {
+  string observable_service_id = 1;
+  optional string package_name = 2;
+  optional string instrumentation_name = 3;
+  optional string name = 4;
+  optional bool show_example = 5;
+  optional int32 max_payload_length = 6;
+}
+
+message ListDistinctValuesRequest {
+  string observable_service_id = 1;
+  optional string client_id = 2;
+  string field = 3;
+  WhereClause where = 4;
+  optional int32 limit = 5;
+}
+
+message AggregateSpansRequest {
+  string observable_service_id = 1;
+  optional string client_id = 2;
+  WhereClause where = 3;
+  repeated AggregateGroupField group_by = 4;
+  repeated AggregateMetric metrics = 5;
+  TimeBucket time_bucket = 6;
+  MetricOrderBy order_by = 7;
+  optional int32 limit = 8;
+}
+
+message GetTraceSpansRequest {
+  string observable_service_id = 1;
+  optional string client_id = 2;
+  string trace_id = 3;
+  optional bool include_payloads = 4;
+  optional int32 max_payload_length = 5;
+}
+
+message GetSpansByIdsRequest {
+  string observable_service_id = 1;
+  repeated string ids = 2;
+  repeated SelectableSpanField fields = 3;
+  optional bool include_payloads = 4;
+  optional int32 max_payload_length = 5;
+}
+
+message CompareSchemaRequest {
+  string observable_service_id = 1;
+  optional string client_id = 2;
+  string name = 3;
+  SchemaComparisonPeriod period_a = 4;
+  SchemaComparisonPeriod period_b = 5;
+  optional bool include_payloads = 6;
+  optional int32 max_payload_length = 7;
+}
