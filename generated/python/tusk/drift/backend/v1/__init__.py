@@ -17,7 +17,6 @@ from betterproto.grpc.grpclib_server import ServiceBase
 
 from ...core import v1 as __core_v1__
 
-
 if TYPE_CHECKING:
     import grpclib.server
     from betterproto.grpc.grpclib_client import MetadataLike
