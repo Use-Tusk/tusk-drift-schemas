@@ -208,9 +208,13 @@ if [[ "$UPDATED_RUST_WORKSPACE_VERSION" != "$NEW_VERSION" ]]; then
     error "Failed to update version in Cargo.toml"
 fi
 
+# Update Cargo.lock to match new workspace version
+info "Updating Cargo.lock..."
+cargo check -p tusk-drift-schemas --quiet
+
 # Commit version bump
 info "Committing version bump..."
-git add package.json package-lock.json pyproject.toml Cargo.toml
+git add package.json package-lock.json pyproject.toml Cargo.toml Cargo.lock
 git commit -m "chore: bump version to $NEW_VERSION"
 
 # Create annotated tag
