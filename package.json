@@ -1,6 +1,6 @@
 {
   "name": "@use-tusk/drift-schemas",
-  "version": "0.1.32",
+  "version": "0.1.33",
   "type": "module",
   "files": [
     "dist/**"
