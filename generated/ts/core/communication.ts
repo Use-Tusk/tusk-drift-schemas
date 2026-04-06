@@ -193,6 +193,12 @@ export interface SDKMessage {
          */
         setTimeTravelResponse: SetTimeTravelResponse;
     } | {
+        oneofKind: "coverageSnapshotResponse";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.CoverageSnapshotResponse coverage_snapshot_response = 9
+         */
+        coverageSnapshotResponse: CoverageSnapshotResponse;
+    } | {
         oneofKind: undefined;
     };
 }
@@ -241,6 +247,12 @@ export interface CLIMessage {
          * @generated from protobuf field: tusk.drift.core.v1.SetTimeTravelRequest set_time_travel_request = 7
          */
         setTimeTravelRequest: SetTimeTravelRequest;
+    } | {
+        oneofKind: "coverageSnapshotRequest";
+        /**
+         * @generated from protobuf field: tusk.drift.core.v1.CoverageSnapshotRequest coverage_snapshot_request = 8
+         */
+        coverageSnapshotRequest: CoverageSnapshotRequest;
     } | {
         oneofKind: undefined;
     };
@@ -386,6 +398,94 @@ export interface SetTimeTravelResponse {
     error: string;
 }
 /**
+ * Request from CLI to SDK to take a coverage snapshot.
+ * CLI sends this between tests to collect per-test coverage data.
+ *
+ * @generated from protobuf message tusk.drift.core.v1.CoverageSnapshotRequest
+ */
+export interface CoverageSnapshotRequest {
+    /**
+     * If true, returns ALL coverable lines (including uncovered at count=0)
+     * for computing the total coverage denominator.
+     * If false, returns only lines executed since the last snapshot (per-test data).
+     *
+     * @generated from protobuf field: bool baseline = 1
+     */
+    baseline: boolean;
+}
+/**
+ * Response from SDK with coverage data.
+ *
+ * @generated from protobuf message tusk.drift.core.v1.CoverageSnapshotResponse
+ */
+export interface CoverageSnapshotResponse {
+    /**
+     * @generated from protobuf field: bool success = 1
+     */
+    success: boolean;
+    /**
+     * @generated from protobuf field: string error = 2
+     */
+    error: string;
+    /**
+     * Per-file coverage data. File paths are absolute (CLI normalizes to repo-relative).
+     *
+     * @generated from protobuf field: map<string, tusk.drift.core.v1.FileCoverageData> coverage = 3
+     */
+    coverage: {
+        [key: string]: FileCoverageData;
+    };
+}
+/**
+ * Coverage data for a single file.
+ *
+ * @generated from protobuf message tusk.drift.core.v1.FileCoverageData
+ */
+export interface FileCoverageData {
+    /**
+     * Line-level coverage: lineNumber (as string) -> execution count.
+     * count > 0 = covered, count = 0 = coverable but uncovered (baseline only).
+     *
+     * @generated from protobuf field: map<string, int32> lines = 1
+     */
+    lines: {
+        [key: string]: number;
+    };
+    /**
+     * Branch coverage aggregate for this file.
+     *
+     * @generated from protobuf field: int32 total_branches = 2
+     */
+    totalBranches: number;
+    /**
+     * @generated from protobuf field: int32 covered_branches = 3
+     */
+    coveredBranches: number;
+    /**
+     * Per-line branch detail (e.g., "line 5: 1/2 branches taken").
+     *
+     * @generated from protobuf field: map<string, tusk.drift.core.v1.BranchInfo> branches = 4
+     */
+    branches: {
+        [key: string]: BranchInfo;
+    };
+}
+/**
+ * Branch coverage at a specific line.
+ *
+ * @generated from protobuf message tusk.drift.core.v1.BranchInfo
+ */
+export interface BranchInfo {
+    /**
+     * @generated from protobuf field: int32 total = 1
+     */
+    total: number; // total branches at this line (usually 2 for if/else)
+    /**
+     * @generated from protobuf field: int32 covered = 2
+     */
+    covered: number; // branches with count > 0
+}
+/**
  * SDK runtime environment
  *
  * @generated from protobuf enum tusk.drift.core.v1.Runtime
@@ -435,7 +535,11 @@ export enum MessageType {
     /**
      * @generated from protobuf enum value: MESSAGE_TYPE_SET_TIME_TRAVEL = 6;
      */
-    SET_TIME_TRAVEL = 6
+    SET_TIME_TRAVEL = 6,
+    /**
+     * @generated from protobuf enum value: MESSAGE_TYPE_COVERAGE_SNAPSHOT = 7;
+     */
+    COVERAGE_SNAPSHOT = 7
 }
 // @generated message type with reflection information, may provide speed optimized methods
 class ConnectRequest$Type extends MessageType$<ConnectRequest> {
@@ -797,7 +901,8 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
             { no: 5, name: "send_inbound_span_for_replay_request", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayRequest },
             { no: 6, name: "send_alert_request", kind: "message", oneof: "payload", T: () => SendAlertRequest },
             { no: 7, name: "env_var_request", kind: "message", oneof: "payload", T: () => EnvVarRequest },
-            { no: 8, name: "set_time_travel_response", kind: "message", oneof: "payload", T: () => SetTimeTravelResponse }
+            { no: 8, name: "set_time_travel_response", kind: "message", oneof: "payload", T: () => SetTimeTravelResponse },
+            { no: 9, name: "coverage_snapshot_response", kind: "message", oneof: "payload", T: () => CoverageSnapshotResponse }
         ]);
     }
     create(value?: PartialMessage<SDKMessage>): SDKMessage {
@@ -856,6 +961,12 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
                         setTimeTravelResponse: SetTimeTravelResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).setTimeTravelResponse)
                     };
                     break;
+                case /* tusk.drift.core.v1.CoverageSnapshotResponse coverage_snapshot_response */ 9:
+                    message.payload = {
+                        oneofKind: "coverageSnapshotResponse",
+                        coverageSnapshotResponse: CoverageSnapshotResponse.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).coverageSnapshotResponse)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -892,6 +1003,9 @@ class SDKMessage$Type extends MessageType$<SDKMessage> {
         /* tusk.drift.core.v1.SetTimeTravelResponse set_time_travel_response = 8; */
         if (message.payload.oneofKind === "setTimeTravelResponse")
             SetTimeTravelResponse.internalBinaryWrite(message.payload.setTimeTravelResponse, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.CoverageSnapshotResponse coverage_snapshot_response = 9; */
+        if (message.payload.oneofKind === "coverageSnapshotResponse")
+            CoverageSnapshotResponse.internalBinaryWrite(message.payload.coverageSnapshotResponse, writer.tag(9, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -912,7 +1026,8 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
             { no: 4, name: "get_mock_response", kind: "message", oneof: "payload", T: () => GetMockResponse },
             { no: 5, name: "send_inbound_span_for_replay_response", kind: "message", oneof: "payload", T: () => SendInboundSpanForReplayResponse },
             { no: 6, name: "env_var_response", kind: "message", oneof: "payload", T: () => EnvVarResponse },
-            { no: 7, name: "set_time_travel_request", kind: "message", oneof: "payload", T: () => SetTimeTravelRequest }
+            { no: 7, name: "set_time_travel_request", kind: "message", oneof: "payload", T: () => SetTimeTravelRequest },
+            { no: 8, name: "coverage_snapshot_request", kind: "message", oneof: "payload", T: () => CoverageSnapshotRequest }
         ]);
     }
     create(value?: PartialMessage<CLIMessage>): CLIMessage {
@@ -965,6 +1080,12 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
                         setTimeTravelRequest: SetTimeTravelRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).setTimeTravelRequest)
                     };
                     break;
+                case /* tusk.drift.core.v1.CoverageSnapshotRequest coverage_snapshot_request */ 8:
+                    message.payload = {
+                        oneofKind: "coverageSnapshotRequest",
+                        coverageSnapshotRequest: CoverageSnapshotRequest.internalBinaryRead(reader, reader.uint32(), options, (message.payload as any).coverageSnapshotRequest)
+                    };
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -998,6 +1119,9 @@ class CLIMessage$Type extends MessageType$<CLIMessage> {
         /* tusk.drift.core.v1.SetTimeTravelRequest set_time_travel_request = 7; */
         if (message.payload.oneofKind === "setTimeTravelRequest")
             SetTimeTravelRequest.internalBinaryWrite(message.payload.setTimeTravelRequest, writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        /* tusk.drift.core.v1.CoverageSnapshotRequest coverage_snapshot_request = 8; */
+        if (message.payload.oneofKind === "coverageSnapshotRequest")
+            CoverageSnapshotRequest.internalBinaryWrite(message.payload.coverageSnapshotRequest, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -1523,6 +1647,298 @@ class SetTimeTravelResponse$Type extends MessageType$<SetTimeTravelResponse> {
  * @generated MessageType for protobuf message tusk.drift.core.v1.SetTimeTravelResponse
  */
 export const SetTimeTravelResponse = new SetTimeTravelResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CoverageSnapshotRequest$Type extends MessageType$<CoverageSnapshotRequest> {
+    constructor() {
+        super("tusk.drift.core.v1.CoverageSnapshotRequest", [
+            { no: 1, name: "baseline", kind: "scalar", T: 8 /*ScalarType.BOOL*/ }
+        ]);
+    }
+    create(value?: PartialMessage<CoverageSnapshotRequest>): CoverageSnapshotRequest {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.baseline = false;
+        if (value !== undefined)
+            reflectionMergePartial<CoverageSnapshotRequest>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CoverageSnapshotRequest): CoverageSnapshotRequest {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool baseline */ 1:
+                    message.baseline = reader.bool();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: CoverageSnapshotRequest, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool baseline = 1; */
+        if (message.baseline !== false)
+            writer.tag(1, WireType.Varint).bool(message.baseline);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.CoverageSnapshotRequest
+ */
+export const CoverageSnapshotRequest = new CoverageSnapshotRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CoverageSnapshotResponse$Type extends MessageType$<CoverageSnapshotResponse> {
+    constructor() {
+        super("tusk.drift.core.v1.CoverageSnapshotResponse", [
+            { no: 1, name: "success", kind: "scalar", T: 8 /*ScalarType.BOOL*/ },
+            { no: 2, name: "error", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "coverage", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FileCoverageData } }
+        ]);
+    }
+    create(value?: PartialMessage<CoverageSnapshotResponse>): CoverageSnapshotResponse {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.success = false;
+        message.error = "";
+        message.coverage = {};
+        if (value !== undefined)
+            reflectionMergePartial<CoverageSnapshotResponse>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CoverageSnapshotResponse): CoverageSnapshotResponse {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* bool success */ 1:
+                    message.success = reader.bool();
+                    break;
+                case /* string error */ 2:
+                    message.error = reader.string();
+                    break;
+                case /* map<string, tusk.drift.core.v1.FileCoverageData> coverage */ 3:
+                    this.binaryReadMap3(message.coverage, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap3(map: CoverageSnapshotResponse["coverage"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof CoverageSnapshotResponse["coverage"] | undefined, val: CoverageSnapshotResponse["coverage"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FileCoverageData.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.core.v1.CoverageSnapshotResponse.coverage");
+            }
+        }
+        map[key ?? ""] = val ?? FileCoverageData.create();
+    }
+    internalBinaryWrite(message: CoverageSnapshotResponse, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* bool success = 1; */
+        if (message.success !== false)
+            writer.tag(1, WireType.Varint).bool(message.success);
+        /* string error = 2; */
+        if (message.error !== "")
+            writer.tag(2, WireType.LengthDelimited).string(message.error);
+        /* map<string, tusk.drift.core.v1.FileCoverageData> coverage = 3; */
+        for (let k of globalThis.Object.keys(message.coverage)) {
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FileCoverageData.internalBinaryWrite(message.coverage[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.CoverageSnapshotResponse
+ */
+export const CoverageSnapshotResponse = new CoverageSnapshotResponse$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FileCoverageData$Type extends MessageType$<FileCoverageData> {
+    constructor() {
+        super("tusk.drift.core.v1.FileCoverageData", [
+            { no: 1, name: "lines", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "scalar", T: 5 /*ScalarType.INT32*/ } },
+            { no: 2, name: "total_branches", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "covered_branches", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 4, name: "branches", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => BranchInfo } }
+        ]);
+    }
+    create(value?: PartialMessage<FileCoverageData>): FileCoverageData {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.lines = {};
+        message.totalBranches = 0;
+        message.coveredBranches = 0;
+        message.branches = {};
+        if (value !== undefined)
+            reflectionMergePartial<FileCoverageData>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FileCoverageData): FileCoverageData {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* map<string, int32> lines */ 1:
+                    this.binaryReadMap1(message.lines, reader, options);
+                    break;
+                case /* int32 total_branches */ 2:
+                    message.totalBranches = reader.int32();
+                    break;
+                case /* int32 covered_branches */ 3:
+                    message.coveredBranches = reader.int32();
+                    break;
+                case /* map<string, tusk.drift.core.v1.BranchInfo> branches */ 4:
+                    this.binaryReadMap4(message.branches, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap1(map: FileCoverageData["lines"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof FileCoverageData["lines"] | undefined, val: FileCoverageData["lines"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = reader.int32();
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.core.v1.FileCoverageData.lines");
+            }
+        }
+        map[key ?? ""] = val ?? 0;
+    }
+    private binaryReadMap4(map: FileCoverageData["branches"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof FileCoverageData["branches"] | undefined, val: FileCoverageData["branches"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = BranchInfo.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.core.v1.FileCoverageData.branches");
+            }
+        }
+        map[key ?? ""] = val ?? BranchInfo.create();
+    }
+    internalBinaryWrite(message: FileCoverageData, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* map<string, int32> lines = 1; */
+        for (let k of globalThis.Object.keys(message.lines))
+            writer.tag(1, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k).tag(2, WireType.Varint).int32(message.lines[k]).join();
+        /* int32 total_branches = 2; */
+        if (message.totalBranches !== 0)
+            writer.tag(2, WireType.Varint).int32(message.totalBranches);
+        /* int32 covered_branches = 3; */
+        if (message.coveredBranches !== 0)
+            writer.tag(3, WireType.Varint).int32(message.coveredBranches);
+        /* map<string, tusk.drift.core.v1.BranchInfo> branches = 4; */
+        for (let k of globalThis.Object.keys(message.branches)) {
+            writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            BranchInfo.internalBinaryWrite(message.branches[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.FileCoverageData
+ */
+export const FileCoverageData = new FileCoverageData$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class BranchInfo$Type extends MessageType$<BranchInfo> {
+    constructor() {
+        super("tusk.drift.core.v1.BranchInfo", [
+            { no: 1, name: "total", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "covered", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<BranchInfo>): BranchInfo {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.total = 0;
+        message.covered = 0;
+        if (value !== undefined)
+            reflectionMergePartial<BranchInfo>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: BranchInfo): BranchInfo {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 total */ 1:
+                    message.total = reader.int32();
+                    break;
+                case /* int32 covered */ 2:
+                    message.covered = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: BranchInfo, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 total = 1; */
+        if (message.total !== 0)
+            writer.tag(1, WireType.Varint).int32(message.total);
+        /* int32 covered = 2; */
+        if (message.covered !== 0)
+            writer.tag(2, WireType.Varint).int32(message.covered);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.core.v1.BranchInfo
+ */
+export const BranchInfo = new BranchInfo$Type();
 /**
  * @generated ServiceType for protobuf service tusk.drift.core.v1.MockService
  */

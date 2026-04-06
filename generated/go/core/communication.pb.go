@@ -76,13 +76,14 @@ func (Runtime) EnumDescriptor() ([]byte, []int) {
 type MessageType int32
 
 const (
-	MessageType_MESSAGE_TYPE_UNSPECIFIED     MessageType = 0
-	MessageType_MESSAGE_TYPE_SDK_CONNECT     MessageType = 1
-	MessageType_MESSAGE_TYPE_MOCK_REQUEST    MessageType = 2
-	MessageType_MESSAGE_TYPE_INBOUND_SPAN    MessageType = 3
-	MessageType_MESSAGE_TYPE_ALERT           MessageType = 4
-	MessageType_MESSAGE_TYPE_ENV_VAR_REQUEST MessageType = 5
-	MessageType_MESSAGE_TYPE_SET_TIME_TRAVEL MessageType = 6
+	MessageType_MESSAGE_TYPE_UNSPECIFIED       MessageType = 0
+	MessageType_MESSAGE_TYPE_SDK_CONNECT       MessageType = 1
+	MessageType_MESSAGE_TYPE_MOCK_REQUEST      MessageType = 2
+	MessageType_MESSAGE_TYPE_INBOUND_SPAN      MessageType = 3
+	MessageType_MESSAGE_TYPE_ALERT             MessageType = 4
+	MessageType_MESSAGE_TYPE_ENV_VAR_REQUEST   MessageType = 5
+	MessageType_MESSAGE_TYPE_SET_TIME_TRAVEL   MessageType = 6
+	MessageType_MESSAGE_TYPE_COVERAGE_SNAPSHOT MessageType = 7
 )
 
 // Enum value maps for MessageType.
@@ -95,15 +96,17 @@ var (
 		4: "MESSAGE_TYPE_ALERT",
 		5: "MESSAGE_TYPE_ENV_VAR_REQUEST",
 		6: "MESSAGE_TYPE_SET_TIME_TRAVEL",
+		7: "MESSAGE_TYPE_COVERAGE_SNAPSHOT",
 	}
 	MessageType_value = map[string]int32{
-		"MESSAGE_TYPE_UNSPECIFIED":     0,
-		"MESSAGE_TYPE_SDK_CONNECT":     1,
-		"MESSAGE_TYPE_MOCK_REQUEST":    2,
-		"MESSAGE_TYPE_INBOUND_SPAN":    3,
-		"MESSAGE_TYPE_ALERT":           4,
-		"MESSAGE_TYPE_ENV_VAR_REQUEST": 5,
-		"MESSAGE_TYPE_SET_TIME_TRAVEL": 6,
+		"MESSAGE_TYPE_UNSPECIFIED":       0,
+		"MESSAGE_TYPE_SDK_CONNECT":       1,
+		"MESSAGE_TYPE_MOCK_REQUEST":      2,
+		"MESSAGE_TYPE_INBOUND_SPAN":      3,
+		"MESSAGE_TYPE_ALERT":             4,
+		"MESSAGE_TYPE_ENV_VAR_REQUEST":   5,
+		"MESSAGE_TYPE_SET_TIME_TRAVEL":   6,
+		"MESSAGE_TYPE_COVERAGE_SNAPSHOT": 7,
 	}
 )
 
@@ -480,6 +483,7 @@ type SDKMessage struct {
 	//	*SDKMessage_SendAlertRequest
 	//	*SDKMessage_EnvVarRequest
 	//	*SDKMessage_SetTimeTravelResponse
+	//	*SDKMessage_CoverageSnapshotResponse
 	Payload       isSDKMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -590,6 +594,15 @@ func (x *SDKMessage) GetSetTimeTravelResponse() *SetTimeTravelResponse {
 	return nil
 }
 
+func (x *SDKMessage) GetCoverageSnapshotResponse() *CoverageSnapshotResponse {
+	if x != nil {
+		if x, ok := x.Payload.(*SDKMessage_CoverageSnapshotResponse); ok {
+			return x.CoverageSnapshotResponse
+		}
+	}
+	return nil
+}
+
 type isSDKMessage_Payload interface {
 	isSDKMessage_Payload()
 }
@@ -618,6 +631,10 @@ type SDKMessage_SetTimeTravelResponse struct {
 	SetTimeTravelResponse *SetTimeTravelResponse `protobuf:"bytes,8,opt,name=set_time_travel_response,json=setTimeTravelResponse,proto3,oneof"`
 }
 
+type SDKMessage_CoverageSnapshotResponse struct {
+	CoverageSnapshotResponse *CoverageSnapshotResponse `protobuf:"bytes,9,opt,name=coverage_snapshot_response,json=coverageSnapshotResponse,proto3,oneof"`
+}
+
 func (*SDKMessage_ConnectRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_GetMockRequest) isSDKMessage_Payload() {}
@@ -630,6 +647,8 @@ func (*SDKMessage_EnvVarRequest) isSDKMessage_Payload() {}
 
 func (*SDKMessage_SetTimeTravelResponse) isSDKMessage_Payload() {}
 
+func (*SDKMessage_CoverageSnapshotResponse) isSDKMessage_Payload() {}
+
 type CLIMessage struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	Type      MessageType            `protobuf:"varint,1,opt,name=type,proto3,enum=tusk.drift.core.v1.MessageType" json:"type,omitempty"`
@@ -641,6 +660,7 @@ type CLIMessage struct {
 	//	*CLIMessage_SendInboundSpanForReplayResponse
 	//	*CLIMessage_EnvVarResponse
 	//	*CLIMessage_SetTimeTravelRequest
+	//	*CLIMessage_CoverageSnapshotRequest
 	Payload       isCLIMessage_Payload `protobuf_oneof:"payload"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -742,6 +762,15 @@ func (x *CLIMessage) GetSetTimeTravelRequest() *SetTimeTravelRequest {
 	return nil
 }
 
+func (x *CLIMessage) GetCoverageSnapshotRequest() *CoverageSnapshotRequest {
+	if x != nil {
+		if x, ok := x.Payload.(*CLIMessage_CoverageSnapshotRequest); ok {
+			return x.CoverageSnapshotRequest
+		}
+	}
+	return nil
+}
+
 type isCLIMessage_Payload interface {
 	isCLIMessage_Payload()
 }
@@ -766,6 +795,10 @@ type CLIMessage_SetTimeTravelRequest struct {
 	SetTimeTravelRequest *SetTimeTravelRequest `protobuf:"bytes,7,opt,name=set_time_travel_request,json=setTimeTravelRequest,proto3,oneof"`
 }
 
+type CLIMessage_CoverageSnapshotRequest struct {
+	CoverageSnapshotRequest *CoverageSnapshotRequest `protobuf:"bytes,8,opt,name=coverage_snapshot_request,json=coverageSnapshotRequest,proto3,oneof"`
+}
+
 func (*CLIMessage_ConnectResponse) isCLIMessage_Payload() {}
 
 func (*CLIMessage_GetMockResponse) isCLIMessage_Payload() {}
@@ -775,6 +808,8 @@ func (*CLIMessage_SendInboundSpanForReplayResponse) isCLIMessage_Payload() {}
 func (*CLIMessage_EnvVarResponse) isCLIMessage_Payload() {}
 
 func (*CLIMessage_SetTimeTravelRequest) isCLIMessage_Payload() {}
+
+func (*CLIMessage_CoverageSnapshotRequest) isCLIMessage_Payload() {}
 
 type SendInboundSpanForReplayRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -1280,6 +1315,243 @@ func (x *SetTimeTravelResponse) GetError() string {
 	return ""
 }
 
+// Request from CLI to SDK to take a coverage snapshot.
+// CLI sends this between tests to collect per-test coverage data.
+type CoverageSnapshotRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// If true, returns ALL coverable lines (including uncovered at count=0)
+	// for computing the total coverage denominator.
+	// If false, returns only lines executed since the last snapshot (per-test data).
+	Baseline      bool `protobuf:"varint,1,opt,name=baseline,proto3" json:"baseline,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CoverageSnapshotRequest) Reset() {
+	*x = CoverageSnapshotRequest{}
+	mi := &file_core_communication_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CoverageSnapshotRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CoverageSnapshotRequest) ProtoMessage() {}
+
+func (x *CoverageSnapshotRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CoverageSnapshotRequest.ProtoReflect.Descriptor instead.
+func (*CoverageSnapshotRequest) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *CoverageSnapshotRequest) GetBaseline() bool {
+	if x != nil {
+		return x.Baseline
+	}
+	return false
+}
+
+// Response from SDK with coverage data.
+type CoverageSnapshotResponse struct {
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Success bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Error   string                 `protobuf:"bytes,2,opt,name=error,proto3" json:"error,omitempty"`
+	// Per-file coverage data. File paths are absolute (CLI normalizes to repo-relative).
+	Coverage      map[string]*FileCoverageData `protobuf:"bytes,3,rep,name=coverage,proto3" json:"coverage,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CoverageSnapshotResponse) Reset() {
+	*x = CoverageSnapshotResponse{}
+	mi := &file_core_communication_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CoverageSnapshotResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CoverageSnapshotResponse) ProtoMessage() {}
+
+func (x *CoverageSnapshotResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CoverageSnapshotResponse.ProtoReflect.Descriptor instead.
+func (*CoverageSnapshotResponse) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *CoverageSnapshotResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *CoverageSnapshotResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
+func (x *CoverageSnapshotResponse) GetCoverage() map[string]*FileCoverageData {
+	if x != nil {
+		return x.Coverage
+	}
+	return nil
+}
+
+// Coverage data for a single file.
+type FileCoverageData struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Line-level coverage: lineNumber (as string) -> execution count.
+	// count > 0 = covered, count = 0 = coverable but uncovered (baseline only).
+	Lines map[string]int32 `protobuf:"bytes,1,rep,name=lines,proto3" json:"lines,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"varint,2,opt,name=value"`
+	// Branch coverage aggregate for this file.
+	TotalBranches   int32 `protobuf:"varint,2,opt,name=total_branches,json=totalBranches,proto3" json:"total_branches,omitempty"`
+	CoveredBranches int32 `protobuf:"varint,3,opt,name=covered_branches,json=coveredBranches,proto3" json:"covered_branches,omitempty"`
+	// Per-line branch detail (e.g., "line 5: 1/2 branches taken").
+	Branches      map[string]*BranchInfo `protobuf:"bytes,4,rep,name=branches,proto3" json:"branches,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FileCoverageData) Reset() {
+	*x = FileCoverageData{}
+	mi := &file_core_communication_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FileCoverageData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileCoverageData) ProtoMessage() {}
+
+func (x *FileCoverageData) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileCoverageData.ProtoReflect.Descriptor instead.
+func (*FileCoverageData) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *FileCoverageData) GetLines() map[string]int32 {
+	if x != nil {
+		return x.Lines
+	}
+	return nil
+}
+
+func (x *FileCoverageData) GetTotalBranches() int32 {
+	if x != nil {
+		return x.TotalBranches
+	}
+	return 0
+}
+
+func (x *FileCoverageData) GetCoveredBranches() int32 {
+	if x != nil {
+		return x.CoveredBranches
+	}
+	return 0
+}
+
+func (x *FileCoverageData) GetBranches() map[string]*BranchInfo {
+	if x != nil {
+		return x.Branches
+	}
+	return nil
+}
+
+// Branch coverage at a specific line.
+type BranchInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int32                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"`     // total branches at this line (usually 2 for if/else)
+	Covered       int32                  `protobuf:"varint,2,opt,name=covered,proto3" json:"covered,omitempty"` // branches with count > 0
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BranchInfo) Reset() {
+	*x = BranchInfo{}
+	mi := &file_core_communication_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BranchInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BranchInfo) ProtoMessage() {}
+
+func (x *BranchInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_core_communication_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BranchInfo.ProtoReflect.Descriptor instead.
+func (*BranchInfo) Descriptor() ([]byte, []int) {
+	return file_core_communication_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *BranchInfo) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *BranchInfo) GetCovered() int32 {
+	if x != nil {
+		return x.Covered
+	}
+	return 0
+}
+
 var File_core_communication_proto protoreflect.FileDescriptor
 
 const file_core_communication_proto_rawDesc = "" +
@@ -1323,7 +1595,7 @@ const file_core_communication_proto_rawDesc = "" +
 	"matched_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tmatchedAt\x12D\n" +
 	"\vmatch_level\x18\t \x01(\v2\x1e.tusk.drift.core.v1.MatchLevelH\x00R\n" +
 	"matchLevel\x88\x01\x01B\x0e\n" +
-	"\f_match_level\"\x9a\x05\n" +
+	"\f_match_level\"\x88\x06\n" +
 	"\n" +
 	"SDKMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -1334,8 +1606,9 @@ const file_core_communication_proto_rawDesc = "" +
 	"$send_inbound_span_for_replay_request\x18\x05 \x01(\v23.tusk.drift.core.v1.SendInboundSpanForReplayRequestH\x00R\x1fsendInboundSpanForReplayRequest\x12T\n" +
 	"\x12send_alert_request\x18\x06 \x01(\v2$.tusk.drift.core.v1.SendAlertRequestH\x00R\x10sendAlertRequest\x12K\n" +
 	"\x0fenv_var_request\x18\a \x01(\v2!.tusk.drift.core.v1.EnvVarRequestH\x00R\renvVarRequest\x12d\n" +
-	"\x18set_time_travel_response\x18\b \x01(\v2).tusk.drift.core.v1.SetTimeTravelResponseH\x00R\x15setTimeTravelResponseB\t\n" +
-	"\apayload\"\xcd\x04\n" +
+	"\x18set_time_travel_response\x18\b \x01(\v2).tusk.drift.core.v1.SetTimeTravelResponseH\x00R\x15setTimeTravelResponse\x12l\n" +
+	"\x1acoverage_snapshot_response\x18\t \x01(\v2,.tusk.drift.core.v1.CoverageSnapshotResponseH\x00R\x18coverageSnapshotResponseB\t\n" +
+	"\apayload\"\xb8\x05\n" +
 	"\n" +
 	"CLIMessage\x123\n" +
 	"\x04type\x18\x01 \x01(\x0e2\x1f.tusk.drift.core.v1.MessageTypeR\x04type\x12\x1d\n" +
@@ -1345,7 +1618,8 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x11get_mock_response\x18\x04 \x01(\v2#.tusk.drift.core.v1.GetMockResponseH\x00R\x0fgetMockResponse\x12\x87\x01\n" +
 	"%send_inbound_span_for_replay_response\x18\x05 \x01(\v24.tusk.drift.core.v1.SendInboundSpanForReplayResponseH\x00R sendInboundSpanForReplayResponse\x12N\n" +
 	"\x10env_var_response\x18\x06 \x01(\v2\".tusk.drift.core.v1.EnvVarResponseH\x00R\x0eenvVarResponse\x12a\n" +
-	"\x17set_time_travel_request\x18\a \x01(\v2(.tusk.drift.core.v1.SetTimeTravelRequestH\x00R\x14setTimeTravelRequestB\t\n" +
+	"\x17set_time_travel_request\x18\a \x01(\v2(.tusk.drift.core.v1.SetTimeTravelRequestH\x00R\x14setTimeTravelRequest\x12i\n" +
+	"\x19coverage_snapshot_request\x18\b \x01(\v2+.tusk.drift.core.v1.CoverageSnapshotRequestH\x00R\x17coverageSnapshotRequestB\t\n" +
 	"\apayload\"O\n" +
 	"\x1fSendInboundSpanForReplayRequest\x12,\n" +
 	"\x04span\x18\x01 \x01(\v2\x18.tusk.drift.core.v1.SpanR\x04span\"<\n" +
@@ -1381,11 +1655,36 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x10timestamp_source\x18\x03 \x01(\tR\x0ftimestampSource\"G\n" +
 	"\x15SetTimeTravelResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
-	"\x05error\x18\x02 \x01(\tR\x05error*H\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\"5\n" +
+	"\x17CoverageSnapshotRequest\x12\x1a\n" +
+	"\bbaseline\x18\x01 \x01(\bR\bbaseline\"\x85\x02\n" +
+	"\x18CoverageSnapshotResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x14\n" +
+	"\x05error\x18\x02 \x01(\tR\x05error\x12V\n" +
+	"\bcoverage\x18\x03 \x03(\v2:.tusk.drift.core.v1.CoverageSnapshotResponse.CoverageEntryR\bcoverage\x1aa\n" +
+	"\rCoverageEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12:\n" +
+	"\x05value\x18\x02 \x01(\v2$.tusk.drift.core.v1.FileCoverageDataR\x05value:\x028\x01\"\x92\x03\n" +
+	"\x10FileCoverageData\x12E\n" +
+	"\x05lines\x18\x01 \x03(\v2/.tusk.drift.core.v1.FileCoverageData.LinesEntryR\x05lines\x12%\n" +
+	"\x0etotal_branches\x18\x02 \x01(\x05R\rtotalBranches\x12)\n" +
+	"\x10covered_branches\x18\x03 \x01(\x05R\x0fcoveredBranches\x12N\n" +
+	"\bbranches\x18\x04 \x03(\v22.tusk.drift.core.v1.FileCoverageData.BranchesEntryR\bbranches\x1a8\n" +
+	"\n" +
+	"LinesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x05R\x05value:\x028\x01\x1a[\n" +
+	"\rBranchesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x124\n" +
+	"\x05value\x18\x02 \x01(\v2\x1e.tusk.drift.core.v1.BranchInfoR\x05value:\x028\x01\"<\n" +
+	"\n" +
+	"BranchInfo\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x05R\x05total\x12\x18\n" +
+	"\acovered\x18\x02 \x01(\x05R\acovered*H\n" +
 	"\aRuntime\x12\x17\n" +
 	"\x13RUNTIME_UNSPECIFIED\x10\x00\x12\x10\n" +
 	"\fRUNTIME_NODE\x10\x01\x12\x12\n" +
-	"\x0eRUNTIME_PYTHON\x10\x02*\xe3\x01\n" +
+	"\x0eRUNTIME_PYTHON\x10\x02*\x87\x02\n" +
 	"\vMessageType\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_UNSPECIFIED\x10\x00\x12\x1c\n" +
 	"\x18MESSAGE_TYPE_SDK_CONNECT\x10\x01\x12\x1d\n" +
@@ -1393,7 +1692,8 @@ const file_core_communication_proto_rawDesc = "" +
 	"\x19MESSAGE_TYPE_INBOUND_SPAN\x10\x03\x12\x16\n" +
 	"\x12MESSAGE_TYPE_ALERT\x10\x04\x12 \n" +
 	"\x1cMESSAGE_TYPE_ENV_VAR_REQUEST\x10\x05\x12 \n" +
-	"\x1cMESSAGE_TYPE_SET_TIME_TRAVEL\x10\x062\xbd\x02\n" +
+	"\x1cMESSAGE_TYPE_SET_TIME_TRAVEL\x10\x06\x12\"\n" +
+	"\x1eMESSAGE_TYPE_COVERAGE_SNAPSHOT\x10\a2\xbd\x02\n" +
 	"\vMockService\x12R\n" +
 	"\aConnect\x12\".tusk.drift.core.v1.ConnectRequest\x1a#.tusk.drift.core.v1.ConnectResponse\x12R\n" +
 	"\aGetMock\x12\".tusk.drift.core.v1.GetMockRequest\x1a#.tusk.drift.core.v1.GetMockResponse\x12\x85\x01\n" +
@@ -1413,7 +1713,7 @@ func file_core_communication_proto_rawDescGZIP() []byte {
 }
 
 var file_core_communication_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 17)
+var file_core_communication_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_core_communication_proto_goTypes = []any{
 	(Runtime)(0),                                // 0: tusk.drift.core.v1.Runtime
 	(MessageType)(0),                            // 1: tusk.drift.core.v1.MessageType
@@ -1432,23 +1732,30 @@ var file_core_communication_proto_goTypes = []any{
 	(*EnvVarResponse)(nil),                      // 14: tusk.drift.core.v1.EnvVarResponse
 	(*SetTimeTravelRequest)(nil),                // 15: tusk.drift.core.v1.SetTimeTravelRequest
 	(*SetTimeTravelResponse)(nil),               // 16: tusk.drift.core.v1.SetTimeTravelResponse
-	nil,                                         // 17: tusk.drift.core.v1.GetMockRequest.TagsEntry
-	nil,                                         // 18: tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
-	(*structpb.Struct)(nil),                     // 19: google.protobuf.Struct
-	(*Span)(nil),                                // 20: tusk.drift.core.v1.Span
-	(*timestamppb.Timestamp)(nil),               // 21: google.protobuf.Timestamp
-	(*MatchLevel)(nil),                          // 22: tusk.drift.core.v1.MatchLevel
+	(*CoverageSnapshotRequest)(nil),             // 17: tusk.drift.core.v1.CoverageSnapshotRequest
+	(*CoverageSnapshotResponse)(nil),            // 18: tusk.drift.core.v1.CoverageSnapshotResponse
+	(*FileCoverageData)(nil),                    // 19: tusk.drift.core.v1.FileCoverageData
+	(*BranchInfo)(nil),                          // 20: tusk.drift.core.v1.BranchInfo
+	nil,                                         // 21: tusk.drift.core.v1.GetMockRequest.TagsEntry
+	nil,                                         // 22: tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
+	nil,                                         // 23: tusk.drift.core.v1.CoverageSnapshotResponse.CoverageEntry
+	nil,                                         // 24: tusk.drift.core.v1.FileCoverageData.LinesEntry
+	nil,                                         // 25: tusk.drift.core.v1.FileCoverageData.BranchesEntry
+	(*structpb.Struct)(nil),                     // 26: google.protobuf.Struct
+	(*Span)(nil),                                // 27: tusk.drift.core.v1.Span
+	(*timestamppb.Timestamp)(nil),               // 28: google.protobuf.Timestamp
+	(*MatchLevel)(nil),                          // 29: tusk.drift.core.v1.MatchLevel
 }
 var file_core_communication_proto_depIdxs = []int32{
-	19, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
+	26, // 0: tusk.drift.core.v1.ConnectRequest.metadata:type_name -> google.protobuf.Struct
 	0,  // 1: tusk.drift.core.v1.ConnectRequest.runtime:type_name -> tusk.drift.core.v1.Runtime
-	20, // 2: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
-	17, // 3: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
-	21, // 4: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
-	19, // 5: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
-	19, // 6: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
-	21, // 7: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
-	22, // 8: tusk.drift.core.v1.GetMockResponse.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	27, // 2: tusk.drift.core.v1.GetMockRequest.outbound_span:type_name -> tusk.drift.core.v1.Span
+	21, // 3: tusk.drift.core.v1.GetMockRequest.tags:type_name -> tusk.drift.core.v1.GetMockRequest.TagsEntry
+	28, // 4: tusk.drift.core.v1.GetMockRequest.requested_at:type_name -> google.protobuf.Timestamp
+	26, // 5: tusk.drift.core.v1.GetMockResponse.response_data:type_name -> google.protobuf.Struct
+	26, // 6: tusk.drift.core.v1.GetMockResponse.metadata:type_name -> google.protobuf.Struct
+	28, // 7: tusk.drift.core.v1.GetMockResponse.matched_at:type_name -> google.protobuf.Timestamp
+	29, // 8: tusk.drift.core.v1.GetMockResponse.match_level:type_name -> tusk.drift.core.v1.MatchLevel
 	1,  // 9: tusk.drift.core.v1.SDKMessage.type:type_name -> tusk.drift.core.v1.MessageType
 	2,  // 10: tusk.drift.core.v1.SDKMessage.connect_request:type_name -> tusk.drift.core.v1.ConnectRequest
 	4,  // 11: tusk.drift.core.v1.SDKMessage.get_mock_request:type_name -> tusk.drift.core.v1.GetMockRequest
@@ -1456,27 +1763,34 @@ var file_core_communication_proto_depIdxs = []int32{
 	10, // 13: tusk.drift.core.v1.SDKMessage.send_alert_request:type_name -> tusk.drift.core.v1.SendAlertRequest
 	13, // 14: tusk.drift.core.v1.SDKMessage.env_var_request:type_name -> tusk.drift.core.v1.EnvVarRequest
 	16, // 15: tusk.drift.core.v1.SDKMessage.set_time_travel_response:type_name -> tusk.drift.core.v1.SetTimeTravelResponse
-	1,  // 16: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
-	3,  // 17: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
-	5,  // 18: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
-	9,  // 19: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	14, // 20: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
-	15, // 21: tusk.drift.core.v1.CLIMessage.set_time_travel_request:type_name -> tusk.drift.core.v1.SetTimeTravelRequest
-	20, // 22: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
-	11, // 23: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
-	12, // 24: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
-	18, // 25: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
-	2,  // 26: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
-	4,  // 27: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
-	8,  // 28: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
-	3,  // 29: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
-	5,  // 30: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
-	9,  // 31: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
-	29, // [29:32] is the sub-list for method output_type
-	26, // [26:29] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	18, // 16: tusk.drift.core.v1.SDKMessage.coverage_snapshot_response:type_name -> tusk.drift.core.v1.CoverageSnapshotResponse
+	1,  // 17: tusk.drift.core.v1.CLIMessage.type:type_name -> tusk.drift.core.v1.MessageType
+	3,  // 18: tusk.drift.core.v1.CLIMessage.connect_response:type_name -> tusk.drift.core.v1.ConnectResponse
+	5,  // 19: tusk.drift.core.v1.CLIMessage.get_mock_response:type_name -> tusk.drift.core.v1.GetMockResponse
+	9,  // 20: tusk.drift.core.v1.CLIMessage.send_inbound_span_for_replay_response:type_name -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	14, // 21: tusk.drift.core.v1.CLIMessage.env_var_response:type_name -> tusk.drift.core.v1.EnvVarResponse
+	15, // 22: tusk.drift.core.v1.CLIMessage.set_time_travel_request:type_name -> tusk.drift.core.v1.SetTimeTravelRequest
+	17, // 23: tusk.drift.core.v1.CLIMessage.coverage_snapshot_request:type_name -> tusk.drift.core.v1.CoverageSnapshotRequest
+	27, // 24: tusk.drift.core.v1.SendInboundSpanForReplayRequest.span:type_name -> tusk.drift.core.v1.Span
+	11, // 25: tusk.drift.core.v1.SendAlertRequest.version_mismatch:type_name -> tusk.drift.core.v1.InstrumentationVersionMismatchAlert
+	12, // 26: tusk.drift.core.v1.SendAlertRequest.unpatched_dependency:type_name -> tusk.drift.core.v1.UnpatchedDependencyAlert
+	22, // 27: tusk.drift.core.v1.EnvVarResponse.env_vars:type_name -> tusk.drift.core.v1.EnvVarResponse.EnvVarsEntry
+	23, // 28: tusk.drift.core.v1.CoverageSnapshotResponse.coverage:type_name -> tusk.drift.core.v1.CoverageSnapshotResponse.CoverageEntry
+	24, // 29: tusk.drift.core.v1.FileCoverageData.lines:type_name -> tusk.drift.core.v1.FileCoverageData.LinesEntry
+	25, // 30: tusk.drift.core.v1.FileCoverageData.branches:type_name -> tusk.drift.core.v1.FileCoverageData.BranchesEntry
+	19, // 31: tusk.drift.core.v1.CoverageSnapshotResponse.CoverageEntry.value:type_name -> tusk.drift.core.v1.FileCoverageData
+	20, // 32: tusk.drift.core.v1.FileCoverageData.BranchesEntry.value:type_name -> tusk.drift.core.v1.BranchInfo
+	2,  // 33: tusk.drift.core.v1.MockService.Connect:input_type -> tusk.drift.core.v1.ConnectRequest
+	4,  // 34: tusk.drift.core.v1.MockService.GetMock:input_type -> tusk.drift.core.v1.GetMockRequest
+	8,  // 35: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:input_type -> tusk.drift.core.v1.SendInboundSpanForReplayRequest
+	3,  // 36: tusk.drift.core.v1.MockService.Connect:output_type -> tusk.drift.core.v1.ConnectResponse
+	5,  // 37: tusk.drift.core.v1.MockService.GetMock:output_type -> tusk.drift.core.v1.GetMockResponse
+	9,  // 38: tusk.drift.core.v1.MockService.SendInboundSpanForReplay:output_type -> tusk.drift.core.v1.SendInboundSpanForReplayResponse
+	36, // [36:39] is the sub-list for method output_type
+	33, // [33:36] is the sub-list for method input_type
+	33, // [33:33] is the sub-list for extension type_name
+	33, // [33:33] is the sub-list for extension extendee
+	0,  // [0:33] is the sub-list for field type_name
 }
 
 func init() { file_core_communication_proto_init() }
@@ -1493,6 +1807,7 @@ func file_core_communication_proto_init() {
 		(*SDKMessage_SendAlertRequest)(nil),
 		(*SDKMessage_EnvVarRequest)(nil),
 		(*SDKMessage_SetTimeTravelResponse)(nil),
+		(*SDKMessage_CoverageSnapshotResponse)(nil),
 	}
 	file_core_communication_proto_msgTypes[5].OneofWrappers = []any{
 		(*CLIMessage_ConnectResponse)(nil),
@@ -1500,6 +1815,7 @@ func file_core_communication_proto_init() {
 		(*CLIMessage_SendInboundSpanForReplayResponse)(nil),
 		(*CLIMessage_EnvVarResponse)(nil),
 		(*CLIMessage_SetTimeTravelRequest)(nil),
+		(*CLIMessage_CoverageSnapshotRequest)(nil),
 	}
 	file_core_communication_proto_msgTypes[8].OneofWrappers = []any{
 		(*SendAlertRequest_VersionMismatch)(nil),
@@ -1511,7 +1827,7 @@ func file_core_communication_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_core_communication_proto_rawDesc), len(file_core_communication_proto_rawDesc)),
 			NumEnums:      2,
-			NumMessages:   17,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

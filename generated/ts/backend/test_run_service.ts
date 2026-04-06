@@ -559,6 +559,53 @@ export interface TraceTestResult {
      * @generated from protobuf field: repeated tusk.drift.backend.v1.TraceTestSpanResult span_results = 7
      */
     spanResults: TraceTestSpanResult[];
+    /**
+     * Per-test coverage data (only set when coverage is enabled)
+     *
+     * @generated from protobuf field: optional tusk.drift.backend.v1.TraceTestCoverageData coverage_data = 8
+     */
+    coverageData?: TraceTestCoverageData;
+}
+/**
+ * Per-test coverage: lines covered by a single trace test
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.TraceTestCoverageData
+ */
+export interface TraceTestCoverageData {
+    /**
+     * @generated from protobuf field: int32 total_covered_lines = 1
+     */
+    totalCoveredLines: number;
+    /**
+     * @generated from protobuf field: map<string, tusk.drift.backend.v1.FileLineRanges> covered_lines_by_file = 2
+     */
+    coveredLinesByFile: {
+        [key: string]: FileLineRanges;
+    };
+}
+/**
+ * Compressed line ranges: [[1,50],[60,200]] stored as repeated LineRange
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.FileLineRanges
+ */
+export interface FileLineRanges {
+    /**
+     * @generated from protobuf field: repeated tusk.drift.backend.v1.LineRange ranges = 1
+     */
+    ranges: LineRange[];
+}
+/**
+ * @generated from protobuf message tusk.drift.backend.v1.LineRange
+ */
+export interface LineRange {
+    /**
+     * @generated from protobuf field: int32 start = 1
+     */
+    start: number;
+    /**
+     * @generated from protobuf field: int32 end = 2
+     */
+    end: number; // inclusive
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.UploadTraceTestResultsRequest
@@ -642,6 +689,44 @@ export interface UpdateDriftRunCIStatusRequest {
      * @generated from protobuf field: optional string ci_status_message = 3
      */
     ciStatusMessage?: string;
+    /**
+     * Coverage baseline (only set when coverage was enabled for this run)
+     *
+     * @generated from protobuf field: optional tusk.drift.backend.v1.CoverageBaseline coverage_baseline = 4
+     */
+    coverageBaseline?: CoverageBaseline;
+}
+/**
+ * Coverage baseline: all coverable lines in the codebase (denominator for coverage %)
+ *
+ * @generated from protobuf message tusk.drift.backend.v1.CoverageBaseline
+ */
+export interface CoverageBaseline {
+    /**
+     * @generated from protobuf field: string commit_sha = 1
+     */
+    commitSha: string;
+    /**
+     * @generated from protobuf field: int32 total_coverable_lines = 2
+     */
+    totalCoverableLines: number;
+    /**
+     * All coverable lines per file (denominator)
+     *
+     * @generated from protobuf field: map<string, tusk.drift.backend.v1.FileLineRanges> coverable_lines_by_file = 3
+     */
+    coverableLinesByFile: {
+        [key: string]: FileLineRanges;
+    };
+    /**
+     * Lines covered at startup (module loading, decorators, DI registration).
+     * Included in the aggregate numerator to match industry standard (Istanbul, NYC, etc.).
+     *
+     * @generated from protobuf field: map<string, tusk.drift.backend.v1.FileLineRanges> startup_covered_lines_by_file = 4
+     */
+    startupCoveredLinesByFile: {
+        [key: string]: FileLineRanges;
+    };
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
@@ -2830,7 +2915,8 @@ class TraceTestResult$Type extends MessageType<TraceTestResult> {
             { no: 4, name: "test_failure_message", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 5, name: "replay_trace_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
             { no: 6, name: "replay_server_span_id", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 7, name: "span_results", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TraceTestSpanResult }
+            { no: 7, name: "span_results", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => TraceTestSpanResult },
+            { no: 8, name: "coverage_data", kind: "message", T: () => TraceTestCoverageData }
         ]);
     }
     create(value?: PartialMessage<TraceTestResult>): TraceTestResult {
@@ -2868,6 +2954,9 @@ class TraceTestResult$Type extends MessageType<TraceTestResult> {
                 case /* repeated tusk.drift.backend.v1.TraceTestSpanResult span_results */ 7:
                     message.spanResults.push(TraceTestSpanResult.internalBinaryRead(reader, reader.uint32(), options));
                     break;
+                case /* optional tusk.drift.backend.v1.TraceTestCoverageData coverage_data */ 8:
+                    message.coverageData = TraceTestCoverageData.internalBinaryRead(reader, reader.uint32(), options, message.coverageData);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -2901,6 +2990,9 @@ class TraceTestResult$Type extends MessageType<TraceTestResult> {
         /* repeated tusk.drift.backend.v1.TraceTestSpanResult span_results = 7; */
         for (let i = 0; i < message.spanResults.length; i++)
             TraceTestSpanResult.internalBinaryWrite(message.spanResults[i], writer.tag(7, WireType.LengthDelimited).fork(), options).join();
+        /* optional tusk.drift.backend.v1.TraceTestCoverageData coverage_data = 8; */
+        if (message.coverageData)
+            TraceTestCoverageData.internalBinaryWrite(message.coverageData, writer.tag(8, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -2911,6 +3003,183 @@ class TraceTestResult$Type extends MessageType<TraceTestResult> {
  * @generated MessageType for protobuf message tusk.drift.backend.v1.TraceTestResult
  */
 export const TraceTestResult = new TraceTestResult$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class TraceTestCoverageData$Type extends MessageType<TraceTestCoverageData> {
+    constructor() {
+        super("tusk.drift.backend.v1.TraceTestCoverageData", [
+            { no: 1, name: "total_covered_lines", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "covered_lines_by_file", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FileLineRanges } }
+        ]);
+    }
+    create(value?: PartialMessage<TraceTestCoverageData>): TraceTestCoverageData {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.totalCoveredLines = 0;
+        message.coveredLinesByFile = {};
+        if (value !== undefined)
+            reflectionMergePartial<TraceTestCoverageData>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: TraceTestCoverageData): TraceTestCoverageData {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 total_covered_lines */ 1:
+                    message.totalCoveredLines = reader.int32();
+                    break;
+                case /* map<string, tusk.drift.backend.v1.FileLineRanges> covered_lines_by_file */ 2:
+                    this.binaryReadMap2(message.coveredLinesByFile, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap2(map: TraceTestCoverageData["coveredLinesByFile"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof TraceTestCoverageData["coveredLinesByFile"] | undefined, val: TraceTestCoverageData["coveredLinesByFile"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FileLineRanges.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.backend.v1.TraceTestCoverageData.covered_lines_by_file");
+            }
+        }
+        map[key ?? ""] = val ?? FileLineRanges.create();
+    }
+    internalBinaryWrite(message: TraceTestCoverageData, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 total_covered_lines = 1; */
+        if (message.totalCoveredLines !== 0)
+            writer.tag(1, WireType.Varint).int32(message.totalCoveredLines);
+        /* map<string, tusk.drift.backend.v1.FileLineRanges> covered_lines_by_file = 2; */
+        for (let k of globalThis.Object.keys(message.coveredLinesByFile)) {
+            writer.tag(2, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FileLineRanges.internalBinaryWrite(message.coveredLinesByFile[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.TraceTestCoverageData
+ */
+export const TraceTestCoverageData = new TraceTestCoverageData$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class FileLineRanges$Type extends MessageType<FileLineRanges> {
+    constructor() {
+        super("tusk.drift.backend.v1.FileLineRanges", [
+            { no: 1, name: "ranges", kind: "message", repeat: 2 /*RepeatType.UNPACKED*/, T: () => LineRange }
+        ]);
+    }
+    create(value?: PartialMessage<FileLineRanges>): FileLineRanges {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.ranges = [];
+        if (value !== undefined)
+            reflectionMergePartial<FileLineRanges>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: FileLineRanges): FileLineRanges {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* repeated tusk.drift.backend.v1.LineRange ranges */ 1:
+                    message.ranges.push(LineRange.internalBinaryRead(reader, reader.uint32(), options));
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: FileLineRanges, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* repeated tusk.drift.backend.v1.LineRange ranges = 1; */
+        for (let i = 0; i < message.ranges.length; i++)
+            LineRange.internalBinaryWrite(message.ranges[i], writer.tag(1, WireType.LengthDelimited).fork(), options).join();
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.FileLineRanges
+ */
+export const FileLineRanges = new FileLineRanges$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class LineRange$Type extends MessageType<LineRange> {
+    constructor() {
+        super("tusk.drift.backend.v1.LineRange", [
+            { no: 1, name: "start", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 2, name: "end", kind: "scalar", T: 5 /*ScalarType.INT32*/ }
+        ]);
+    }
+    create(value?: PartialMessage<LineRange>): LineRange {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.start = 0;
+        message.end = 0;
+        if (value !== undefined)
+            reflectionMergePartial<LineRange>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: LineRange): LineRange {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* int32 start */ 1:
+                    message.start = reader.int32();
+                    break;
+                case /* int32 end */ 2:
+                    message.end = reader.int32();
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    internalBinaryWrite(message: LineRange, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* int32 start = 1; */
+        if (message.start !== 0)
+            writer.tag(1, WireType.Varint).int32(message.start);
+        /* int32 end = 2; */
+        if (message.end !== 0)
+            writer.tag(2, WireType.Varint).int32(message.end);
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.LineRange
+ */
+export const LineRange = new LineRange$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UploadTraceTestResultsRequest$Type extends MessageType<UploadTraceTestResultsRequest> {
     constructor() {
@@ -3150,7 +3419,8 @@ class UpdateDriftRunCIStatusRequest$Type extends MessageType<UpdateDriftRunCISta
         super("tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest", [
             { no: 1, name: "drift_run_id", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "ci_status", kind: "enum", T: () => ["tusk.drift.backend.v1.DriftRunCIStatus", DriftRunCIStatus] },
-            { no: 3, name: "ci_status_message", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ }
+            { no: 3, name: "ci_status_message", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
+            { no: 4, name: "coverage_baseline", kind: "message", T: () => CoverageBaseline }
         ]);
     }
     create(value?: PartialMessage<UpdateDriftRunCIStatusRequest>): UpdateDriftRunCIStatusRequest {
@@ -3175,6 +3445,9 @@ class UpdateDriftRunCIStatusRequest$Type extends MessageType<UpdateDriftRunCISta
                 case /* optional string ci_status_message */ 3:
                     message.ciStatusMessage = reader.string();
                     break;
+                case /* optional tusk.drift.backend.v1.CoverageBaseline coverage_baseline */ 4:
+                    message.coverageBaseline = CoverageBaseline.internalBinaryRead(reader, reader.uint32(), options, message.coverageBaseline);
+                    break;
                 default:
                     let u = options.readUnknownField;
                     if (u === "throw")
@@ -3196,6 +3469,9 @@ class UpdateDriftRunCIStatusRequest$Type extends MessageType<UpdateDriftRunCISta
         /* optional string ci_status_message = 3; */
         if (message.ciStatusMessage !== undefined)
             writer.tag(3, WireType.LengthDelimited).string(message.ciStatusMessage);
+        /* optional tusk.drift.backend.v1.CoverageBaseline coverage_baseline = 4; */
+        if (message.coverageBaseline)
+            CoverageBaseline.internalBinaryWrite(message.coverageBaseline, writer.tag(4, WireType.LengthDelimited).fork(), options).join();
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
@@ -3206,6 +3482,117 @@ class UpdateDriftRunCIStatusRequest$Type extends MessageType<UpdateDriftRunCISta
  * @generated MessageType for protobuf message tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
  */
 export const UpdateDriftRunCIStatusRequest = new UpdateDriftRunCIStatusRequest$Type();
+// @generated message type with reflection information, may provide speed optimized methods
+class CoverageBaseline$Type extends MessageType<CoverageBaseline> {
+    constructor() {
+        super("tusk.drift.backend.v1.CoverageBaseline", [
+            { no: 1, name: "commit_sha", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 2, name: "total_coverable_lines", kind: "scalar", T: 5 /*ScalarType.INT32*/ },
+            { no: 3, name: "coverable_lines_by_file", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FileLineRanges } },
+            { no: 4, name: "startup_covered_lines_by_file", kind: "map", K: 9 /*ScalarType.STRING*/, V: { kind: "message", T: () => FileLineRanges } }
+        ]);
+    }
+    create(value?: PartialMessage<CoverageBaseline>): CoverageBaseline {
+        const message = globalThis.Object.create((this.messagePrototype!));
+        message.commitSha = "";
+        message.totalCoverableLines = 0;
+        message.coverableLinesByFile = {};
+        message.startupCoveredLinesByFile = {};
+        if (value !== undefined)
+            reflectionMergePartial<CoverageBaseline>(this, message, value);
+        return message;
+    }
+    internalBinaryRead(reader: IBinaryReader, length: number, options: BinaryReadOptions, target?: CoverageBaseline): CoverageBaseline {
+        let message = target ?? this.create(), end = reader.pos + length;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case /* string commit_sha */ 1:
+                    message.commitSha = reader.string();
+                    break;
+                case /* int32 total_coverable_lines */ 2:
+                    message.totalCoverableLines = reader.int32();
+                    break;
+                case /* map<string, tusk.drift.backend.v1.FileLineRanges> coverable_lines_by_file */ 3:
+                    this.binaryReadMap3(message.coverableLinesByFile, reader, options);
+                    break;
+                case /* map<string, tusk.drift.backend.v1.FileLineRanges> startup_covered_lines_by_file */ 4:
+                    this.binaryReadMap4(message.startupCoveredLinesByFile, reader, options);
+                    break;
+                default:
+                    let u = options.readUnknownField;
+                    if (u === "throw")
+                        throw new globalThis.Error(`Unknown field ${fieldNo} (wire type ${wireType}) for ${this.typeName}`);
+                    let d = reader.skip(wireType);
+                    if (u !== false)
+                        (u === true ? UnknownFieldHandler.onRead : u)(this.typeName, message, fieldNo, wireType, d);
+            }
+        }
+        return message;
+    }
+    private binaryReadMap3(map: CoverageBaseline["coverableLinesByFile"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof CoverageBaseline["coverableLinesByFile"] | undefined, val: CoverageBaseline["coverableLinesByFile"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FileLineRanges.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.backend.v1.CoverageBaseline.coverable_lines_by_file");
+            }
+        }
+        map[key ?? ""] = val ?? FileLineRanges.create();
+    }
+    private binaryReadMap4(map: CoverageBaseline["startupCoveredLinesByFile"], reader: IBinaryReader, options: BinaryReadOptions): void {
+        let len = reader.uint32(), end = reader.pos + len, key: keyof CoverageBaseline["startupCoveredLinesByFile"] | undefined, val: CoverageBaseline["startupCoveredLinesByFile"][any] | undefined;
+        while (reader.pos < end) {
+            let [fieldNo, wireType] = reader.tag();
+            switch (fieldNo) {
+                case 1:
+                    key = reader.string();
+                    break;
+                case 2:
+                    val = FileLineRanges.internalBinaryRead(reader, reader.uint32(), options);
+                    break;
+                default: throw new globalThis.Error("unknown map entry field for tusk.drift.backend.v1.CoverageBaseline.startup_covered_lines_by_file");
+            }
+        }
+        map[key ?? ""] = val ?? FileLineRanges.create();
+    }
+    internalBinaryWrite(message: CoverageBaseline, writer: IBinaryWriter, options: BinaryWriteOptions): IBinaryWriter {
+        /* string commit_sha = 1; */
+        if (message.commitSha !== "")
+            writer.tag(1, WireType.LengthDelimited).string(message.commitSha);
+        /* int32 total_coverable_lines = 2; */
+        if (message.totalCoverableLines !== 0)
+            writer.tag(2, WireType.Varint).int32(message.totalCoverableLines);
+        /* map<string, tusk.drift.backend.v1.FileLineRanges> coverable_lines_by_file = 3; */
+        for (let k of globalThis.Object.keys(message.coverableLinesByFile)) {
+            writer.tag(3, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FileLineRanges.internalBinaryWrite(message.coverableLinesByFile[k], writer, options);
+            writer.join().join();
+        }
+        /* map<string, tusk.drift.backend.v1.FileLineRanges> startup_covered_lines_by_file = 4; */
+        for (let k of globalThis.Object.keys(message.startupCoveredLinesByFile)) {
+            writer.tag(4, WireType.LengthDelimited).fork().tag(1, WireType.LengthDelimited).string(k);
+            writer.tag(2, WireType.LengthDelimited).fork();
+            FileLineRanges.internalBinaryWrite(message.startupCoveredLinesByFile[k], writer, options);
+            writer.join().join();
+        }
+        let u = options.writeUnknownFields;
+        if (u !== false)
+            (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
+        return writer;
+    }
+}
+/**
+ * @generated MessageType for protobuf message tusk.drift.backend.v1.CoverageBaseline
+ */
+export const CoverageBaseline = new CoverageBaseline$Type();
 // @generated message type with reflection information, may provide speed optimized methods
 class UpdateDriftRunCIStatusResponseSuccess$Type extends MessageType<UpdateDriftRunCIStatusResponseSuccess> {
     constructor() {

@@ -1932,8 +1932,10 @@ type TraceTestResult struct {
 	ReplayTraceId      *string                 `protobuf:"bytes,5,opt,name=replay_trace_id,json=replayTraceId,proto3,oneof" json:"replay_trace_id,omitempty"`
 	ReplayServerSpanId *string                 `protobuf:"bytes,6,opt,name=replay_server_span_id,json=replayServerSpanId,proto3,oneof" json:"replay_server_span_id,omitempty"`
 	SpanResults        []*TraceTestSpanResult  `protobuf:"bytes,7,rep,name=span_results,json=spanResults,proto3" json:"span_results,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
+	// Per-test coverage data (only set when coverage is enabled)
+	CoverageData  *TraceTestCoverageData `protobuf:"bytes,8,opt,name=coverage_data,json=coverageData,proto3,oneof" json:"coverage_data,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *TraceTestResult) Reset() {
@@ -2015,6 +2017,163 @@ func (x *TraceTestResult) GetSpanResults() []*TraceTestSpanResult {
 	return nil
 }
 
+func (x *TraceTestResult) GetCoverageData() *TraceTestCoverageData {
+	if x != nil {
+		return x.CoverageData
+	}
+	return nil
+}
+
+// Per-test coverage: lines covered by a single trace test
+type TraceTestCoverageData struct {
+	state              protoimpl.MessageState     `protogen:"open.v1"`
+	TotalCoveredLines  int32                      `protobuf:"varint,1,opt,name=total_covered_lines,json=totalCoveredLines,proto3" json:"total_covered_lines,omitempty"`
+	CoveredLinesByFile map[string]*FileLineRanges `protobuf:"bytes,2,rep,name=covered_lines_by_file,json=coveredLinesByFile,proto3" json:"covered_lines_by_file,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *TraceTestCoverageData) Reset() {
+	*x = TraceTestCoverageData{}
+	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TraceTestCoverageData) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TraceTestCoverageData) ProtoMessage() {}
+
+func (x *TraceTestCoverageData) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TraceTestCoverageData.ProtoReflect.Descriptor instead.
+func (*TraceTestCoverageData) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *TraceTestCoverageData) GetTotalCoveredLines() int32 {
+	if x != nil {
+		return x.TotalCoveredLines
+	}
+	return 0
+}
+
+func (x *TraceTestCoverageData) GetCoveredLinesByFile() map[string]*FileLineRanges {
+	if x != nil {
+		return x.CoveredLinesByFile
+	}
+	return nil
+}
+
+// Compressed line ranges: [[1,50],[60,200]] stored as repeated LineRange
+type FileLineRanges struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ranges        []*LineRange           `protobuf:"bytes,1,rep,name=ranges,proto3" json:"ranges,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FileLineRanges) Reset() {
+	*x = FileLineRanges{}
+	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FileLineRanges) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FileLineRanges) ProtoMessage() {}
+
+func (x *FileLineRanges) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FileLineRanges.ProtoReflect.Descriptor instead.
+func (*FileLineRanges) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *FileLineRanges) GetRanges() []*LineRange {
+	if x != nil {
+		return x.Ranges
+	}
+	return nil
+}
+
+type LineRange struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Start         int32                  `protobuf:"varint,1,opt,name=start,proto3" json:"start,omitempty"`
+	End           int32                  `protobuf:"varint,2,opt,name=end,proto3" json:"end,omitempty"` // inclusive
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LineRange) Reset() {
+	*x = LineRange{}
+	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LineRange) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LineRange) ProtoMessage() {}
+
+func (x *LineRange) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LineRange.ProtoReflect.Descriptor instead.
+func (*LineRange) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *LineRange) GetStart() int32 {
+	if x != nil {
+		return x.Start
+	}
+	return 0
+}
+
+func (x *LineRange) GetEnd() int32 {
+	if x != nil {
+		return x.End
+	}
+	return 0
+}
+
 type UploadTraceTestResultsRequest struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	DriftRunId       string                 `protobuf:"bytes,1,opt,name=drift_run_id,json=driftRunId,proto3" json:"drift_run_id,omitempty"`
@@ -2027,7 +2186,7 @@ type UploadTraceTestResultsRequest struct {
 
 func (x *UploadTraceTestResultsRequest) Reset() {
 	*x = UploadTraceTestResultsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	mi := &file_backend_test_run_service_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2039,7 +2198,7 @@ func (x *UploadTraceTestResultsRequest) String() string {
 func (*UploadTraceTestResultsRequest) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[28]
+	mi := &file_backend_test_run_service_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2052,7 +2211,7 @@ func (x *UploadTraceTestResultsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadTraceTestResultsRequest.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{28}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *UploadTraceTestResultsRequest) GetDriftRunId() string {
@@ -2092,7 +2251,7 @@ type UploadTraceTestResultsResponseSuccess struct {
 
 func (x *UploadTraceTestResultsResponseSuccess) Reset() {
 	*x = UploadTraceTestResultsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	mi := &file_backend_test_run_service_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2104,7 +2263,7 @@ func (x *UploadTraceTestResultsResponseSuccess) String() string {
 func (*UploadTraceTestResultsResponseSuccess) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[29]
+	mi := &file_backend_test_run_service_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2117,7 +2276,7 @@ func (x *UploadTraceTestResultsResponseSuccess) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UploadTraceTestResultsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{29}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *UploadTraceTestResultsResponseSuccess) GetMessage() string {
@@ -2137,7 +2296,7 @@ type UploadTraceTestResultsResponseError struct {
 
 func (x *UploadTraceTestResultsResponseError) Reset() {
 	*x = UploadTraceTestResultsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	mi := &file_backend_test_run_service_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2149,7 +2308,7 @@ func (x *UploadTraceTestResultsResponseError) String() string {
 func (*UploadTraceTestResultsResponseError) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[30]
+	mi := &file_backend_test_run_service_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2162,7 +2321,7 @@ func (x *UploadTraceTestResultsResponseError) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UploadTraceTestResultsResponseError.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{30}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *UploadTraceTestResultsResponseError) GetCode() string {
@@ -2192,7 +2351,7 @@ type UploadTraceTestResultsResponse struct {
 
 func (x *UploadTraceTestResultsResponse) Reset() {
 	*x = UploadTraceTestResultsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[31]
+	mi := &file_backend_test_run_service_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2204,7 +2363,7 @@ func (x *UploadTraceTestResultsResponse) String() string {
 func (*UploadTraceTestResultsResponse) ProtoMessage() {}
 
 func (x *UploadTraceTestResultsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[31]
+	mi := &file_backend_test_run_service_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2217,7 +2376,7 @@ func (x *UploadTraceTestResultsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UploadTraceTestResultsResponse.ProtoReflect.Descriptor instead.
 func (*UploadTraceTestResultsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{31}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *UploadTraceTestResultsResponse) GetResponse() isUploadTraceTestResultsResponse_Response {
@@ -2266,13 +2425,15 @@ type UpdateDriftRunCIStatusRequest struct {
 	DriftRunId      string                 `protobuf:"bytes,1,opt,name=drift_run_id,json=driftRunId,proto3" json:"drift_run_id,omitempty"`
 	CiStatus        DriftRunCIStatus       `protobuf:"varint,2,opt,name=ci_status,json=ciStatus,proto3,enum=tusk.drift.backend.v1.DriftRunCIStatus" json:"ci_status,omitempty"`
 	CiStatusMessage *string                `protobuf:"bytes,3,opt,name=ci_status_message,json=ciStatusMessage,proto3,oneof" json:"ci_status_message,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	// Coverage baseline (only set when coverage was enabled for this run)
+	CoverageBaseline *CoverageBaseline `protobuf:"bytes,4,opt,name=coverage_baseline,json=coverageBaseline,proto3,oneof" json:"coverage_baseline,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *UpdateDriftRunCIStatusRequest) Reset() {
 	*x = UpdateDriftRunCIStatusRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[32]
+	mi := &file_backend_test_run_service_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2284,7 +2445,7 @@ func (x *UpdateDriftRunCIStatusRequest) String() string {
 func (*UpdateDriftRunCIStatusRequest) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[32]
+	mi := &file_backend_test_run_service_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2297,7 +2458,7 @@ func (x *UpdateDriftRunCIStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDriftRunCIStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{32}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *UpdateDriftRunCIStatusRequest) GetDriftRunId() string {
@@ -2321,6 +2482,85 @@ func (x *UpdateDriftRunCIStatusRequest) GetCiStatusMessage() string {
 	return ""
 }
 
+func (x *UpdateDriftRunCIStatusRequest) GetCoverageBaseline() *CoverageBaseline {
+	if x != nil {
+		return x.CoverageBaseline
+	}
+	return nil
+}
+
+// Coverage baseline: all coverable lines in the codebase (denominator for coverage %)
+type CoverageBaseline struct {
+	state               protoimpl.MessageState `protogen:"open.v1"`
+	CommitSha           string                 `protobuf:"bytes,1,opt,name=commit_sha,json=commitSha,proto3" json:"commit_sha,omitempty"`
+	TotalCoverableLines int32                  `protobuf:"varint,2,opt,name=total_coverable_lines,json=totalCoverableLines,proto3" json:"total_coverable_lines,omitempty"`
+	// All coverable lines per file (denominator)
+	CoverableLinesByFile map[string]*FileLineRanges `protobuf:"bytes,3,rep,name=coverable_lines_by_file,json=coverableLinesByFile,proto3" json:"coverable_lines_by_file,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	// Lines covered at startup (module loading, decorators, DI registration).
+	// Included in the aggregate numerator to match industry standard (Istanbul, NYC, etc.).
+	StartupCoveredLinesByFile map[string]*FileLineRanges `protobuf:"bytes,4,rep,name=startup_covered_lines_by_file,json=startupCoveredLinesByFile,proto3" json:"startup_covered_lines_by_file,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *CoverageBaseline) Reset() {
+	*x = CoverageBaseline{}
+	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CoverageBaseline) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CoverageBaseline) ProtoMessage() {}
+
+func (x *CoverageBaseline) ProtoReflect() protoreflect.Message {
+	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CoverageBaseline.ProtoReflect.Descriptor instead.
+func (*CoverageBaseline) Descriptor() ([]byte, []int) {
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *CoverageBaseline) GetCommitSha() string {
+	if x != nil {
+		return x.CommitSha
+	}
+	return ""
+}
+
+func (x *CoverageBaseline) GetTotalCoverableLines() int32 {
+	if x != nil {
+		return x.TotalCoverableLines
+	}
+	return 0
+}
+
+func (x *CoverageBaseline) GetCoverableLinesByFile() map[string]*FileLineRanges {
+	if x != nil {
+		return x.CoverableLinesByFile
+	}
+	return nil
+}
+
+func (x *CoverageBaseline) GetStartupCoveredLinesByFile() map[string]*FileLineRanges {
+	if x != nil {
+		return x.StartupCoveredLinesByFile
+	}
+	return nil
+}
+
 type UpdateDriftRunCIStatusResponseSuccess struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
@@ -2330,7 +2570,7 @@ type UpdateDriftRunCIStatusResponseSuccess struct {
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) Reset() {
 	*x = UpdateDriftRunCIStatusResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[33]
+	mi := &file_backend_test_run_service_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2342,7 +2582,7 @@ func (x *UpdateDriftRunCIStatusResponseSuccess) String() string {
 func (*UpdateDriftRunCIStatusResponseSuccess) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[33]
+	mi := &file_backend_test_run_service_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2355,7 +2595,7 @@ func (x *UpdateDriftRunCIStatusResponseSuccess) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use UpdateDriftRunCIStatusResponseSuccess.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{33}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *UpdateDriftRunCIStatusResponseSuccess) GetMessage() string {
@@ -2375,7 +2615,7 @@ type UpdateDriftRunCIStatusResponseError struct {
 
 func (x *UpdateDriftRunCIStatusResponseError) Reset() {
 	*x = UpdateDriftRunCIStatusResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[34]
+	mi := &file_backend_test_run_service_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2387,7 +2627,7 @@ func (x *UpdateDriftRunCIStatusResponseError) String() string {
 func (*UpdateDriftRunCIStatusResponseError) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[34]
+	mi := &file_backend_test_run_service_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2400,7 +2640,7 @@ func (x *UpdateDriftRunCIStatusResponseError) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use UpdateDriftRunCIStatusResponseError.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{34}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *UpdateDriftRunCIStatusResponseError) GetCode() string {
@@ -2430,7 +2670,7 @@ type UpdateDriftRunCIStatusResponse struct {
 
 func (x *UpdateDriftRunCIStatusResponse) Reset() {
 	*x = UpdateDriftRunCIStatusResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[35]
+	mi := &file_backend_test_run_service_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2442,7 +2682,7 @@ func (x *UpdateDriftRunCIStatusResponse) String() string {
 func (*UpdateDriftRunCIStatusResponse) ProtoMessage() {}
 
 func (x *UpdateDriftRunCIStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[35]
+	mi := &file_backend_test_run_service_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2455,7 +2695,7 @@ func (x *UpdateDriftRunCIStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateDriftRunCIStatusResponse.ProtoReflect.Descriptor instead.
 func (*UpdateDriftRunCIStatusResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{35}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *UpdateDriftRunCIStatusResponse) GetResponse() isUpdateDriftRunCIStatusResponse_Response {
@@ -2511,7 +2751,7 @@ type GetValidationTraceTestsRequest struct {
 
 func (x *GetValidationTraceTestsRequest) Reset() {
 	*x = GetValidationTraceTestsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	mi := &file_backend_test_run_service_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2523,7 +2763,7 @@ func (x *GetValidationTraceTestsRequest) String() string {
 func (*GetValidationTraceTestsRequest) ProtoMessage() {}
 
 func (x *GetValidationTraceTestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[36]
+	mi := &file_backend_test_run_service_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2536,7 +2776,7 @@ func (x *GetValidationTraceTestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetValidationTraceTestsRequest.ProtoReflect.Descriptor instead.
 func (*GetValidationTraceTestsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{36}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *GetValidationTraceTestsRequest) GetObservableServiceId() string {
@@ -2571,7 +2811,7 @@ type GetValidationTraceTestsResponseSuccess struct {
 
 func (x *GetValidationTraceTestsResponseSuccess) Reset() {
 	*x = GetValidationTraceTestsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[37]
+	mi := &file_backend_test_run_service_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2583,7 +2823,7 @@ func (x *GetValidationTraceTestsResponseSuccess) String() string {
 func (*GetValidationTraceTestsResponseSuccess) ProtoMessage() {}
 
 func (x *GetValidationTraceTestsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[37]
+	mi := &file_backend_test_run_service_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2596,7 +2836,7 @@ func (x *GetValidationTraceTestsResponseSuccess) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use GetValidationTraceTestsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetValidationTraceTestsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{37}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *GetValidationTraceTestsResponseSuccess) GetTraceTests() []*TraceTest {
@@ -2630,7 +2870,7 @@ type GetValidationTraceTestsResponseError struct {
 
 func (x *GetValidationTraceTestsResponseError) Reset() {
 	*x = GetValidationTraceTestsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[38]
+	mi := &file_backend_test_run_service_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2642,7 +2882,7 @@ func (x *GetValidationTraceTestsResponseError) String() string {
 func (*GetValidationTraceTestsResponseError) ProtoMessage() {}
 
 func (x *GetValidationTraceTestsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[38]
+	mi := &file_backend_test_run_service_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2655,7 +2895,7 @@ func (x *GetValidationTraceTestsResponseError) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetValidationTraceTestsResponseError.ProtoReflect.Descriptor instead.
 func (*GetValidationTraceTestsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{38}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *GetValidationTraceTestsResponseError) GetCode() string {
@@ -2685,7 +2925,7 @@ type GetValidationTraceTestsResponse struct {
 
 func (x *GetValidationTraceTestsResponse) Reset() {
 	*x = GetValidationTraceTestsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[39]
+	mi := &file_backend_test_run_service_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2697,7 +2937,7 @@ func (x *GetValidationTraceTestsResponse) String() string {
 func (*GetValidationTraceTestsResponse) ProtoMessage() {}
 
 func (x *GetValidationTraceTestsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[39]
+	mi := &file_backend_test_run_service_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2710,7 +2950,7 @@ func (x *GetValidationTraceTestsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetValidationTraceTestsResponse.ProtoReflect.Descriptor instead.
 func (*GetValidationTraceTestsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{39}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *GetValidationTraceTestsResponse) GetResponse() isGetValidationTraceTestsResponse_Response {
@@ -2764,7 +3004,7 @@ type GetAllTraceTestIdsRequest struct {
 
 func (x *GetAllTraceTestIdsRequest) Reset() {
 	*x = GetAllTraceTestIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[40]
+	mi := &file_backend_test_run_service_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2776,7 +3016,7 @@ func (x *GetAllTraceTestIdsRequest) String() string {
 func (*GetAllTraceTestIdsRequest) ProtoMessage() {}
 
 func (x *GetAllTraceTestIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[40]
+	mi := &file_backend_test_run_service_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2789,7 +3029,7 @@ func (x *GetAllTraceTestIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTraceTestIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetAllTraceTestIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{40}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *GetAllTraceTestIdsRequest) GetObservableServiceId() string {
@@ -2808,7 +3048,7 @@ type GetAllTraceTestIdsResponseSuccess struct {
 
 func (x *GetAllTraceTestIdsResponseSuccess) Reset() {
 	*x = GetAllTraceTestIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[41]
+	mi := &file_backend_test_run_service_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2820,7 +3060,7 @@ func (x *GetAllTraceTestIdsResponseSuccess) String() string {
 func (*GetAllTraceTestIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetAllTraceTestIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[41]
+	mi := &file_backend_test_run_service_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2833,7 +3073,7 @@ func (x *GetAllTraceTestIdsResponseSuccess) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use GetAllTraceTestIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetAllTraceTestIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{41}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *GetAllTraceTestIdsResponseSuccess) GetTraceTestIds() []string {
@@ -2853,7 +3093,7 @@ type GetAllTraceTestIdsResponseError struct {
 
 func (x *GetAllTraceTestIdsResponseError) Reset() {
 	*x = GetAllTraceTestIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[42]
+	mi := &file_backend_test_run_service_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2865,7 +3105,7 @@ func (x *GetAllTraceTestIdsResponseError) String() string {
 func (*GetAllTraceTestIdsResponseError) ProtoMessage() {}
 
 func (x *GetAllTraceTestIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[42]
+	mi := &file_backend_test_run_service_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2878,7 +3118,7 @@ func (x *GetAllTraceTestIdsResponseError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTraceTestIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetAllTraceTestIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{42}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *GetAllTraceTestIdsResponseError) GetCode() string {
@@ -2908,7 +3148,7 @@ type GetAllTraceTestIdsResponse struct {
 
 func (x *GetAllTraceTestIdsResponse) Reset() {
 	*x = GetAllTraceTestIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[43]
+	mi := &file_backend_test_run_service_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2920,7 +3160,7 @@ func (x *GetAllTraceTestIdsResponse) String() string {
 func (*GetAllTraceTestIdsResponse) ProtoMessage() {}
 
 func (x *GetAllTraceTestIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[43]
+	mi := &file_backend_test_run_service_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2933,7 +3173,7 @@ func (x *GetAllTraceTestIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllTraceTestIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetAllTraceTestIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{43}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *GetAllTraceTestIdsResponse) GetResponse() isGetAllTraceTestIdsResponse_Response {
@@ -2988,7 +3228,7 @@ type GetTraceTestsByIdsRequest struct {
 
 func (x *GetTraceTestsByIdsRequest) Reset() {
 	*x = GetTraceTestsByIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[44]
+	mi := &file_backend_test_run_service_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3000,7 +3240,7 @@ func (x *GetTraceTestsByIdsRequest) String() string {
 func (*GetTraceTestsByIdsRequest) ProtoMessage() {}
 
 func (x *GetTraceTestsByIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[44]
+	mi := &file_backend_test_run_service_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3013,7 +3253,7 @@ func (x *GetTraceTestsByIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTraceTestsByIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetTraceTestsByIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{44}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *GetTraceTestsByIdsRequest) GetObservableServiceId() string {
@@ -3039,7 +3279,7 @@ type GetTraceTestsByIdsResponseSuccess struct {
 
 func (x *GetTraceTestsByIdsResponseSuccess) Reset() {
 	*x = GetTraceTestsByIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[45]
+	mi := &file_backend_test_run_service_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3051,7 +3291,7 @@ func (x *GetTraceTestsByIdsResponseSuccess) String() string {
 func (*GetTraceTestsByIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetTraceTestsByIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[45]
+	mi := &file_backend_test_run_service_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3064,7 +3304,7 @@ func (x *GetTraceTestsByIdsResponseSuccess) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use GetTraceTestsByIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetTraceTestsByIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{45}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *GetTraceTestsByIdsResponseSuccess) GetTraceTests() []*TraceTest {
@@ -3084,7 +3324,7 @@ type GetTraceTestsByIdsResponseError struct {
 
 func (x *GetTraceTestsByIdsResponseError) Reset() {
 	*x = GetTraceTestsByIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[46]
+	mi := &file_backend_test_run_service_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3096,7 +3336,7 @@ func (x *GetTraceTestsByIdsResponseError) String() string {
 func (*GetTraceTestsByIdsResponseError) ProtoMessage() {}
 
 func (x *GetTraceTestsByIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[46]
+	mi := &file_backend_test_run_service_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3109,7 +3349,7 @@ func (x *GetTraceTestsByIdsResponseError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTraceTestsByIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetTraceTestsByIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{46}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *GetTraceTestsByIdsResponseError) GetCode() string {
@@ -3139,7 +3379,7 @@ type GetTraceTestsByIdsResponse struct {
 
 func (x *GetTraceTestsByIdsResponse) Reset() {
 	*x = GetTraceTestsByIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[47]
+	mi := &file_backend_test_run_service_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3151,7 +3391,7 @@ func (x *GetTraceTestsByIdsResponse) String() string {
 func (*GetTraceTestsByIdsResponse) ProtoMessage() {}
 
 func (x *GetTraceTestsByIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[47]
+	mi := &file_backend_test_run_service_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3164,7 +3404,7 @@ func (x *GetTraceTestsByIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTraceTestsByIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetTraceTestsByIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{47}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *GetTraceTestsByIdsResponse) GetResponse() isGetTraceTestsByIdsResponse_Response {
@@ -3218,7 +3458,7 @@ type GetAllPreAppStartSpanIdsRequest struct {
 
 func (x *GetAllPreAppStartSpanIdsRequest) Reset() {
 	*x = GetAllPreAppStartSpanIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[48]
+	mi := &file_backend_test_run_service_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3230,7 +3470,7 @@ func (x *GetAllPreAppStartSpanIdsRequest) String() string {
 func (*GetAllPreAppStartSpanIdsRequest) ProtoMessage() {}
 
 func (x *GetAllPreAppStartSpanIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[48]
+	mi := &file_backend_test_run_service_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3243,7 +3483,7 @@ func (x *GetAllPreAppStartSpanIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllPreAppStartSpanIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetAllPreAppStartSpanIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{48}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *GetAllPreAppStartSpanIdsRequest) GetObservableServiceId() string {
@@ -3262,7 +3502,7 @@ type GetAllPreAppStartSpanIdsResponseSuccess struct {
 
 func (x *GetAllPreAppStartSpanIdsResponseSuccess) Reset() {
 	*x = GetAllPreAppStartSpanIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[49]
+	mi := &file_backend_test_run_service_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3274,7 +3514,7 @@ func (x *GetAllPreAppStartSpanIdsResponseSuccess) String() string {
 func (*GetAllPreAppStartSpanIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetAllPreAppStartSpanIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[49]
+	mi := &file_backend_test_run_service_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3287,7 +3527,7 @@ func (x *GetAllPreAppStartSpanIdsResponseSuccess) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GetAllPreAppStartSpanIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetAllPreAppStartSpanIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{49}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *GetAllPreAppStartSpanIdsResponseSuccess) GetSpanIds() []string {
@@ -3307,7 +3547,7 @@ type GetAllPreAppStartSpanIdsResponseError struct {
 
 func (x *GetAllPreAppStartSpanIdsResponseError) Reset() {
 	*x = GetAllPreAppStartSpanIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[50]
+	mi := &file_backend_test_run_service_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3319,7 +3559,7 @@ func (x *GetAllPreAppStartSpanIdsResponseError) String() string {
 func (*GetAllPreAppStartSpanIdsResponseError) ProtoMessage() {}
 
 func (x *GetAllPreAppStartSpanIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[50]
+	mi := &file_backend_test_run_service_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3332,7 +3572,7 @@ func (x *GetAllPreAppStartSpanIdsResponseError) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GetAllPreAppStartSpanIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetAllPreAppStartSpanIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{50}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *GetAllPreAppStartSpanIdsResponseError) GetCode() string {
@@ -3362,7 +3602,7 @@ type GetAllPreAppStartSpanIdsResponse struct {
 
 func (x *GetAllPreAppStartSpanIdsResponse) Reset() {
 	*x = GetAllPreAppStartSpanIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[51]
+	mi := &file_backend_test_run_service_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3374,7 +3614,7 @@ func (x *GetAllPreAppStartSpanIdsResponse) String() string {
 func (*GetAllPreAppStartSpanIdsResponse) ProtoMessage() {}
 
 func (x *GetAllPreAppStartSpanIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[51]
+	mi := &file_backend_test_run_service_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3387,7 +3627,7 @@ func (x *GetAllPreAppStartSpanIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllPreAppStartSpanIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetAllPreAppStartSpanIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{51}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *GetAllPreAppStartSpanIdsResponse) GetResponse() isGetAllPreAppStartSpanIdsResponse_Response {
@@ -3442,7 +3682,7 @@ type GetPreAppStartSpansByIdsRequest struct {
 
 func (x *GetPreAppStartSpansByIdsRequest) Reset() {
 	*x = GetPreAppStartSpansByIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[52]
+	mi := &file_backend_test_run_service_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3454,7 +3694,7 @@ func (x *GetPreAppStartSpansByIdsRequest) String() string {
 func (*GetPreAppStartSpansByIdsRequest) ProtoMessage() {}
 
 func (x *GetPreAppStartSpansByIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[52]
+	mi := &file_backend_test_run_service_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3467,7 +3707,7 @@ func (x *GetPreAppStartSpansByIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPreAppStartSpansByIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetPreAppStartSpansByIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{52}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *GetPreAppStartSpansByIdsRequest) GetObservableServiceId() string {
@@ -3493,7 +3733,7 @@ type GetPreAppStartSpansByIdsResponseSuccess struct {
 
 func (x *GetPreAppStartSpansByIdsResponseSuccess) Reset() {
 	*x = GetPreAppStartSpansByIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[53]
+	mi := &file_backend_test_run_service_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3505,7 +3745,7 @@ func (x *GetPreAppStartSpansByIdsResponseSuccess) String() string {
 func (*GetPreAppStartSpansByIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetPreAppStartSpansByIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[53]
+	mi := &file_backend_test_run_service_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3518,7 +3758,7 @@ func (x *GetPreAppStartSpansByIdsResponseSuccess) ProtoReflect() protoreflect.Me
 
 // Deprecated: Use GetPreAppStartSpansByIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetPreAppStartSpansByIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{53}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *GetPreAppStartSpansByIdsResponseSuccess) GetSpans() []*core.Span {
@@ -3538,7 +3778,7 @@ type GetPreAppStartSpansByIdsResponseError struct {
 
 func (x *GetPreAppStartSpansByIdsResponseError) Reset() {
 	*x = GetPreAppStartSpansByIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[54]
+	mi := &file_backend_test_run_service_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3550,7 +3790,7 @@ func (x *GetPreAppStartSpansByIdsResponseError) String() string {
 func (*GetPreAppStartSpansByIdsResponseError) ProtoMessage() {}
 
 func (x *GetPreAppStartSpansByIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[54]
+	mi := &file_backend_test_run_service_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3563,7 +3803,7 @@ func (x *GetPreAppStartSpansByIdsResponseError) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use GetPreAppStartSpansByIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetPreAppStartSpansByIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{54}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *GetPreAppStartSpansByIdsResponseError) GetCode() string {
@@ -3593,7 +3833,7 @@ type GetPreAppStartSpansByIdsResponse struct {
 
 func (x *GetPreAppStartSpansByIdsResponse) Reset() {
 	*x = GetPreAppStartSpansByIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[55]
+	mi := &file_backend_test_run_service_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3605,7 +3845,7 @@ func (x *GetPreAppStartSpansByIdsResponse) String() string {
 func (*GetPreAppStartSpansByIdsResponse) ProtoMessage() {}
 
 func (x *GetPreAppStartSpansByIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[55]
+	mi := &file_backend_test_run_service_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3618,7 +3858,7 @@ func (x *GetPreAppStartSpansByIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPreAppStartSpansByIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetPreAppStartSpansByIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{55}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *GetPreAppStartSpansByIdsResponse) GetResponse() isGetPreAppStartSpansByIdsResponse_Response {
@@ -3672,7 +3912,7 @@ type GetAllGlobalSpanIdsRequest struct {
 
 func (x *GetAllGlobalSpanIdsRequest) Reset() {
 	*x = GetAllGlobalSpanIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[56]
+	mi := &file_backend_test_run_service_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3684,7 +3924,7 @@ func (x *GetAllGlobalSpanIdsRequest) String() string {
 func (*GetAllGlobalSpanIdsRequest) ProtoMessage() {}
 
 func (x *GetAllGlobalSpanIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[56]
+	mi := &file_backend_test_run_service_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3697,7 +3937,7 @@ func (x *GetAllGlobalSpanIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllGlobalSpanIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetAllGlobalSpanIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{56}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *GetAllGlobalSpanIdsRequest) GetObservableServiceId() string {
@@ -3716,7 +3956,7 @@ type GetAllGlobalSpanIdsResponseSuccess struct {
 
 func (x *GetAllGlobalSpanIdsResponseSuccess) Reset() {
 	*x = GetAllGlobalSpanIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[57]
+	mi := &file_backend_test_run_service_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3728,7 +3968,7 @@ func (x *GetAllGlobalSpanIdsResponseSuccess) String() string {
 func (*GetAllGlobalSpanIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetAllGlobalSpanIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[57]
+	mi := &file_backend_test_run_service_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3741,7 +3981,7 @@ func (x *GetAllGlobalSpanIdsResponseSuccess) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use GetAllGlobalSpanIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetAllGlobalSpanIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{57}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *GetAllGlobalSpanIdsResponseSuccess) GetSpanIds() []string {
@@ -3761,7 +4001,7 @@ type GetAllGlobalSpanIdsResponseError struct {
 
 func (x *GetAllGlobalSpanIdsResponseError) Reset() {
 	*x = GetAllGlobalSpanIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[58]
+	mi := &file_backend_test_run_service_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3773,7 +4013,7 @@ func (x *GetAllGlobalSpanIdsResponseError) String() string {
 func (*GetAllGlobalSpanIdsResponseError) ProtoMessage() {}
 
 func (x *GetAllGlobalSpanIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[58]
+	mi := &file_backend_test_run_service_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3786,7 +4026,7 @@ func (x *GetAllGlobalSpanIdsResponseError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllGlobalSpanIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetAllGlobalSpanIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{58}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GetAllGlobalSpanIdsResponseError) GetCode() string {
@@ -3816,7 +4056,7 @@ type GetAllGlobalSpanIdsResponse struct {
 
 func (x *GetAllGlobalSpanIdsResponse) Reset() {
 	*x = GetAllGlobalSpanIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[59]
+	mi := &file_backend_test_run_service_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3828,7 +4068,7 @@ func (x *GetAllGlobalSpanIdsResponse) String() string {
 func (*GetAllGlobalSpanIdsResponse) ProtoMessage() {}
 
 func (x *GetAllGlobalSpanIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[59]
+	mi := &file_backend_test_run_service_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3841,7 +4081,7 @@ func (x *GetAllGlobalSpanIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAllGlobalSpanIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetAllGlobalSpanIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{59}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *GetAllGlobalSpanIdsResponse) GetResponse() isGetAllGlobalSpanIdsResponse_Response {
@@ -3896,7 +4136,7 @@ type GetGlobalSpansByIdsRequest struct {
 
 func (x *GetGlobalSpansByIdsRequest) Reset() {
 	*x = GetGlobalSpansByIdsRequest{}
-	mi := &file_backend_test_run_service_proto_msgTypes[60]
+	mi := &file_backend_test_run_service_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3908,7 +4148,7 @@ func (x *GetGlobalSpansByIdsRequest) String() string {
 func (*GetGlobalSpansByIdsRequest) ProtoMessage() {}
 
 func (x *GetGlobalSpansByIdsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[60]
+	mi := &file_backend_test_run_service_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3921,7 +4161,7 @@ func (x *GetGlobalSpansByIdsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGlobalSpansByIdsRequest.ProtoReflect.Descriptor instead.
 func (*GetGlobalSpansByIdsRequest) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{60}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *GetGlobalSpansByIdsRequest) GetObservableServiceId() string {
@@ -3947,7 +4187,7 @@ type GetGlobalSpansByIdsResponseSuccess struct {
 
 func (x *GetGlobalSpansByIdsResponseSuccess) Reset() {
 	*x = GetGlobalSpansByIdsResponseSuccess{}
-	mi := &file_backend_test_run_service_proto_msgTypes[61]
+	mi := &file_backend_test_run_service_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3959,7 +4199,7 @@ func (x *GetGlobalSpansByIdsResponseSuccess) String() string {
 func (*GetGlobalSpansByIdsResponseSuccess) ProtoMessage() {}
 
 func (x *GetGlobalSpansByIdsResponseSuccess) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[61]
+	mi := &file_backend_test_run_service_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3972,7 +4212,7 @@ func (x *GetGlobalSpansByIdsResponseSuccess) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use GetGlobalSpansByIdsResponseSuccess.ProtoReflect.Descriptor instead.
 func (*GetGlobalSpansByIdsResponseSuccess) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{61}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *GetGlobalSpansByIdsResponseSuccess) GetSpans() []*core.Span {
@@ -3992,7 +4232,7 @@ type GetGlobalSpansByIdsResponseError struct {
 
 func (x *GetGlobalSpansByIdsResponseError) Reset() {
 	*x = GetGlobalSpansByIdsResponseError{}
-	mi := &file_backend_test_run_service_proto_msgTypes[62]
+	mi := &file_backend_test_run_service_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4004,7 +4244,7 @@ func (x *GetGlobalSpansByIdsResponseError) String() string {
 func (*GetGlobalSpansByIdsResponseError) ProtoMessage() {}
 
 func (x *GetGlobalSpansByIdsResponseError) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[62]
+	mi := &file_backend_test_run_service_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4017,7 +4257,7 @@ func (x *GetGlobalSpansByIdsResponseError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGlobalSpansByIdsResponseError.ProtoReflect.Descriptor instead.
 func (*GetGlobalSpansByIdsResponseError) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{62}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *GetGlobalSpansByIdsResponseError) GetCode() string {
@@ -4047,7 +4287,7 @@ type GetGlobalSpansByIdsResponse struct {
 
 func (x *GetGlobalSpansByIdsResponse) Reset() {
 	*x = GetGlobalSpansByIdsResponse{}
-	mi := &file_backend_test_run_service_proto_msgTypes[63]
+	mi := &file_backend_test_run_service_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4059,7 +4299,7 @@ func (x *GetGlobalSpansByIdsResponse) String() string {
 func (*GetGlobalSpansByIdsResponse) ProtoMessage() {}
 
 func (x *GetGlobalSpansByIdsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_backend_test_run_service_proto_msgTypes[63]
+	mi := &file_backend_test_run_service_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4072,7 +4312,7 @@ func (x *GetGlobalSpansByIdsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetGlobalSpansByIdsResponse.ProtoReflect.Descriptor instead.
 func (*GetGlobalSpansByIdsResponse) Descriptor() ([]byte, []int) {
-	return file_backend_test_run_service_proto_rawDescGZIP(), []int{63}
+	return file_backend_test_run_service_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *GetGlobalSpansByIdsResponse) GetResponse() isGetGlobalSpansByIdsResponse_Response {
@@ -4269,7 +4509,7 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"deviationsB\x1c\n" +
 	"\x1a_matched_span_recording_idB\x0e\n" +
 	"\f_match_levelB\x0e\n" +
-	"\f_stack_trace\"\x86\x04\n" +
+	"\f_stack_trace\"\xf0\x04\n" +
 	"\x0fTraceTestResult\x12\"\n" +
 	"\rtrace_test_id\x18\x01 \x01(\tR\vtraceTestId\x12!\n" +
 	"\ftest_success\x18\x02 \x01(\bR\vtestSuccess\x12b\n" +
@@ -4277,11 +4517,24 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\x14test_failure_message\x18\x04 \x01(\tH\x01R\x12testFailureMessage\x88\x01\x01\x12+\n" +
 	"\x0freplay_trace_id\x18\x05 \x01(\tH\x02R\rreplayTraceId\x88\x01\x01\x126\n" +
 	"\x15replay_server_span_id\x18\x06 \x01(\tH\x03R\x12replayServerSpanId\x88\x01\x01\x12M\n" +
-	"\fspan_results\x18\a \x03(\v2*.tusk.drift.backend.v1.TraceTestSpanResultR\vspanResultsB\x16\n" +
+	"\fspan_results\x18\a \x03(\v2*.tusk.drift.backend.v1.TraceTestSpanResultR\vspanResults\x12V\n" +
+	"\rcoverage_data\x18\b \x01(\v2,.tusk.drift.backend.v1.TraceTestCoverageDataH\x04R\fcoverageData\x88\x01\x01B\x16\n" +
 	"\x14_test_failure_reasonB\x17\n" +
 	"\x15_test_failure_messageB\x12\n" +
 	"\x10_replay_trace_idB\x18\n" +
-	"\x16_replay_server_span_id\"\xd9\x01\n" +
+	"\x16_replay_server_span_idB\x10\n" +
+	"\x0e_coverage_data\"\xae\x02\n" +
+	"\x15TraceTestCoverageData\x12.\n" +
+	"\x13total_covered_lines\x18\x01 \x01(\x05R\x11totalCoveredLines\x12w\n" +
+	"\x15covered_lines_by_file\x18\x02 \x03(\v2D.tusk.drift.backend.v1.TraceTestCoverageData.CoveredLinesByFileEntryR\x12coveredLinesByFile\x1al\n" +
+	"\x17CoveredLinesByFileEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12;\n" +
+	"\x05value\x18\x02 \x01(\v2%.tusk.drift.backend.v1.FileLineRangesR\x05value:\x028\x01\"J\n" +
+	"\x0eFileLineRanges\x128\n" +
+	"\x06ranges\x18\x01 \x03(\v2 .tusk.drift.backend.v1.LineRangeR\x06ranges\"3\n" +
+	"\tLineRange\x12\x14\n" +
+	"\x05start\x18\x01 \x01(\x05R\x05start\x12\x10\n" +
+	"\x03end\x18\x02 \x01(\x05R\x03end\"\xd9\x01\n" +
 	"\x1dUploadTraceTestResultsRequest\x12 \n" +
 	"\fdrift_run_id\x18\x01 \x01(\tR\n" +
 	"driftRunId\x12\x1f\n" +
@@ -4299,13 +4552,27 @@ const file_backend_test_run_service_proto_rawDesc = "" +
 	"\asuccess\x18\x01 \x01(\v2<.tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccessH\x00R\asuccess\x12R\n" +
 	"\x05error\x18\x02 \x01(\v2:.tusk.drift.backend.v1.UploadTraceTestResultsResponseErrorH\x00R\x05errorB\n" +
 	"\n" +
-	"\bresponse\"\xce\x01\n" +
+	"\bresponse\"\xbf\x02\n" +
 	"\x1dUpdateDriftRunCIStatusRequest\x12 \n" +
 	"\fdrift_run_id\x18\x01 \x01(\tR\n" +
 	"driftRunId\x12D\n" +
 	"\tci_status\x18\x02 \x01(\x0e2'.tusk.drift.backend.v1.DriftRunCIStatusR\bciStatus\x12/\n" +
-	"\x11ci_status_message\x18\x03 \x01(\tH\x00R\x0fciStatusMessage\x88\x01\x01B\x14\n" +
-	"\x12_ci_status_message\"A\n" +
+	"\x11ci_status_message\x18\x03 \x01(\tH\x00R\x0fciStatusMessage\x88\x01\x01\x12Y\n" +
+	"\x11coverage_baseline\x18\x04 \x01(\v2'.tusk.drift.backend.v1.CoverageBaselineH\x01R\x10coverageBaseline\x88\x01\x01B\x14\n" +
+	"\x12_ci_status_messageB\x14\n" +
+	"\x12_coverage_baseline\"\xcf\x04\n" +
+	"\x10CoverageBaseline\x12\x1d\n" +
+	"\n" +
+	"commit_sha\x18\x01 \x01(\tR\tcommitSha\x122\n" +
+	"\x15total_coverable_lines\x18\x02 \x01(\x05R\x13totalCoverableLines\x12x\n" +
+	"\x17coverable_lines_by_file\x18\x03 \x03(\v2A.tusk.drift.backend.v1.CoverageBaseline.CoverableLinesByFileEntryR\x14coverableLinesByFile\x12\x88\x01\n" +
+	"\x1dstartup_covered_lines_by_file\x18\x04 \x03(\v2F.tusk.drift.backend.v1.CoverageBaseline.StartupCoveredLinesByFileEntryR\x19startupCoveredLinesByFile\x1an\n" +
+	"\x19CoverableLinesByFileEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12;\n" +
+	"\x05value\x18\x02 \x01(\v2%.tusk.drift.backend.v1.FileLineRangesR\x05value:\x028\x01\x1as\n" +
+	"\x1eStartupCoveredLinesByFileEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12;\n" +
+	"\x05value\x18\x02 \x01(\v2%.tusk.drift.backend.v1.FileLineRangesR\x05value:\x028\x01\"A\n" +
 	"%UpdateDriftRunCIStatusResponseSuccess\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\"S\n" +
 	"#UpdateDriftRunCIStatusResponseError\x12\x12\n" +
@@ -4459,7 +4726,7 @@ func file_backend_test_run_service_proto_rawDescGZIP() []byte {
 }
 
 var file_backend_test_run_service_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
-var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 64)
+var file_backend_test_run_service_proto_msgTypes = make([]protoimpl.MessageInfo, 71)
 var file_backend_test_run_service_proto_goTypes = []any{
 	(TraceTestStatus)(0),                            // 0: tusk.drift.backend.v1.TraceTestStatus
 	(TraceTestFailureReason)(0),                     // 1: tusk.drift.backend.v1.TraceTestFailureReason
@@ -4492,55 +4759,62 @@ var file_backend_test_run_service_proto_goTypes = []any{
 	(*Deviation)(nil),                               // 28: tusk.drift.backend.v1.Deviation
 	(*TraceTestSpanResult)(nil),                     // 29: tusk.drift.backend.v1.TraceTestSpanResult
 	(*TraceTestResult)(nil),                         // 30: tusk.drift.backend.v1.TraceTestResult
-	(*UploadTraceTestResultsRequest)(nil),           // 31: tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	(*UploadTraceTestResultsResponseSuccess)(nil),   // 32: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	(*UploadTraceTestResultsResponseError)(nil),     // 33: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	(*UploadTraceTestResultsResponse)(nil),          // 34: tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	(*UpdateDriftRunCIStatusRequest)(nil),           // 35: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	(*UpdateDriftRunCIStatusResponseSuccess)(nil),   // 36: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	(*UpdateDriftRunCIStatusResponseError)(nil),     // 37: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	(*UpdateDriftRunCIStatusResponse)(nil),          // 38: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	(*GetValidationTraceTestsRequest)(nil),          // 39: tusk.drift.backend.v1.GetValidationTraceTestsRequest
-	(*GetValidationTraceTestsResponseSuccess)(nil),  // 40: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
-	(*GetValidationTraceTestsResponseError)(nil),    // 41: tusk.drift.backend.v1.GetValidationTraceTestsResponseError
-	(*GetValidationTraceTestsResponse)(nil),         // 42: tusk.drift.backend.v1.GetValidationTraceTestsResponse
-	(*GetAllTraceTestIdsRequest)(nil),               // 43: tusk.drift.backend.v1.GetAllTraceTestIdsRequest
-	(*GetAllTraceTestIdsResponseSuccess)(nil),       // 44: tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
-	(*GetAllTraceTestIdsResponseError)(nil),         // 45: tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
-	(*GetAllTraceTestIdsResponse)(nil),              // 46: tusk.drift.backend.v1.GetAllTraceTestIdsResponse
-	(*GetTraceTestsByIdsRequest)(nil),               // 47: tusk.drift.backend.v1.GetTraceTestsByIdsRequest
-	(*GetTraceTestsByIdsResponseSuccess)(nil),       // 48: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
-	(*GetTraceTestsByIdsResponseError)(nil),         // 49: tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
-	(*GetTraceTestsByIdsResponse)(nil),              // 50: tusk.drift.backend.v1.GetTraceTestsByIdsResponse
-	(*GetAllPreAppStartSpanIdsRequest)(nil),         // 51: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
-	(*GetAllPreAppStartSpanIdsResponseSuccess)(nil), // 52: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
-	(*GetAllPreAppStartSpanIdsResponseError)(nil),   // 53: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
-	(*GetAllPreAppStartSpanIdsResponse)(nil),        // 54: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
-	(*GetPreAppStartSpansByIdsRequest)(nil),         // 55: tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
-	(*GetPreAppStartSpansByIdsResponseSuccess)(nil), // 56: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
-	(*GetPreAppStartSpansByIdsResponseError)(nil),   // 57: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
-	(*GetPreAppStartSpansByIdsResponse)(nil),        // 58: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
-	(*GetAllGlobalSpanIdsRequest)(nil),              // 59: tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
-	(*GetAllGlobalSpanIdsResponseSuccess)(nil),      // 60: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
-	(*GetAllGlobalSpanIdsResponseError)(nil),        // 61: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
-	(*GetAllGlobalSpanIdsResponse)(nil),             // 62: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
-	(*GetGlobalSpansByIdsRequest)(nil),              // 63: tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
-	(*GetGlobalSpansByIdsResponseSuccess)(nil),      // 64: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
-	(*GetGlobalSpansByIdsResponseError)(nil),        // 65: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
-	(*GetGlobalSpansByIdsResponse)(nil),             // 66: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
-	(*core.Span)(nil),                               // 67: tusk.drift.core.v1.Span
-	(*core.MatchLevel)(nil),                         // 68: tusk.drift.core.v1.MatchLevel
+	(*TraceTestCoverageData)(nil),                   // 31: tusk.drift.backend.v1.TraceTestCoverageData
+	(*FileLineRanges)(nil),                          // 32: tusk.drift.backend.v1.FileLineRanges
+	(*LineRange)(nil),                               // 33: tusk.drift.backend.v1.LineRange
+	(*UploadTraceTestResultsRequest)(nil),           // 34: tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	(*UploadTraceTestResultsResponseSuccess)(nil),   // 35: tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	(*UploadTraceTestResultsResponseError)(nil),     // 36: tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	(*UploadTraceTestResultsResponse)(nil),          // 37: tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	(*UpdateDriftRunCIStatusRequest)(nil),           // 38: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	(*CoverageBaseline)(nil),                        // 39: tusk.drift.backend.v1.CoverageBaseline
+	(*UpdateDriftRunCIStatusResponseSuccess)(nil),   // 40: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	(*UpdateDriftRunCIStatusResponseError)(nil),     // 41: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	(*UpdateDriftRunCIStatusResponse)(nil),          // 42: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	(*GetValidationTraceTestsRequest)(nil),          // 43: tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	(*GetValidationTraceTestsResponseSuccess)(nil),  // 44: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
+	(*GetValidationTraceTestsResponseError)(nil),    // 45: tusk.drift.backend.v1.GetValidationTraceTestsResponseError
+	(*GetValidationTraceTestsResponse)(nil),         // 46: tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	(*GetAllTraceTestIdsRequest)(nil),               // 47: tusk.drift.backend.v1.GetAllTraceTestIdsRequest
+	(*GetAllTraceTestIdsResponseSuccess)(nil),       // 48: tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
+	(*GetAllTraceTestIdsResponseError)(nil),         // 49: tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
+	(*GetAllTraceTestIdsResponse)(nil),              // 50: tusk.drift.backend.v1.GetAllTraceTestIdsResponse
+	(*GetTraceTestsByIdsRequest)(nil),               // 51: tusk.drift.backend.v1.GetTraceTestsByIdsRequest
+	(*GetTraceTestsByIdsResponseSuccess)(nil),       // 52: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
+	(*GetTraceTestsByIdsResponseError)(nil),         // 53: tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
+	(*GetTraceTestsByIdsResponse)(nil),              // 54: tusk.drift.backend.v1.GetTraceTestsByIdsResponse
+	(*GetAllPreAppStartSpanIdsRequest)(nil),         // 55: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+	(*GetAllPreAppStartSpanIdsResponseSuccess)(nil), // 56: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
+	(*GetAllPreAppStartSpanIdsResponseError)(nil),   // 57: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
+	(*GetAllPreAppStartSpanIdsResponse)(nil),        // 58: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+	(*GetPreAppStartSpansByIdsRequest)(nil),         // 59: tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+	(*GetPreAppStartSpansByIdsResponseSuccess)(nil), // 60: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
+	(*GetPreAppStartSpansByIdsResponseError)(nil),   // 61: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
+	(*GetPreAppStartSpansByIdsResponse)(nil),        // 62: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+	(*GetAllGlobalSpanIdsRequest)(nil),              // 63: tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+	(*GetAllGlobalSpanIdsResponseSuccess)(nil),      // 64: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+	(*GetAllGlobalSpanIdsResponseError)(nil),        // 65: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+	(*GetAllGlobalSpanIdsResponse)(nil),             // 66: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+	(*GetGlobalSpansByIdsRequest)(nil),              // 67: tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+	(*GetGlobalSpansByIdsResponseSuccess)(nil),      // 68: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+	(*GetGlobalSpansByIdsResponseError)(nil),        // 69: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+	(*GetGlobalSpansByIdsResponse)(nil),             // 70: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+	nil,                                             // 71: tusk.drift.backend.v1.TraceTestCoverageData.CoveredLinesByFileEntry
+	nil,                                             // 72: tusk.drift.backend.v1.CoverageBaseline.CoverableLinesByFileEntry
+	nil,                                             // 73: tusk.drift.backend.v1.CoverageBaseline.StartupCoveredLinesByFileEntry
+	(*core.Span)(nil),                               // 74: tusk.drift.core.v1.Span
+	(*core.MatchLevel)(nil),                         // 75: tusk.drift.core.v1.MatchLevel
 }
 var file_backend_test_run_service_proto_depIdxs = []int32{
-	67, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	74, // 0: tusk.drift.backend.v1.GetGlobalSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	4,  // 1: tusk.drift.backend.v1.GetGlobalSpansResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseSuccess
 	5,  // 2: tusk.drift.backend.v1.GetGlobalSpansResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansResponseError
-	67, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	74, // 3: tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
 	8,  // 4: tusk.drift.backend.v1.GetPreAppStartSpansResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseSuccess
 	9,  // 5: tusk.drift.backend.v1.GetPreAppStartSpansResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansResponseError
 	12, // 6: tusk.drift.backend.v1.CreateDriftRunResponse.success:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseSuccess
 	13, // 7: tusk.drift.backend.v1.CreateDriftRunResponse.error:type_name -> tusk.drift.backend.v1.CreateDriftRunResponseError
-	67, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
+	74, // 8: tusk.drift.backend.v1.TraceTest.spans:type_name -> tusk.drift.core.v1.Span
 	0,  // 9: tusk.drift.backend.v1.TraceTest.status:type_name -> tusk.drift.backend.v1.TraceTestStatus
 	16, // 10: tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
 	17, // 11: tusk.drift.backend.v1.GetDriftRunTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponseSuccess
@@ -4552,70 +4826,79 @@ var file_backend_test_run_service_proto_depIdxs = []int32{
 	16, // 17: tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
 	25, // 18: tusk.drift.backend.v1.GetAllTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseSuccess
 	26, // 19: tusk.drift.backend.v1.GetAllTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestsResponseError
-	67, // 20: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
-	68, // 21: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
+	74, // 20: tusk.drift.backend.v1.TraceTestSpanResult.replay_span:type_name -> tusk.drift.core.v1.Span
+	75, // 21: tusk.drift.backend.v1.TraceTestSpanResult.match_level:type_name -> tusk.drift.core.v1.MatchLevel
 	28, // 22: tusk.drift.backend.v1.TraceTestSpanResult.deviations:type_name -> tusk.drift.backend.v1.Deviation
 	1,  // 23: tusk.drift.backend.v1.TraceTestResult.test_failure_reason:type_name -> tusk.drift.backend.v1.TraceTestFailureReason
 	29, // 24: tusk.drift.backend.v1.TraceTestResult.span_results:type_name -> tusk.drift.backend.v1.TraceTestSpanResult
-	30, // 25: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
-	32, // 26: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
-	33, // 27: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
-	2,  // 28: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
-	36, // 29: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
-	37, // 30: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
-	16, // 31: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	40, // 32: tusk.drift.backend.v1.GetValidationTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
-	41, // 33: tusk.drift.backend.v1.GetValidationTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseError
-	44, // 34: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
-	45, // 35: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
-	16, // 36: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
-	48, // 37: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
-	49, // 38: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
-	52, // 39: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
-	53, // 40: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
-	67, // 41: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	56, // 42: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
-	57, // 43: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
-	60, // 44: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
-	61, // 45: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
-	67, // 46: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
-	64, // 47: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
-	65, // 48: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
-	3,  // 49: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
-	7,  // 50: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
-	11, // 51: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
-	15, // 52: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
-	24, // 53: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
-	20, // 54: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
-	31, // 55: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
-	35, // 56: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
-	39, // 57: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
-	43, // 58: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
-	47, // 59: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
-	51, // 60: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
-	55, // 61: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
-	59, // 62: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:input_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
-	63, // 63: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:input_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
-	6,  // 64: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
-	10, // 65: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
-	14, // 66: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
-	19, // 67: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
-	27, // 68: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
-	21, // 69: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
-	34, // 70: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
-	38, // 71: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
-	42, // 72: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
-	46, // 73: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
-	50, // 74: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
-	54, // 75: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
-	58, // 76: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
-	62, // 77: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:output_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
-	66, // 78: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:output_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
-	64, // [64:79] is the sub-list for method output_type
-	49, // [49:64] is the sub-list for method input_type
-	49, // [49:49] is the sub-list for extension type_name
-	49, // [49:49] is the sub-list for extension extendee
-	0,  // [0:49] is the sub-list for field type_name
+	31, // 25: tusk.drift.backend.v1.TraceTestResult.coverage_data:type_name -> tusk.drift.backend.v1.TraceTestCoverageData
+	71, // 26: tusk.drift.backend.v1.TraceTestCoverageData.covered_lines_by_file:type_name -> tusk.drift.backend.v1.TraceTestCoverageData.CoveredLinesByFileEntry
+	33, // 27: tusk.drift.backend.v1.FileLineRanges.ranges:type_name -> tusk.drift.backend.v1.LineRange
+	30, // 28: tusk.drift.backend.v1.UploadTraceTestResultsRequest.trace_test_results:type_name -> tusk.drift.backend.v1.TraceTestResult
+	35, // 29: tusk.drift.backend.v1.UploadTraceTestResultsResponse.success:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseSuccess
+	36, // 30: tusk.drift.backend.v1.UploadTraceTestResultsResponse.error:type_name -> tusk.drift.backend.v1.UploadTraceTestResultsResponseError
+	2,  // 31: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.ci_status:type_name -> tusk.drift.backend.v1.DriftRunCIStatus
+	39, // 32: tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest.coverage_baseline:type_name -> tusk.drift.backend.v1.CoverageBaseline
+	72, // 33: tusk.drift.backend.v1.CoverageBaseline.coverable_lines_by_file:type_name -> tusk.drift.backend.v1.CoverageBaseline.CoverableLinesByFileEntry
+	73, // 34: tusk.drift.backend.v1.CoverageBaseline.startup_covered_lines_by_file:type_name -> tusk.drift.backend.v1.CoverageBaseline.StartupCoveredLinesByFileEntry
+	40, // 35: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.success:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseSuccess
+	41, // 36: tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse.error:type_name -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponseError
+	16, // 37: tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	44, // 38: tusk.drift.backend.v1.GetValidationTraceTestsResponse.success:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseSuccess
+	45, // 39: tusk.drift.backend.v1.GetValidationTraceTestsResponse.error:type_name -> tusk.drift.backend.v1.GetValidationTraceTestsResponseError
+	48, // 40: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseSuccess
+	49, // 41: tusk.drift.backend.v1.GetAllTraceTestIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllTraceTestIdsResponseError
+	16, // 42: tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess.trace_tests:type_name -> tusk.drift.backend.v1.TraceTest
+	52, // 43: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseSuccess
+	53, // 44: tusk.drift.backend.v1.GetTraceTestsByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetTraceTestsByIdsResponseError
+	56, // 45: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseSuccess
+	57, // 46: tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponseError
+	74, // 47: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	60, // 48: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseSuccess
+	61, // 49: tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponseError
+	64, // 50: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.success:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseSuccess
+	65, // 51: tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse.error:type_name -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponseError
+	74, // 52: tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess.spans:type_name -> tusk.drift.core.v1.Span
+	68, // 53: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.success:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseSuccess
+	69, // 54: tusk.drift.backend.v1.GetGlobalSpansByIdsResponse.error:type_name -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponseError
+	32, // 55: tusk.drift.backend.v1.TraceTestCoverageData.CoveredLinesByFileEntry.value:type_name -> tusk.drift.backend.v1.FileLineRanges
+	32, // 56: tusk.drift.backend.v1.CoverageBaseline.CoverableLinesByFileEntry.value:type_name -> tusk.drift.backend.v1.FileLineRanges
+	32, // 57: tusk.drift.backend.v1.CoverageBaseline.StartupCoveredLinesByFileEntry.value:type_name -> tusk.drift.backend.v1.FileLineRanges
+	3,  // 58: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:input_type -> tusk.drift.backend.v1.GetGlobalSpansRequest
+	7,  // 59: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansRequest
+	11, // 60: tusk.drift.backend.v1.TestRunService.CreateDriftRun:input_type -> tusk.drift.backend.v1.CreateDriftRunRequest
+	15, // 61: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:input_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsRequest
+	24, // 62: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:input_type -> tusk.drift.backend.v1.GetAllTraceTestsRequest
+	20, // 63: tusk.drift.backend.v1.TestRunService.GetTraceTest:input_type -> tusk.drift.backend.v1.GetTraceTestRequest
+	34, // 64: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:input_type -> tusk.drift.backend.v1.UploadTraceTestResultsRequest
+	38, // 65: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:input_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusRequest
+	43, // 66: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:input_type -> tusk.drift.backend.v1.GetValidationTraceTestsRequest
+	47, // 67: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:input_type -> tusk.drift.backend.v1.GetAllTraceTestIdsRequest
+	51, // 68: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:input_type -> tusk.drift.backend.v1.GetTraceTestsByIdsRequest
+	55, // 69: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:input_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsRequest
+	59, // 70: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:input_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsRequest
+	63, // 71: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:input_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsRequest
+	67, // 72: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:input_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsRequest
+	6,  // 73: tusk.drift.backend.v1.TestRunService.GetGlobalSpans:output_type -> tusk.drift.backend.v1.GetGlobalSpansResponse
+	10, // 74: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpans:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansResponse
+	14, // 75: tusk.drift.backend.v1.TestRunService.CreateDriftRun:output_type -> tusk.drift.backend.v1.CreateDriftRunResponse
+	19, // 76: tusk.drift.backend.v1.TestRunService.GetDriftRunTraceTests:output_type -> tusk.drift.backend.v1.GetDriftRunTraceTestsResponse
+	27, // 77: tusk.drift.backend.v1.TestRunService.GetAllTraceTests:output_type -> tusk.drift.backend.v1.GetAllTraceTestsResponse
+	21, // 78: tusk.drift.backend.v1.TestRunService.GetTraceTest:output_type -> tusk.drift.backend.v1.GetTraceTestResponse
+	37, // 79: tusk.drift.backend.v1.TestRunService.UploadTraceTestResults:output_type -> tusk.drift.backend.v1.UploadTraceTestResultsResponse
+	42, // 80: tusk.drift.backend.v1.TestRunService.UpdateDriftRunCIStatus:output_type -> tusk.drift.backend.v1.UpdateDriftRunCIStatusResponse
+	46, // 81: tusk.drift.backend.v1.TestRunService.GetValidationTraceTests:output_type -> tusk.drift.backend.v1.GetValidationTraceTestsResponse
+	50, // 82: tusk.drift.backend.v1.TestRunService.GetAllTraceTestIds:output_type -> tusk.drift.backend.v1.GetAllTraceTestIdsResponse
+	54, // 83: tusk.drift.backend.v1.TestRunService.GetTraceTestsByIds:output_type -> tusk.drift.backend.v1.GetTraceTestsByIdsResponse
+	58, // 84: tusk.drift.backend.v1.TestRunService.GetAllPreAppStartSpanIds:output_type -> tusk.drift.backend.v1.GetAllPreAppStartSpanIdsResponse
+	62, // 85: tusk.drift.backend.v1.TestRunService.GetPreAppStartSpansByIds:output_type -> tusk.drift.backend.v1.GetPreAppStartSpansByIdsResponse
+	66, // 86: tusk.drift.backend.v1.TestRunService.GetAllGlobalSpanIds:output_type -> tusk.drift.backend.v1.GetAllGlobalSpanIdsResponse
+	70, // 87: tusk.drift.backend.v1.TestRunService.GetGlobalSpansByIds:output_type -> tusk.drift.backend.v1.GetGlobalSpansByIdsResponse
+	73, // [73:88] is the sub-list for method output_type
+	58, // [58:73] is the sub-list for method input_type
+	58, // [58:58] is the sub-list for extension type_name
+	58, // [58:58] is the sub-list for extension extendee
+	0,  // [0:58] is the sub-list for field type_name
 }
 
 func init() { file_backend_test_run_service_proto_init() }
@@ -4658,42 +4941,42 @@ func file_backend_test_run_service_proto_init() {
 	}
 	file_backend_test_run_service_proto_msgTypes[26].OneofWrappers = []any{}
 	file_backend_test_run_service_proto_msgTypes[27].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[31].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[34].OneofWrappers = []any{
 		(*UploadTraceTestResultsResponse_Success)(nil),
 		(*UploadTraceTestResultsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[32].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[35].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[35].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[39].OneofWrappers = []any{
 		(*UpdateDriftRunCIStatusResponse_Success)(nil),
 		(*UpdateDriftRunCIStatusResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[36].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[37].OneofWrappers = []any{}
-	file_backend_test_run_service_proto_msgTypes[39].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[40].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[41].OneofWrappers = []any{}
+	file_backend_test_run_service_proto_msgTypes[43].OneofWrappers = []any{
 		(*GetValidationTraceTestsResponse_Success)(nil),
 		(*GetValidationTraceTestsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[43].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[47].OneofWrappers = []any{
 		(*GetAllTraceTestIdsResponse_Success)(nil),
 		(*GetAllTraceTestIdsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[47].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[51].OneofWrappers = []any{
 		(*GetTraceTestsByIdsResponse_Success)(nil),
 		(*GetTraceTestsByIdsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[51].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[55].OneofWrappers = []any{
 		(*GetAllPreAppStartSpanIdsResponse_Success)(nil),
 		(*GetAllPreAppStartSpanIdsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[55].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[59].OneofWrappers = []any{
 		(*GetPreAppStartSpansByIdsResponse_Success)(nil),
 		(*GetPreAppStartSpansByIdsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[59].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[63].OneofWrappers = []any{
 		(*GetAllGlobalSpanIdsResponse_Success)(nil),
 		(*GetAllGlobalSpanIdsResponse_Error)(nil),
 	}
-	file_backend_test_run_service_proto_msgTypes[63].OneofWrappers = []any{
+	file_backend_test_run_service_proto_msgTypes[67].OneofWrappers = []any{
 		(*GetGlobalSpansByIdsResponse_Success)(nil),
 		(*GetGlobalSpansByIdsResponse_Error)(nil),
 	}
@@ -4703,7 +4986,7 @@ func file_backend_test_run_service_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_backend_test_run_service_proto_rawDesc), len(file_backend_test_run_service_proto_rawDesc)),
 			NumEnums:      3,
-			NumMessages:   64,
+			NumMessages:   71,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

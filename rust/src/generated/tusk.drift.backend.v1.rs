@@ -743,6 +743,34 @@ pub struct TraceTestResult {
     pub replay_server_span_id: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(message, repeated, tag = "7")]
     pub span_results: ::prost::alloc::vec::Vec<TraceTestSpanResult>,
+    /// Per-test coverage data (only set when coverage is enabled)
+    #[prost(message, optional, tag = "8")]
+    pub coverage_data: ::core::option::Option<TraceTestCoverageData>,
+}
+/// Per-test coverage: lines covered by a single trace test
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TraceTestCoverageData {
+    #[prost(int32, tag = "1")]
+    pub total_covered_lines: i32,
+    #[prost(map = "string, message", tag = "2")]
+    pub covered_lines_by_file: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        FileLineRanges,
+    >,
+}
+/// Compressed line ranges: \[[1,50\],[60,200]] stored as repeated LineRange
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileLineRanges {
+    #[prost(message, repeated, tag = "1")]
+    pub ranges: ::prost::alloc::vec::Vec<LineRange>,
+}
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct LineRange {
+    #[prost(int32, tag = "1")]
+    pub start: i32,
+    /// inclusive
+    #[prost(int32, tag = "2")]
+    pub end: i32,
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UploadTraceTestResultsRequest {
@@ -782,7 +810,7 @@ pub mod upload_trace_test_results_response {
         Error(super::UploadTraceTestResultsResponseError),
     }
 }
-#[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct UpdateDriftRunCiStatusRequest {
     #[prost(string, tag = "1")]
     pub drift_run_id: ::prost::alloc::string::String,
@@ -790,6 +818,30 @@ pub struct UpdateDriftRunCiStatusRequest {
     pub ci_status: i32,
     #[prost(string, optional, tag = "3")]
     pub ci_status_message: ::core::option::Option<::prost::alloc::string::String>,
+    /// Coverage baseline (only set when coverage was enabled for this run)
+    #[prost(message, optional, tag = "4")]
+    pub coverage_baseline: ::core::option::Option<CoverageBaseline>,
+}
+/// Coverage baseline: all coverable lines in the codebase (denominator for coverage %)
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CoverageBaseline {
+    #[prost(string, tag = "1")]
+    pub commit_sha: ::prost::alloc::string::String,
+    #[prost(int32, tag = "2")]
+    pub total_coverable_lines: i32,
+    /// All coverable lines per file (denominator)
+    #[prost(map = "string, message", tag = "3")]
+    pub coverable_lines_by_file: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        FileLineRanges,
+    >,
+    /// Lines covered at startup (module loading, decorators, DI registration).
+    /// Included in the aggregate numerator to match industry standard (Istanbul, NYC, etc.).
+    #[prost(map = "string, message", tag = "4")]
+    pub startup_covered_lines_by_file: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        FileLineRanges,
+    >,
 }
 #[derive(Clone, PartialEq, Eq, Hash, ::prost::Message)]
 pub struct UpdateDriftRunCiStatusResponseSuccess {

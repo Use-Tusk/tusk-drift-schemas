@@ -287,6 +287,25 @@ message TraceTestResult {
   optional string replay_server_span_id = 6;
 
   repeated TraceTestSpanResult span_results = 7;
+
+  // Per-test coverage data (only set when coverage is enabled)
+  optional TraceTestCoverageData coverage_data = 8;
+}
+
+// Per-test coverage: lines covered by a single trace test
+message TraceTestCoverageData {
+  int32 total_covered_lines = 1;
+  map<string, FileLineRanges> covered_lines_by_file = 2;
+}
+
+// Compressed line ranges: [[1,50],[60,200]] stored as repeated LineRange
+message FileLineRanges {
+  repeated LineRange ranges = 1;
+}
+
+message LineRange {
+  int32 start = 1;
+  int32 end = 2; // inclusive
 }
 
 message UploadTraceTestResultsRequest {
@@ -324,6 +343,20 @@ message UpdateDriftRunCIStatusRequest {
   string drift_run_id = 1;
   DriftRunCIStatus ci_status = 2;
   optional string ci_status_message = 3;
+
+  // Coverage baseline (only set when coverage was enabled for this run)
+  optional CoverageBaseline coverage_baseline = 4;
+}
+
+// Coverage baseline: all coverable lines in the codebase (denominator for coverage %)
+message CoverageBaseline {
+  string commit_sha = 1;
+  int32 total_coverable_lines = 2;
+  // All coverable lines per file (denominator)
+  map<string, FileLineRanges> coverable_lines_by_file = 3;
+  // Lines covered at startup (module loading, decorators, DI registration).
+  // Included in the aggregate numerator to match industry standard (Istanbul, NYC, etc.).
+  map<string, FileLineRanges> startup_covered_lines_by_file = 4;
 }
 
 message UpdateDriftRunCIStatusResponseSuccess {

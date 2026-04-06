@@ -497,6 +497,35 @@ class TraceTestResult(betterproto.Message):
     replay_trace_id: Optional[str] = betterproto.string_field(5, optional=True)
     replay_server_span_id: Optional[str] = betterproto.string_field(6, optional=True)
     span_results: List["TraceTestSpanResult"] = betterproto.message_field(7)
+    coverage_data: Optional["TraceTestCoverageData"] = betterproto.message_field(
+        8, optional=True
+    )
+    """Per-test coverage data (only set when coverage is enabled)"""
+
+
+@dataclass(eq=False, repr=False)
+class TraceTestCoverageData(betterproto.Message):
+    """Per-test coverage: lines covered by a single trace test"""
+
+    total_covered_lines: int = betterproto.int32_field(1)
+    covered_lines_by_file: Dict[str, "FileLineRanges"] = betterproto.map_field(
+        2, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+
+
+@dataclass(eq=False, repr=False)
+class FileLineRanges(betterproto.Message):
+    """
+    Compressed line ranges: [[1,50],[60,200]] stored as repeated LineRange
+    """
+
+    ranges: List["LineRange"] = betterproto.message_field(1)
+
+
+@dataclass(eq=False, repr=False)
+class LineRange(betterproto.Message):
+    start: int = betterproto.int32_field(1)
+    end: int = betterproto.int32_field(2)
 
 
 @dataclass(eq=False, repr=False)
@@ -533,6 +562,32 @@ class UpdateDriftRunCiStatusRequest(betterproto.Message):
     drift_run_id: str = betterproto.string_field(1)
     ci_status: "DriftRunCiStatus" = betterproto.enum_field(2)
     ci_status_message: Optional[str] = betterproto.string_field(3, optional=True)
+    coverage_baseline: Optional["CoverageBaseline"] = betterproto.message_field(
+        4, optional=True
+    )
+    """Coverage baseline (only set when coverage was enabled for this run)"""
+
+
+@dataclass(eq=False, repr=False)
+class CoverageBaseline(betterproto.Message):
+    """
+    Coverage baseline: all coverable lines in the codebase (denominator for coverage %)
+    """
+
+    commit_sha: str = betterproto.string_field(1)
+    total_coverable_lines: int = betterproto.int32_field(2)
+    coverable_lines_by_file: Dict[str, "FileLineRanges"] = betterproto.map_field(
+        3, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+    """All coverable lines per file (denominator)"""
+
+    startup_covered_lines_by_file: Dict[str, "FileLineRanges"] = betterproto.map_field(
+        4, betterproto.TYPE_STRING, betterproto.TYPE_MESSAGE
+    )
+    """
+    Lines covered at startup (module loading, decorators, DI registration).
+     Included in the aggregate numerator to match industry standard (Istanbul, NYC, etc.).
+    """
 
 
 @dataclass(eq=False, repr=False)

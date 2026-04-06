@@ -691,7 +691,7 @@ pub struct SdkMessage {
     pub r#type: i32,
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    #[prost(oneof = "sdk_message::Payload", tags = "3, 4, 5, 6, 7, 8")]
+    #[prost(oneof = "sdk_message::Payload", tags = "3, 4, 5, 6, 7, 8, 9")]
     pub payload: ::core::option::Option<sdk_message::Payload>,
 }
 /// Nested message and enum types in `SDKMessage`.
@@ -710,6 +710,8 @@ pub mod sdk_message {
         EnvVarRequest(super::EnvVarRequest),
         #[prost(message, tag = "8")]
         SetTimeTravelResponse(super::SetTimeTravelResponse),
+        #[prost(message, tag = "9")]
+        CoverageSnapshotResponse(super::CoverageSnapshotResponse),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -718,7 +720,7 @@ pub struct CliMessage {
     pub r#type: i32,
     #[prost(string, tag = "2")]
     pub request_id: ::prost::alloc::string::String,
-    #[prost(oneof = "cli_message::Payload", tags = "3, 4, 5, 6, 7")]
+    #[prost(oneof = "cli_message::Payload", tags = "3, 4, 5, 6, 7, 8")]
     pub payload: ::core::option::Option<cli_message::Payload>,
 }
 /// Nested message and enum types in `CLIMessage`.
@@ -735,6 +737,8 @@ pub mod cli_message {
         EnvVarResponse(super::EnvVarResponse),
         #[prost(message, tag = "7")]
         SetTimeTravelRequest(super::SetTimeTravelRequest),
+        #[prost(message, tag = "8")]
+        CoverageSnapshotRequest(super::CoverageSnapshotRequest),
     }
 }
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -818,6 +822,59 @@ pub struct SetTimeTravelResponse {
     #[prost(string, tag = "2")]
     pub error: ::prost::alloc::string::String,
 }
+/// Request from CLI to SDK to take a coverage snapshot.
+/// CLI sends this between tests to collect per-test coverage data.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct CoverageSnapshotRequest {
+    /// If true, returns ALL coverable lines (including uncovered at count=0)
+    /// for computing the total coverage denominator.
+    /// If false, returns only lines executed since the last snapshot (per-test data).
+    #[prost(bool, tag = "1")]
+    pub baseline: bool,
+}
+/// Response from SDK with coverage data.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CoverageSnapshotResponse {
+    #[prost(bool, tag = "1")]
+    pub success: bool,
+    #[prost(string, tag = "2")]
+    pub error: ::prost::alloc::string::String,
+    /// Per-file coverage data. File paths are absolute (CLI normalizes to repo-relative).
+    #[prost(map = "string, message", tag = "3")]
+    pub coverage: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        FileCoverageData,
+    >,
+}
+/// Coverage data for a single file.
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct FileCoverageData {
+    /// Line-level coverage: lineNumber (as string) -> execution count.
+    /// count > 0 = covered, count = 0 = coverable but uncovered (baseline only).
+    #[prost(map = "string, int32", tag = "1")]
+    pub lines: ::std::collections::HashMap<::prost::alloc::string::String, i32>,
+    /// Branch coverage aggregate for this file.
+    #[prost(int32, tag = "2")]
+    pub total_branches: i32,
+    #[prost(int32, tag = "3")]
+    pub covered_branches: i32,
+    /// Per-line branch detail (e.g., "line 5: 1/2 branches taken").
+    #[prost(map = "string, message", tag = "4")]
+    pub branches: ::std::collections::HashMap<
+        ::prost::alloc::string::String,
+        BranchInfo,
+    >,
+}
+/// Branch coverage at a specific line.
+#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
+pub struct BranchInfo {
+    /// total branches at this line (usually 2 for if/else)
+    #[prost(int32, tag = "1")]
+    pub total: i32,
+    /// branches with count > 0
+    #[prost(int32, tag = "2")]
+    pub covered: i32,
+}
 /// SDK runtime environment
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
 #[repr(i32)]
@@ -858,6 +915,7 @@ pub enum MessageType {
     Alert = 4,
     EnvVarRequest = 5,
     SetTimeTravel = 6,
+    CoverageSnapshot = 7,
 }
 impl MessageType {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -873,6 +931,7 @@ impl MessageType {
             Self::Alert => "MESSAGE_TYPE_ALERT",
             Self::EnvVarRequest => "MESSAGE_TYPE_ENV_VAR_REQUEST",
             Self::SetTimeTravel => "MESSAGE_TYPE_SET_TIME_TRAVEL",
+            Self::CoverageSnapshot => "MESSAGE_TYPE_COVERAGE_SNAPSHOT",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
@@ -885,6 +944,7 @@ impl MessageType {
             "MESSAGE_TYPE_ALERT" => Some(Self::Alert),
             "MESSAGE_TYPE_ENV_VAR_REQUEST" => Some(Self::EnvVarRequest),
             "MESSAGE_TYPE_SET_TIME_TRAVEL" => Some(Self::SetTimeTravel),
+            "MESSAGE_TYPE_COVERAGE_SNAPSHOT" => Some(Self::CoverageSnapshot),
             _ => None,
         }
     }
