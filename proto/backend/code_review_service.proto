@@ -1,0 +1,139 @@
+syntax = "proto3";
+package tusk.drift.backend.v1;
+
+option go_package = "./backend";
+
+service CodeReviewService {
+  rpc CreateLocalCodeReviewRun(CreateLocalCodeReviewRunRequest) returns (CreateLocalCodeReviewRunResponse);
+
+  // Poll status + display strings for a run. Also serves as the heartbeat
+  rpc GetCodeReviewRunStatus(GetCodeReviewRunStatusRequest) returns (GetCodeReviewRunStatusResponse);
+
+  // User-initiated cancellation (Ctrl+C in the CLI)
+  rpc CancelCodeReviewRun(CancelCodeReviewRunRequest) returns (CancelCodeReviewRunResponse);
+}
+
+// =============================================================================
+// Shared enums
+// =============================================================================
+
+enum CodeReviewRunStatus {
+  CODE_REVIEW_RUN_STATUS_UNSPECIFIED = 0;
+  CODE_REVIEW_RUN_STATUS_PENDING = 1;
+  CODE_REVIEW_RUN_STATUS_RUNNING = 2;
+  CODE_REVIEW_RUN_STATUS_SUCCESS = 3;
+  CODE_REVIEW_RUN_STATUS_FAILED = 4;
+  CODE_REVIEW_RUN_STATUS_CANCELLED = 5;
+}
+
+// =============================================================================
+// CreateLocalCodeReviewRun
+// =============================================================================
+
+message CreateLocalCodeReviewRunRequest {
+  string owner_name = 1;
+  string repo_name = 2;
+
+  // Commit the patch applies on top of
+  string base_sha = 3;
+  bytes patch = 4;
+  optional string min_severity = 5;
+  string cli_version = 6;
+}
+
+message CreateLocalCodeReviewRunResponseSuccess {
+  string run_id = 1;
+}
+
+enum CreateLocalCodeReviewRunResponseErrorCode {
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND = 3;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID = 4;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED = 5;
+}
+
+message CreateLocalCodeReviewRunResponseError {
+  CreateLocalCodeReviewRunResponseErrorCode code = 1;
+  string message = 2;
+  // For RATE_LIMITED: ISO-8601 timestamp at which the next run will be
+  // allowed. CLI shows this so users know whether to wait.
+  optional string retry_after_iso8601 = 3;
+}
+
+message CreateLocalCodeReviewRunResponse {
+  oneof response {
+    CreateLocalCodeReviewRunResponseSuccess success = 1;
+    CreateLocalCodeReviewRunResponseError error = 2;
+  }
+}
+
+// =============================================================================
+// GetCodeReviewRunStatus
+// =============================================================================
+
+message GetCodeReviewRunStatusRequest {
+  string run_id = 1;
+}
+
+message GetCodeReviewRunStatusResponseSuccess {
+  string run_id = 1;
+  CodeReviewRunStatus status = 2;
+
+  // Backend owns all rendering. CLI writes this verbatim.
+  string display_message = 3;
+
+  // CLI writes this verbatim to stdout in json mode
+  optional string display_json = 4;
+}
+
+enum GetCodeReviewRunStatusResponseErrorCode {
+  GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+  GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_RUN_NOT_FOUND = 3;
+}
+
+message GetCodeReviewRunStatusResponseError {
+  GetCodeReviewRunStatusResponseErrorCode code = 1;
+  string message = 2;
+}
+
+message GetCodeReviewRunStatusResponse {
+  oneof response {
+    GetCodeReviewRunStatusResponseSuccess success = 1;
+    GetCodeReviewRunStatusResponseError error = 2;
+  }
+}
+
+// =============================================================================
+// CancelCodeReviewRun
+// =============================================================================
+
+message CancelCodeReviewRunRequest {
+  string run_id = 1;
+}
+
+message CancelCodeReviewRunResponseSuccess {
+  CodeReviewRunStatus status = 1;
+}
+
+enum CancelCodeReviewRunResponseErrorCode {
+  CANCEL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_UNSPECIFIED = 0;
+  CANCEL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_INTERNAL = 1;
+  CANCEL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NOT_AUTHORIZED = 2;
+  CANCEL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RUN_NOT_FOUND = 3;
+}
+
+message CancelCodeReviewRunResponseError {
+  CancelCodeReviewRunResponseErrorCode code = 1;
+  string message = 2;
+}
+
+message CancelCodeReviewRunResponse {
+  oneof response {
+    CancelCodeReviewRunResponseSuccess success = 1;
+    CancelCodeReviewRunResponseError error = 2;
+  }
+}
