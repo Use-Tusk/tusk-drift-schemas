@@ -24,6 +24,14 @@
       "import": "./dist/backend/client_service.client.js",
       "require": "./dist/backend/client_service.client.cjs"
     },
+    "./backend/code_review_service": {
+      "import": "./dist/backend/code_review_service.js",
+      "require": "./dist/backend/code_review_service.cjs"
+    },
+    "./backend/code_review_service.client": {
+      "import": "./dist/backend/code_review_service.client.js",
+      "require": "./dist/backend/code_review_service.client.cjs"
+    },
     "./backend/span_export_service": {
       "import": "./dist/backend/span_export_service.js",
       "require": "./dist/backend/span_export_service.cjs"
