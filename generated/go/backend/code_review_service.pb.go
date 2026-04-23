@@ -88,6 +88,7 @@ const (
 	CreateLocalCodeReviewRunResponseErrorCode_CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND CreateLocalCodeReviewRunResponseErrorCode = 3
 	CreateLocalCodeReviewRunResponseErrorCode_CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID  CreateLocalCodeReviewRunResponseErrorCode = 4
 	CreateLocalCodeReviewRunResponseErrorCode_CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED   CreateLocalCodeReviewRunResponseErrorCode = 5
+	CreateLocalCodeReviewRunResponseErrorCode_CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT        CreateLocalCodeReviewRunResponseErrorCode = 6
 )
 
 // Enum value maps for CreateLocalCodeReviewRunResponseErrorCode.
@@ -99,6 +100,7 @@ var (
 		3: "CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND",
 		4: "CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID",
 		5: "CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED",
+		6: "CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT",
 	}
 	CreateLocalCodeReviewRunResponseErrorCode_value = map[string]int32{
 		"CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_UNSPECIFIED":    0,
@@ -107,6 +109,7 @@ var (
 		"CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND": 3,
 		"CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID":  4,
 		"CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED":   5,
+		"CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT":        6,
 	}
 )
 
@@ -245,11 +248,18 @@ type CreateLocalCodeReviewRunRequest struct {
 	state     protoimpl.MessageState `protogen:"open.v1"`
 	OwnerName string                 `protobuf:"bytes,1,opt,name=owner_name,json=ownerName,proto3" json:"owner_name,omitempty"`
 	RepoName  string                 `protobuf:"bytes,2,opt,name=repo_name,json=repoName,proto3" json:"repo_name,omitempty"`
-	// Commit the patch applies on top of
-	BaseSha       string  `protobuf:"bytes,3,opt,name=base_sha,json=baseSha,proto3" json:"base_sha,omitempty"`
-	Patch         []byte  `protobuf:"bytes,4,opt,name=patch,proto3" json:"patch,omitempty"`
-	MinSeverity   *string `protobuf:"bytes,5,opt,name=min_severity,json=minSeverity,proto3,oneof" json:"min_severity,omitempty"`
-	CliVersion    string  `protobuf:"bytes,6,opt,name=cli_version,json=cliVersion,proto3" json:"cli_version,omitempty"`
+	// Most recent commit on this branch reachable on origin
+	LastPushedSha string `protobuf:"bytes,3,opt,name=last_pushed_sha,json=lastPushedSha,proto3" json:"last_pushed_sha,omitempty"`
+	// Diff between `last_pushed_sha` and the working tree (unpushed commits
+	// + uncommitted changes only)
+	Patch       []byte  `protobuf:"bytes,4,opt,name=patch,proto3" json:"patch,omitempty"`
+	MinSeverity *string `protobuf:"bytes,5,opt,name=min_severity,json=minSeverity,proto3,oneof" json:"min_severity,omitempty"`
+	CliVersion  string  `protobuf:"bytes,6,opt,name=cli_version,json=cliVersion,proto3" json:"cli_version,omitempty"`
+	// Current branch name. Backend uses it to look up the open PR for seat
+	// resolution, `base_branch` defaulting, and PR context.
+	BranchName string `protobuf:"bytes,7,opt,name=branch_name,json=branchName,proto3" json:"branch_name,omitempty"`
+	// The user's actual local HEAD commit
+	LocalHeadSha  string `protobuf:"bytes,8,opt,name=local_head_sha,json=localHeadSha,proto3" json:"local_head_sha,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -298,9 +308,9 @@ func (x *CreateLocalCodeReviewRunRequest) GetRepoName() string {
 	return ""
 }
 
-func (x *CreateLocalCodeReviewRunRequest) GetBaseSha() string {
+func (x *CreateLocalCodeReviewRunRequest) GetLastPushedSha() string {
 	if x != nil {
-		return x.BaseSha
+		return x.LastPushedSha
 	}
 	return ""
 }
@@ -322,6 +332,20 @@ func (x *CreateLocalCodeReviewRunRequest) GetMinSeverity() string {
 func (x *CreateLocalCodeReviewRunRequest) GetCliVersion() string {
 	if x != nil {
 		return x.CliVersion
+	}
+	return ""
+}
+
+func (x *CreateLocalCodeReviewRunRequest) GetBranchName() string {
+	if x != nil {
+		return x.BranchName
+	}
+	return ""
+}
+
+func (x *CreateLocalCodeReviewRunRequest) GetLocalHeadSha() string {
+	if x != nil {
+		return x.LocalHeadSha
 	}
 	return ""
 }
@@ -988,16 +1012,19 @@ var File_backend_code_review_service_proto protoreflect.FileDescriptor
 
 const file_backend_code_review_service_proto_rawDesc = "" +
 	"\n" +
-	"!backend/code_review_service.proto\x12\x15tusk.drift.backend.v1\"\xe8\x01\n" +
+	"!backend/code_review_service.proto\x12\x15tusk.drift.backend.v1\"\xbc\x02\n" +
 	"\x1fCreateLocalCodeReviewRunRequest\x12\x1d\n" +
 	"\n" +
 	"owner_name\x18\x01 \x01(\tR\townerName\x12\x1b\n" +
-	"\trepo_name\x18\x02 \x01(\tR\brepoName\x12\x19\n" +
-	"\bbase_sha\x18\x03 \x01(\tR\abaseSha\x12\x14\n" +
+	"\trepo_name\x18\x02 \x01(\tR\brepoName\x12&\n" +
+	"\x0flast_pushed_sha\x18\x03 \x01(\tR\rlastPushedSha\x12\x14\n" +
 	"\x05patch\x18\x04 \x01(\fR\x05patch\x12&\n" +
 	"\fmin_severity\x18\x05 \x01(\tH\x00R\vminSeverity\x88\x01\x01\x12\x1f\n" +
 	"\vcli_version\x18\x06 \x01(\tR\n" +
-	"cliVersionB\x0f\n" +
+	"cliVersion\x12\x1f\n" +
+	"\vbranch_name\x18\a \x01(\tR\n" +
+	"branchName\x12$\n" +
+	"\x0elocal_head_sha\x18\b \x01(\tR\flocalHeadShaB\x0f\n" +
 	"\r_min_severity\"@\n" +
 	"'CreateLocalCodeReviewRunResponseSuccess\x12\x15\n" +
 	"\x06run_id\x18\x01 \x01(\tR\x05runId\"\xe4\x01\n" +
@@ -1045,14 +1072,15 @@ const file_backend_code_review_service_proto_rawDesc = "" +
 	"\x1eCODE_REVIEW_RUN_STATUS_RUNNING\x10\x02\x12\"\n" +
 	"\x1eCODE_REVIEW_RUN_STATUS_SUCCESS\x10\x03\x12!\n" +
 	"\x1dCODE_REVIEW_RUN_STATUS_FAILED\x10\x04\x12$\n" +
-	" CODE_REVIEW_RUN_STATUS_CANCELLED\x10\x05*\xbd\x03\n" +
+	" CODE_REVIEW_RUN_STATUS_CANCELLED\x10\x05*\xfb\x03\n" +
 	")CreateLocalCodeReviewRunResponseErrorCode\x12@\n" +
 	"<CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_UNSPECIFIED\x10\x00\x12=\n" +
 	"9CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x12C\n" +
 	"?CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NOT_AUTHORIZED\x10\x02\x12C\n" +
 	"?CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND\x10\x03\x12B\n" +
 	">CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID\x10\x04\x12A\n" +
-	"=CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED\x10\x05*\xab\x02\n" +
+	"=CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED\x10\x05\x12<\n" +
+	"8CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT\x10\x06*\xab\x02\n" +
 	"'GetCodeReviewRunStatusResponseErrorCode\x12>\n" +
 	":GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_UNSPECIFIED\x10\x00\x12;\n" +
 	"7GET_CODE_REVIEW_RUN_STATUS_RESPONSE_ERROR_CODE_INTERNAL\x10\x01\x12A\n" +
