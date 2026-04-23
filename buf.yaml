@@ -10,3 +10,9 @@ lint:
 breaking:
   use:
     - FILE
+  # Remove in next commit, added because wanted to change field name that wasn't in use yet
+  ignore_only:
+    FIELD_SAME_NAME:
+      - proto/backend/code_review_service.proto
+    FIELD_SAME_JSON_NAME:
+      - proto/backend/code_review_service.proto

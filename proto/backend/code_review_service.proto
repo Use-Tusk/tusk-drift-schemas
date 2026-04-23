@@ -34,11 +34,22 @@ message CreateLocalCodeReviewRunRequest {
   string owner_name = 1;
   string repo_name = 2;
 
-  // Commit the patch applies on top of
-  string base_sha = 3;
+  // Most recent commit on this branch reachable on origin
+  string last_pushed_sha = 3;
+
+  // Diff between `last_pushed_sha` and the working tree (unpushed commits
+  // + uncommitted changes only)
   bytes patch = 4;
+
   optional string min_severity = 5;
   string cli_version = 6;
+
+  // Current branch name. Backend uses it to look up the open PR for seat
+  // resolution, `base_branch` defaulting, and PR context.
+  string branch_name = 7;
+
+  // The user's actual local HEAD commit
+  string local_head_sha = 8;
 }
 
 message CreateLocalCodeReviewRunResponseSuccess {
@@ -52,6 +63,7 @@ enum CreateLocalCodeReviewRunResponseErrorCode {
   CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_REPO_NOT_FOUND = 3;
   CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_PATCH_INVALID = 4;
   CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED = 5;
+  CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT = 6;
 }
 
 message CreateLocalCodeReviewRunResponseError {

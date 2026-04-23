@@ -80,6 +80,7 @@ class CreateLocalCodeReviewRunResponseErrorCode(betterproto.Enum):
     REPO_NOT_FOUND = 3
     PATCH_INVALID = 4
     RATE_LIMITED = 5
+    NO_SEAT = 6
 
 
 class GetCodeReviewRunStatusResponseErrorCode(betterproto.Enum):
@@ -268,12 +269,25 @@ class GetObservableServiceInfoResponse(betterproto.Message):
 class CreateLocalCodeReviewRunRequest(betterproto.Message):
     owner_name: str = betterproto.string_field(1)
     repo_name: str = betterproto.string_field(2)
-    base_sha: str = betterproto.string_field(3)
-    """Commit the patch applies on top of"""
+    last_pushed_sha: str = betterproto.string_field(3)
+    """Most recent commit on this branch reachable on origin"""
 
     patch: bytes = betterproto.bytes_field(4)
+    """
+    Diff between `last_pushed_sha` and the working tree (unpushed commits
+     + uncommitted changes only)
+    """
+
     min_severity: Optional[str] = betterproto.string_field(5, optional=True)
     cli_version: str = betterproto.string_field(6)
+    branch_name: str = betterproto.string_field(7)
+    """
+    Current branch name. Backend uses it to look up the open PR for seat
+     resolution, `base_branch` defaulting, and PR context.
+    """
+
+    local_head_sha: str = betterproto.string_field(8)
+    """The user's actual local HEAD commit"""
 
 
 @dataclass(eq=False, repr=False)

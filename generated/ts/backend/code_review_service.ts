@@ -28,12 +28,15 @@ export interface CreateLocalCodeReviewRunRequest {
      */
     repoName: string;
     /**
-     * Commit the patch applies on top of
+     * Most recent commit on this branch reachable on origin
      *
-     * @generated from protobuf field: string base_sha = 3
+     * @generated from protobuf field: string last_pushed_sha = 3
      */
-    baseSha: string;
+    lastPushedSha: string;
     /**
+     * Diff between `last_pushed_sha` and the working tree (unpushed commits
+     * + uncommitted changes only)
+     *
      * @generated from protobuf field: bytes patch = 4
      */
     patch: Uint8Array;
@@ -45,6 +48,19 @@ export interface CreateLocalCodeReviewRunRequest {
      * @generated from protobuf field: string cli_version = 6
      */
     cliVersion: string;
+    /**
+     * Current branch name. Backend uses it to look up the open PR for seat
+     * resolution, `base_branch` defaulting, and PR context.
+     *
+     * @generated from protobuf field: string branch_name = 7
+     */
+    branchName: string;
+    /**
+     * The user's actual local HEAD commit
+     *
+     * @generated from protobuf field: string local_head_sha = 8
+     */
+    localHeadSha: string;
 }
 /**
  * @generated from protobuf message tusk.drift.backend.v1.CreateLocalCodeReviewRunResponseSuccess
@@ -290,7 +306,11 @@ export enum CreateLocalCodeReviewRunResponseErrorCode {
     /**
      * @generated from protobuf enum value: CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_RATE_LIMITED = 5;
      */
-    RATE_LIMITED = 5
+    RATE_LIMITED = 5,
+    /**
+     * @generated from protobuf enum value: CREATE_LOCAL_CODE_REVIEW_RUN_RESPONSE_ERROR_CODE_NO_SEAT = 6;
+     */
+    NO_SEAT = 6
 }
 /**
  * @generated from protobuf enum tusk.drift.backend.v1.GetCodeReviewRunStatusResponseErrorCode
@@ -340,19 +360,23 @@ class CreateLocalCodeReviewRunRequest$Type extends MessageType<CreateLocalCodeRe
         super("tusk.drift.backend.v1.CreateLocalCodeReviewRunRequest", [
             { no: 1, name: "owner_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 2, name: "repo_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
-            { no: 3, name: "base_sha", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 3, name: "last_pushed_sha", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
             { no: 4, name: "patch", kind: "scalar", T: 12 /*ScalarType.BYTES*/ },
             { no: 5, name: "min_severity", kind: "scalar", opt: true, T: 9 /*ScalarType.STRING*/ },
-            { no: 6, name: "cli_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
+            { no: 6, name: "cli_version", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 7, name: "branch_name", kind: "scalar", T: 9 /*ScalarType.STRING*/ },
+            { no: 8, name: "local_head_sha", kind: "scalar", T: 9 /*ScalarType.STRING*/ }
         ]);
     }
     create(value?: PartialMessage<CreateLocalCodeReviewRunRequest>): CreateLocalCodeReviewRunRequest {
         const message = globalThis.Object.create((this.messagePrototype!));
         message.ownerName = "";
         message.repoName = "";
-        message.baseSha = "";
+        message.lastPushedSha = "";
         message.patch = new Uint8Array(0);
         message.cliVersion = "";
+        message.branchName = "";
+        message.localHeadSha = "";
         if (value !== undefined)
             reflectionMergePartial<CreateLocalCodeReviewRunRequest>(this, message, value);
         return message;
@@ -368,8 +392,8 @@ class CreateLocalCodeReviewRunRequest$Type extends MessageType<CreateLocalCodeRe
                 case /* string repo_name */ 2:
                     message.repoName = reader.string();
                     break;
-                case /* string base_sha */ 3:
-                    message.baseSha = reader.string();
+                case /* string last_pushed_sha */ 3:
+                    message.lastPushedSha = reader.string();
                     break;
                 case /* bytes patch */ 4:
                     message.patch = reader.bytes();
@@ -379,6 +403,12 @@ class CreateLocalCodeReviewRunRequest$Type extends MessageType<CreateLocalCodeRe
                     break;
                 case /* string cli_version */ 6:
                     message.cliVersion = reader.string();
+                    break;
+                case /* string branch_name */ 7:
+                    message.branchName = reader.string();
+                    break;
+                case /* string local_head_sha */ 8:
+                    message.localHeadSha = reader.string();
                     break;
                 default:
                     let u = options.readUnknownField;
@@ -398,9 +428,9 @@ class CreateLocalCodeReviewRunRequest$Type extends MessageType<CreateLocalCodeRe
         /* string repo_name = 2; */
         if (message.repoName !== "")
             writer.tag(2, WireType.LengthDelimited).string(message.repoName);
-        /* string base_sha = 3; */
-        if (message.baseSha !== "")
-            writer.tag(3, WireType.LengthDelimited).string(message.baseSha);
+        /* string last_pushed_sha = 3; */
+        if (message.lastPushedSha !== "")
+            writer.tag(3, WireType.LengthDelimited).string(message.lastPushedSha);
         /* bytes patch = 4; */
         if (message.patch.length)
             writer.tag(4, WireType.LengthDelimited).bytes(message.patch);
@@ -410,6 +440,12 @@ class CreateLocalCodeReviewRunRequest$Type extends MessageType<CreateLocalCodeRe
         /* string cli_version = 6; */
         if (message.cliVersion !== "")
             writer.tag(6, WireType.LengthDelimited).string(message.cliVersion);
+        /* string branch_name = 7; */
+        if (message.branchName !== "")
+            writer.tag(7, WireType.LengthDelimited).string(message.branchName);
+        /* string local_head_sha = 8; */
+        if (message.localHeadSha !== "")
+            writer.tag(8, WireType.LengthDelimited).string(message.localHeadSha);
         let u = options.writeUnknownFields;
         if (u !== false)
             (u == true ? UnknownFieldHandler.onWrite : u)(this.typeName, message, writer);
