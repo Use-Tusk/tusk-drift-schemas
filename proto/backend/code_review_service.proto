@@ -44,7 +44,7 @@ message CreateLocalCodeReviewRunRequest {
   optional string min_severity = 5;
   string cli_version = 6;
 
-  // Current branch name. Backend uses it to look up the opekn PR for seat
+  // Current branch name. Backend uses it to look up the open PR for seat
   // resolution, `base_branch` defaulting, and PR context.
   string branch_name = 7;
 
