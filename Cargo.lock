@@ -396,7 +396,7 @@ dependencies = [
 
 [[package]]
 name = "tusk-drift-schemas"
-version = "0.1.35"
+version = "0.1.36"
 dependencies = [
  "prost",
  "prost-types",
@@ -404,7 +404,7 @@ dependencies = [
 
 [[package]]
 name = "tusk-drift-schemas-rust-codegen"
-version = "0.1.35"
+version = "0.1.36"
 dependencies = [
  "prost-build",
 ]
